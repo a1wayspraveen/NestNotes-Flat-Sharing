@@ -1,27 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NestNotes</title>
+    <title>NestNotes Flat Sharing</title>
+
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<header>
-    <h1>NestNotes Flat Sharing</h1>
-</header>
 
-<nav>
-    <a href="#">Home</a>
-    <a href="#">Listings</a>
-    <a href="#">Login</a>
-</nav>
+    <nav class="navbar">
 
-<main>
-    <h2>Find Your Perfect Flatmate</h2>
-</main>
+        <div class="logo">
+            🏠 NestNotes
+        </div>
 
-<script src="script.js"></script>
+        <div class="nav-links">
+
+            <a href="#">Home</a>
+            <a href="#">Listings</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+
+        </div>
+
+        <button class="login-btn">
+            Login
+        </button>
+
+    </nav>
+
+
+    <section class="hero">
+
+        <div class="hero-text">
+
+            <h1>Find Your Perfect Flatmate</h1>
+
+            <p>
+                Connect with trusted roommates and discover
+                affordable shared accommodations near you.
+            </p>
+
+            <button class="hero-btn">
+                Explore Listings
+            </button>
+
+        </div>
+
+        <div class="hero-image">
+
+            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=700"
+                alt="Flat Sharing">
+
+        </div>
+
+    </section>
+
+
+    <section class="search-section">
+
+        <input
+            type="text"
+            id="searchBox"
+            placeholder="Enter location">
+
+        <button onclick="searchLocation()">
+            Search
+        </button>
+
+    </section>
+
+    <!-- FEATURES -->
+
+    <section class="features">
+
+        <div class="feature-card">
+
+            <h3>Verified Users</h3>
+
+            <p>
+                Safe and trusted community.
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>Affordable Living</h3>
+
+            <p>
+                Find budget-friendly homes.
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>Direct Connect</h3>
+
+            <p>
+                Chat with flatmates instantly.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section>
+
+        <h2 class="section-title">
+            Featured Listings
+        </h2>
+
+        <div
+            class="listings"
+            id="listingContainer">
+
+        </div>
+
+    </section>
+
+
+    <section>
+
+        <h2 class="section-title">
+            Suggested Flatmates
+        </h2>
+
+        <div
+            class="users"
+            id="usersContainer">
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            © 2026 NestNotes Flat Sharing
+        </p>
+
+    </footer>
+
+    <script src="script.js"></script>
+
 </body>
+
 </html>
