@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:3000/api/listings";
+const API_URL =
+  "https://nestnotes-flat-sharing.onrender.com/api/listings";
 
 const container = document.getElementById("myListingsContainer");
 
@@ -148,7 +149,7 @@ async function viewInterestedUsers(listingId) {
 
   try {
     const response = await fetch(
-      `http://localhost:3000/api/interests/listing/${listingId}`,
+      `https://nestnotes-flat-sharing.onrender.com/api/interests/listing/${listingId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

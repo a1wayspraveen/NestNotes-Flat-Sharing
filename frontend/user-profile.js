@@ -8,7 +8,7 @@ async function loadProfile() {
 
     const response =
     await fetch(
-        `http://localhost:3000/api/profile/${userId}`
+        `https://nestnotes-flat-sharing.onrender.com/api/profile/${userId}`
     );
 
     const profile =

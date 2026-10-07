@@ -2,7 +2,7 @@ const params = new URLSearchParams(window.location.search);
 
 const id = params.get("id");
 
-const API_URL = `http://localhost:3000/api/listings/${id}`;
+const API_URL = `https://nestnotes-flat-sharing.onrender.com/api/listings/${id}`;
 
 const container = document.getElementById("listingDetails");
 
@@ -106,7 +106,7 @@ function sendMessage(listingId) {
 async function getInterestCount(listingId) {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/interests/count/${listingId}`,
+      `https://nestnotes-flat-sharing.onrender.com/api/interests/count/${listingId}`,
     );
 
     const data = await response.json();
@@ -122,7 +122,7 @@ async function expressInterest(listingId) {
   const token = localStorage.getItem("token");
 
   try {
-    const response = await fetch("http://localhost:3000/api/interests", {
+    const response = await fetch("https://nestnotes-flat-sharing.onrender.com/api/interests", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

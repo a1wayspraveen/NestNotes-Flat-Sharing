@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api/admin";
+const API_URL = "https://nestnotes-flat-sharing.onrender.com/api/admin";
 
 async function loadListings() {
   try {
@@ -79,7 +79,7 @@ async function deleteListing(id) {
 
   const token = localStorage.getItem("token");
 
-  await fetch(`http://localhost:3000/api/listings/${id}`, {
+  await fetch(`https://nestnotes-flat-sharing.onrender.com/api/listings/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -91,7 +91,7 @@ async function deleteListing(id) {
 
 
   async function verifyUser(id) {
-    await fetch(`http://localhost:3000/api/admin/verify/${id}`, {
+    await fetch(`https://nestnotes-flat-sharing.onrender.com/api/admin/verify/${id}`, {
       method: "PUT",
     });
 

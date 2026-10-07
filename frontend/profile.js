@@ -18,7 +18,7 @@ form.addEventListener("submit", async (e) => {
     };
 
     const response = await fetch(
-        "http://localhost:3000/api/profile",
+        "https://nestnotes-flat-sharing.onrender.com/api/profile",
         {
             method: "POST",
             headers: {

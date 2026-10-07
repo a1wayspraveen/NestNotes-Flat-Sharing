@@ -1,5 +1,5 @@
 const API_URL =
-"http://localhost:3000/api/listings";
+"https://nestnotes-flat-sharing.onrender.com/api/listings";
 
 const container =
 document.getElementById("listingContainer");
@@ -270,7 +270,7 @@ if (!token) {
 
         const uploadResponse =
         await fetch(
-            "http://localhost:3000/api/listings/upload",
+            "https://nestnotes-flat-sharing.onrender.com/api/listings/upload",
             {
                 method: "POST",
                 headers: {
@@ -435,7 +435,7 @@ async function expressInterest(id, button) {
     try {
 
         const response = await fetch(
-            "http://localhost:3000/api/interests",
+            "https://nestnotes-flat-sharing.onrender.com/api/interests",
             {
                 method: "POST",
                 headers: {
@@ -521,7 +521,7 @@ document
 async function loadStats(){
 
     const response = await fetch(
-        "http://localhost:3000/api/listings/stats/summary"
+        "https://nestnotes-flat-sharing.onrender.com/api/listings/stats/summary"
     );
 
     const stats = await response.json();
@@ -620,7 +620,7 @@ async function viewInterests(id){
 
         const response =
         await fetch(
-            `http://localhost:3000/api/interests/listing/${id}`
+            `https://nestnotes-flat-sharing.onrender.com/api/interests/listing/${id}`
         );
 
         const interests =
@@ -648,7 +648,7 @@ async function viewMessages(listingId) {
 
         const response =
         await fetch(
-            `http://localhost:3000/api/messages/${listingId}`
+            `https://nestnotes-flat-sharing.onrender.com/api/messages/${listingId}`
         );
 
         const messages =
@@ -684,7 +684,7 @@ async function getInterestCount(listingId) {
     try {
 
         const response = await fetch(
-            `http://localhost:3000/api/interests/count/${listingId}`
+            `https://nestnotes-flat-sharing.onrender.com/api/interests/count/${listingId}`
         );
 
         const data = await response.json();

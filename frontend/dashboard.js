@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:3000/api/listings";
+const API_URL =
+  "https://nestnotes-flat-sharing.onrender.com/api/listings";
 
 const userId = localStorage.getItem("userId");
 
@@ -21,7 +22,7 @@ async function loadDashboard() {
 
     const statsResponse =
 await fetch(
-    `http://localhost:3000/api/listings/dashboard/stats/${userId}`
+    `https://nestnotes-flat-sharing.onrender.com/api/listings/dashboard/stats/${userId}`
 );
 
 const stats =
@@ -72,7 +73,7 @@ document.getElementById("totalMessages").textContent =
 async function loadStats() {
 
     const response = await fetch(
-        `http://localhost:3000/api/listings/dashboard/stats/${userId}`
+        `https://nestnotes-flat-sharing.onrender.com/api/listings/dashboard/stats/${userId}`
     );
 
     const stats = await response.json();
@@ -92,7 +93,8 @@ async function getInterestCount(listingId) {
     try {
 
         const response = await fetch(
-            `http://localhost:3000/api/interests/count/${listingId}`
+            `https://nestnotes-flat-sharing.onrender.com/api/interests
+/count/${listingId}`
         );
 
         const data = await response.json();
@@ -111,7 +113,7 @@ async function getMessageCount(listingId) {
     try {
 
         const response = await fetch(
-            `http://localhost:3000/api/messages/${listingId}`
+            `https://nestnotes-flat-sharing.onrender.com/api/messages/${listingId}`
         );
 
         const messages = await response.json();

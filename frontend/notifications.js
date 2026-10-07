@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api/messages";
+const API_URL = "https://nestnotes-flat-sharing.onrender.com/api/messages";
 
 const userId = localStorage.getItem("userId");
 

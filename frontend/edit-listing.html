@@ -106,7 +106,8 @@
 
 <script>
 
-const API_URL = "http://localhost:3000/api/listings";
+const API_URL =
+  "https://nestnotes-flat-sharing.onrender.com/api/listings";
 
 const token = localStorage.getItem("token");
 const params = new URLSearchParams(window.location.search);
@@ -222,7 +223,7 @@ if (rent <= 0) {
         formData.append("image", imageFile);
 
         const uploadResponse = await fetch(
-            "http://localhost:3000/api/listings/upload",
+            "https://nestnotes-flat-sharing.onrender.com/api/listings/upload",
             {
                 method: "POST",
                 headers: {

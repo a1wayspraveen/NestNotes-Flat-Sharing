@@ -10,7 +10,7 @@ async function loadUsers() {
     const token = localStorage.getItem("token");
 
     const response = await fetch(
-      `http://localhost:3000/api/interests/listing/${listingId}`,
+      `https://nestnotes-flat-sharing.onrender.com/api/interests/listing/${listingId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

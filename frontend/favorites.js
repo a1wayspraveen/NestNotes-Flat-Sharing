@@ -1,5 +1,5 @@
 const API_URL =
-"http://localhost:3000/api/listings";
+"https://nestnotes-flat-sharing.onrender.com/api/listings";
 
 const container =
 document.getElementById("favoriteContainer");

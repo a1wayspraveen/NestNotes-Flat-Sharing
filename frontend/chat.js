@@ -9,7 +9,7 @@ const token = localStorage.getItem("token");
 async function loadMessages() {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/messages/${listingId}`,
+      `https://nestnotes-flat-sharing.onrender.com/api/messages/${listingId}`,
     );
 
     const messages = await response.json();
@@ -27,7 +27,7 @@ async function loadMessages() {
       });
 
       const repliesResponse = await fetch(
-        `http://localhost:3000/api/messages/replies/${msg.id}`,
+        `https://nestnotes-flat-sharing.onrender.com/api/messages/replies/${msg.id}`,
       );
 
       const replies = await repliesResponse.json();
@@ -83,7 +83,7 @@ async function sendMessage() {
   if (!message) return;
 
   try {
-    const response = await fetch("http://localhost:3000/api/messages", {
+    const response = await fetch("https://nestnotes-flat-sharing.onrender.com/api/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -118,7 +118,7 @@ setInterval(() => {
 async function loadChatTitle() {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/messages/owner/${receiverId}`,
+      `https://nestnotes-flat-sharing.onrender.com/api/messages/owner/${receiverId}`,
     );
 
     const data = await response.json();
