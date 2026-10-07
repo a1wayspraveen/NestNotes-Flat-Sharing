@@ -1,0 +1,96 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fc;
+}
+
+.form-section {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.toggle-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 22px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    margin-bottom: 25px;
+}
+
+#listingForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#listingForm input,
+#listingForm select,
+#listingForm textarea {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#listingForm textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+#listingForm button[type="submit"] {
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #22c55e;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#listingForm button[type="submit"]:hover {
+    background: #16a34a;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 5px rgba(37,99,235,0.3);
+}
+
+.page-title {
+    text-align: center;
+    color: #2563eb;
+    margin-bottom: 25px;
+}
+
+.image-preview{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.cancel-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#6c757d;
+    color:white;
+    margin-top:10px;
+    cursor:pointer;
+}
