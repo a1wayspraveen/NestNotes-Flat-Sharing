@@ -138,6 +138,31 @@ or use VS Code Live Server.
 npm test
 ```
 
+## Screenshots
+
+## Home Page
+![Home](screenshots/HomePage.png)
+![Home](screenshots/HomePage2.png)
+![Home](screenshots/HomePage3.png)
+![Home](screenshots/HomePage4.png)
+
+## Dashboard
+![Dashboard](screenshots/AdminDashboard.png)
+![Dashboard](screenshots/OwnerDashboard.png)
+
+## Login Page
+![Login](screenshots/LoginPage.png)
+
+## Notifications (under development)
+![Notifications](screenshots/Notifications.png)
+
+## Inbox and Chat
+![Inbox](screenshots/OwnerInbox.png)
+![Chat](screenshots/Chat.png)
+
+## User Listings
+![UserListings](screenshots/MyListings.png)
+
 ## Future Improvements (v1.1)
 
 - Notification System Improvements
