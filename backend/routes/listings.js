@@ -6,9 +6,11 @@ const upload = require("../multerConfig");
 const db = require("../database");
 
 router.post("/upload", verifyToken, upload.single("image"), (req, res) => {
+    console.log("File uploaded:", req.file);
     res.json({
         image: `https://nestnotes-flat-sharing.onrender.com/uploads/${req.file.filename}`
     });
+    console.log("File path:", req.file.path);
 });
 
 router.get("/stats/summary", (req, res) => {
@@ -28,6 +30,9 @@ router.get("/stats/summary", (req, res) => {
             }
 
             res.json(row);
+
+
+
         }
     );
 });
