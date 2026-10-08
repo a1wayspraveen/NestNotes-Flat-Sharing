@@ -7,7 +7,7 @@ const db = require("../database");
 
 router.post("/upload", verifyToken, upload.single("image"), (req, res) => {
     res.json({
-        image: `http://localhost:3000/uploads/${req.file.filename}`
+        image: `https://nestnotes-flat-sharing.onrender.com/uploads/${req.file.filename}`
     });
 });
 
