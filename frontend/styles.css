@@ -1,3 +1,24 @@
+@media (max-width:768px){
+
+    nav{
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    .listing-card{
+        width:100%;
+    }
+
+    .listing-card img{
+        height:220px;
+    }
+
+    .hero-content h1{
+        font-size:28px;
+    }
+
+}
+
 html{
     scroll-behavior:smooth;
 }
@@ -555,6 +576,9 @@ footer{
 }
 
 .listing-card {
+  width:100%;
+  height:250px;
+  object-fit:cover;
   background: white;
   border-radius: 16px;
   overflow: hidden;
@@ -749,4 +773,73 @@ textarea{
         padding:20px;
         text-align:center;
     }
+}
+
+/* Auth Pages */
+
+.auth-page{
+    background:#f5f7fb;
+    min-height:100vh;
+}
+
+.auth-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+}
+
+.auth-card{
+    width:100%;
+    max-width:420px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.1);
+}
+
+.auth-card h2{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.auth-subtitle{
+    text-align:center;
+    color:gray;
+    margin-bottom:25px;
+}
+
+.auth-card input{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.auth-btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.auth-btn:hover{
+    opacity:0.9;
+}
+
+.auth-links{
+    text-align:center;
+    margin-top:15px;
+}
+
+#message{
+    text-align:center;
+    color:red;
+    margin-top:10px;
 }
