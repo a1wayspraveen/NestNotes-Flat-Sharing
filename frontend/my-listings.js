@@ -1,5 +1,4 @@
-const API_URL =
-  "https://nestnotes-flat-sharing.onrender.com/api/listings";
+const API_URL = "https://nestnotes-flat-sharing.onrender.com/api/listings";
 
 const container = document.getElementById("myListingsContainer");
 
@@ -54,8 +53,11 @@ async function loadMyListings() {
 
     myListings.forEach((listing) => {
       const imageUrl = listing.image
-        ? `${listing.image}?t=${Date.now()}`
-        : "https://via.placeholder.com/400x250?text=No+Image";
+        ? listing.image.replace(
+            "http://localhost:3000",
+            "https://nestnotes-flat-sharing.onrender.com",
+          ) + `?t=${Date.now()}`
+        : "https://placehold.co/400x250?text=No+Image";
 
       const card = document.createElement("div");
 
