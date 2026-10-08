@@ -2,6 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
+const fs = require("fs");
+
+console.log(
+    "Uploads exists:",
+    fs.existsSync(path.join(__dirname, "uploads"))
+);
+
 const authRoutes = require("./routes/auth");
 const listingsRoutes = require("./routes/listings");
 const interestRoutes = require("./routes/interests");
