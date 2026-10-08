@@ -109,70 +109,53 @@ router.get("/:id", (req, res) => {
 
 // CREATE listing
 router.post("/", verifyToken, (req, res) => {
-    db.get(
-        "SELECT isVerified FROM users WHERE id = ?",
-        [req.user.id],
-        (err, user) => {
+
+    const {
+        title,
+        rent,
+        location,
+        category,
+        image,
+        description
+    } = req.body;
+
+    const userId = req.user.id;
+
+    db.run(
+        `
+        INSERT INTO listings
+        (
+            title,
+            rent,
+            location,
+            category,
+            image,
+            description,
+            user_id
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        `,
+        [
+            title,
+            rent,
+            location,
+            category,
+            image,
+            description,
+            userId
+        ],
+        function(err) {
+
             if (err) {
                 return res.status(500).json({
                     message: err.message
                 });
             }
 
-            if (!user || user.isVerified !== 1) {
-                return res.status(403).json({
-                    message: "Your account is not verified yet"
-                });
-            }
-
-            const {
-                title,
-                rent,
-                location,
-                category,
-                image,
-                description
-            } = req.body;
-
-            const userId = req.user.id;
-
-            db.run(
-                `INSERT INTO listings
-                (
-                    title,
-                    rent,
-                    location,
-                    category,
-                    image,
-                    description,
-                    user_id
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [
-                    title,
-                    rent,
-                    location,
-                    category,
-                    image,
-                    description,
-                    userId
-                ],
-                function (err) {
-                    if (err) {
-                        return res.status(500).json(err);
-                    }
-
-                    res.status(201).json({
-                        id: this.lastID,
-                        title,
-                        rent,
-                        location,
-                        category,
-                        image,
-                        description
-                    });
-                }
-            );
+            res.status(201).json({
+                id: this.lastID,
+                message: "Listing created successfully"
+            });
         }
     );
 });
