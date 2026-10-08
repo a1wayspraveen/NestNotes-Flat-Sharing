@@ -29,6 +29,11 @@ app.use(
     express.static(path.join(__dirname, "uploads"))
 );
 
+console.log(
+    "Serving uploads from:",
+    path.join(__dirname, "uploads")
+);
+
 app.use("/api/auth", authRoutes);
 app.use("/api/listings", listingsRoutes);
 app.use("/api/interests", interestRoutes);
