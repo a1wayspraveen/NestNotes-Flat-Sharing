@@ -7,6 +7,8 @@ const db = require("../database");
 
 router.post("/upload", verifyToken, upload.single("image"), (req, res) => {
     console.log("File uploaded:", req.file);
+    console.log("Filename:", req.file.filename);
+    console.log("Exists:", require("fs").existsSync(req.file.path));
     res.json({
         image: `https://nestnotes-flat-sharing.onrender.com/uploads/${req.file.filename}`
     });
