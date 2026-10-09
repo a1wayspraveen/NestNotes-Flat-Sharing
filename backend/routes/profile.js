@@ -63,9 +63,21 @@ router.post("/", verifyToken, (req, res) => {
 router.get("/", verifyToken, (req, res) => {
     db.get(
         `
-        SELECT *
-        FROM user_profiles
-        WHERE user_id = ?
+        SELECT
+            u.name,
+            u.email,
+            p.age,
+            p.gender,
+            p.occupation,
+            p.budget,
+            p.food_preference,
+            p.smoking,
+            p.drinking,
+            p.bio
+        FROM users u
+        LEFT JOIN user_profiles p
+            ON p.user_id = u.id
+        WHERE u.id = ?
         `,
         [req.user.id],
         (err, row) => {
@@ -77,7 +89,13 @@ router.get("/", verifyToken, (req, res) => {
                 });
             }
 
-            return res.json(row || {});
+            if (!row) {
+                return res.status(404).json({
+                    message: "User not found."
+                });
+            }
+
+            return res.json(row);
         }
     );
 });
