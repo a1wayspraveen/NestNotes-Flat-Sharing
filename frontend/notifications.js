@@ -4,7 +4,7 @@ const token = localStorage.getItem("token");
 const userId = localStorage.getItem("userId");
 
 async function loadNotifications() {
-    const container = document.getElementById("notifications");
+    const container = document.getElementById("notificationsContainer");
 
     if (!container) {
         console.error("Notifications container not found.");
