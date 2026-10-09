@@ -4,36 +4,92 @@ const db = require("../database");
 const verifyToken =
 require("../middleware/authMiddleware");
 
-// Send Message
+// Send Message + Create Notification
 router.post("/", verifyToken, (req, res) => {
-
-    console.log("BODY:", req.body);
-    console.log("USER:", req.user);
-
     const { listingId, message } = req.body;
+    const senderId = req.user.id;
 
-    db.run(
-        `
-        INSERT INTO messages
-        (listingId, senderId, message)
-        VALUES (?, ?, ?)
-        `,
-        [
-            listingId,
-            req.user.id,
-            message
-        ],
-        function(err) {
+    if (!listingId || !message || !message.trim()) {
+        return res.status(400).json({
+            message: "Listing ID and message are required"
+        });
+    }
 
+    // Find the listing and its owner
+    db.get(
+        `SELECT id, title, user_id
+         FROM listings
+         WHERE id = ?`,
+        [listingId],
+        (err, listing) => {
             if (err) {
                 return res.status(500).json({
                     message: err.message
                 });
             }
 
-            res.status(201).json({
-                message: "Message sent"
-            });
+            if (!listing) {
+                return res.status(404).json({
+                    message: "Listing not found"
+                });
+            }
+
+            // Save the message
+            db.run(
+                `INSERT INTO messages
+                 (listingId, senderId, message)
+                 VALUES (?, ?, ?)`,
+                [listingId, senderId, message.trim()],
+                function (err) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: err.message
+                        });
+                    }
+
+                    const messageId = this.lastID;
+
+                    // Don't notify someone about their own message
+                    if (listing.user_id === senderId) {
+                        return res.status(201).json({
+                            message: "Message sent successfully",
+                            messageId
+                        });
+                    }
+
+                    // Notify the listing owner
+                    db.run(
+                        `INSERT INTO notifications
+                         (userId, message)
+                         VALUES (?, ?)`,
+                        [
+                            listing.user_id,
+                            `You received a new message about "${listing.title}".`
+                        ],
+                        function (notificationErr) {
+                            if (notificationErr) {
+                                console.error(
+                                    "Notification error:",
+                                    notificationErr.message
+                                );
+
+                                // The message was saved even if notification
+                                // creation failed.
+                                return res.status(201).json({
+                                    message: "Message sent, but notification failed",
+                                    messageId
+                                });
+                            }
+
+                            res.status(201).json({
+                                message: "Message sent successfully",
+                                messageId,
+                                notificationCreated: true
+                            });
+                        }
+                    );
+                }
+            );
         }
     );
 });
