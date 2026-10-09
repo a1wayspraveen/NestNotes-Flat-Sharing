@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
-console.log("PROFILE ROUTES LOADED");
+
 const db = require("../database");
+const verifyToken = require("../middleware/authMiddleware");
 
-const verifyToken =
-require("../middleware/authMiddleware");
+// Save or update the logged-in user's profile
 router.post("/", verifyToken, (req, res) => {
-
     const {
         age,
         gender,
@@ -20,8 +19,7 @@ router.post("/", verifyToken, (req, res) => {
 
     db.run(
         `
-        INSERT OR REPLACE INTO user_profiles
-        (
+        INSERT OR REPLACE INTO user_profiles (
             user_id,
             age,
             gender,
@@ -45,35 +43,41 @@ router.post("/", verifyToken, (req, res) => {
             drinking,
             bio
         ],
-        function(err) {
+        function (err) {
+            if (err) {
+                console.error("Profile save error:", err.message);
 
-            if(err){
-                return res.status(500).json(err);
+                return res.status(500).json({
+                    message: "Failed to save profile."
+                });
             }
 
-            res.json({
-                message: "Profile saved"
+            return res.json({
+                message: "Profile saved successfully."
             });
         }
     );
 });
 
-router.get("/:id", (req, res) => {
-
+// Get the logged-in user's profile
+router.get("/", verifyToken, (req, res) => {
     db.get(
         `
         SELECT *
         FROM user_profiles
         WHERE user_id = ?
         `,
-        [req.params.id],
+        [req.user.id],
         (err, row) => {
+            if (err) {
+                console.error("Profile loading error:", err.message);
 
-            if(err){
-                return res.status(500).json(err);
+                return res.status(500).json({
+                    message: "Failed to load profile."
+                });
             }
 
-            res.json(row || {});
+            return res.json(row || {});
         }
     );
 });
