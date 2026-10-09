@@ -1,39 +1,518 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | NestNotes</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        :root {
+            --primary: #078b75;
+            --primary-dark: #066b5b;
+            --background: #f3f8f7;
+            --border: #dce8e5;
+            --text: #17332f;
+            --muted: #70817d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
+
+        .profile-header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 18px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            color: var(--primary);
+            font-size: 25px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .header-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .header-links a {
+            text-decoration: none;
+            color: #405650;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .header-links a:hover {
+            color: var(--primary);
+        }
+
+        .page {
+            max-width: 1050px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 280px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(25, 65, 55, 0.04);
+        }
+
+        .profile-summary {
+            text-align: center;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background: #e0f4ee;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 800;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-summary h2 {
+            font-size: 21px;
+            margin: 0 0 7px;
+            overflow-wrap: anywhere;
+        }
+
+        .profile-summary p {
+            color: var(--muted);
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #e3f7ee;
+            color: #087857;
+            padding: 7px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .sidebar-links {
+            display: grid;
+            gap: 8px;
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .sidebar-links a,
+        .sidebar-links button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 9px;
+            border: none;
+            background: transparent;
+            color: #405650;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .sidebar-links a:hover,
+        .sidebar-links button:hover {
+            background: #edf8f5;
+            color: var(--primary);
+        }
+
+        .sidebar-links .logout {
+            color: #c0392b;
+        }
+
+        .form-card h2 {
+            margin: 0 0 7px;
+            font-size: 22px;
+        }
+
+        .section-description {
+            margin: 0 0 25px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fcfefd;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(7, 139, 117, 0.1);
+        }
+
+        .form-group input[readonly] {
+            background: #f1f5f4;
+            color: #71817c;
+            cursor: not-allowed;
+        }
+
+        .form-group textarea {
+            min-height: 115px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+        .save-button {
+            padding: 14px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .save-button:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        #statusMessage {
+            display: none;
+            margin-top: 20px;
+            padding: 13px;
+            border-radius: 9px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        #statusMessage.success {
+            display: block;
+            background: #e5f8ee;
+            color: #087857;
+        }
+
+        #statusMessage.error {
+            display: block;
+            background: #fff0ef;
+            color: #b42318;
+        }
+
+        .loading {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 760px) {
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-summary {
+                padding: 22px;
+            }
+
+            .sidebar-links {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .header-links {
+                gap: 12px;
+            }
+
+            .page {
+                margin-top: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .page-heading h1 {
+                font-size: 26px;
+            }
+
+            .form-actions,
+            .save-button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>My Flatmate Profile</h1>
+<header class="profile-header">
+    <a href="index.html" class="brand">🏠 NestNotes</a>
 
-    <form id="profileForm">
+    <nav class="header-links">
+        <a href="index.html">Home</a>
+        <a href="my-listings.html">My Listings</a>
+        <a href="favorites.html">Favorites</a>
+        <a href="notifications.html">Notifications</a>
+    </nav>
+</header>
 
-        <input type="number" id="age" placeholder="Age"><br><br>
+<main class="page">
 
-        <input type="text" id="gender" placeholder="Gender"><br><br>
+    <div class="page-heading">
+        <h1>My Profile</h1>
+        <p>Manage your personal information and find your place in the NestNotes community.</p>
+    </div>
 
-        <input type="text" id="occupation" placeholder="Occupation"><br><br>
+    <p id="loadingMessage" class="loading">Loading your profile...</p>
 
-        <input type="text" id="budget" placeholder="Monthly Budget"><br><br>
+    <div class="profile-layout">
 
-        <input type="text" id="food_preference" placeholder="Food Preference"><br><br>
+        <aside class="card profile-summary">
 
-        <input type="text" id="smoking" placeholder="Smoking (Yes/No)"><br><br>
+            <div class="avatar" id="avatar">
+                N
+            </div>
 
-        <input type="text" id="drinking" placeholder="Drinking (Yes/No)"><br><br>
+            <h2 id="displayName">Your Name</h2>
+            <p id="displayEmail">Loading email...</p>
 
-        <textarea id="bio" placeholder="Tell others about yourself"></textarea>
+            <span class="status-badge">NestNotes Member</span>
 
-        <br><br>
+            <div class="sidebar-links">
+                <a href="index.html">🏠 Browse Listings</a>
+                <a href="my-listings.html">📋 My Listings</a>
+                <a href="favorites.html">❤️ Favorites</a>
+                <a href="chat.html?listingId=1">💬 Messages</a>
+                <a href="notifications.html">🔔 Notifications</a>
+                <button type="button" class="logout" onclick="logout()">
+                    ↪ Log Out
+                </button>
+            </div>
 
-        <button type="submit">
-            Save Profile
-        </button>
+        </aside>
 
-    </form>
+        <section class="card form-card">
 
-    <script src="profile.js"></script>
+            <h2>Personal Information</h2>
+
+            <p class="section-description">
+                Tell potential flatmates a little about yourself.
+                Your profile helps others understand your lifestyle and preferences.
+            </p>
+
+            <form id="profileForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input id="name" type="text" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input id="email" type="email" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input id="age" type="number" min="18" max="100"
+                               placeholder="Your age">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender">
+                            <option value="">Select gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Non-binary">Non-binary</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="occupation">Occupation</label>
+                        <input id="occupation" type="text"
+                               placeholder="e.g. Student, Software Developer">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget">Monthly Budget</label>
+                        <select id="budget">
+                            <option value="">Select your budget</option>
+                            <option value="Below ₹5,000">Below ₹5,000</option>
+                            <option value="₹5,000 - ₹10,000">₹5,000 - ₹10,000</option>
+                            <option value="₹10,000 - ₹15,000">₹10,000 - ₹15,000</option>
+                            <option value="₹15,000 - ₹25,000">₹15,000 - ₹25,000</option>
+                            <option value="Above ₹25,000">Above ₹25,000</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="food_preference">Food Preference</label>
+                        <select id="food_preference">
+                            <option value="">Select preference</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                            <option value="Non-vegetarian">Non-vegetarian</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="No preference">No preference</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="smoking">Smoking</label>
+                        <select id="smoking">
+                            <option value="">Select preference</option>
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+                            <option value="Occasionally">Occasionally</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="drinking">Drinking</label>
+                        <select id="drinking">
+                            <option value="">Select preference</option>
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+                            <option value="Occasionally">Occasionally</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="bio">About Me</label>
+                        <textarea id="bio"
+                                  maxlength="1000"
+                                  placeholder="Introduce yourself to potential flatmates..."></textarea>
+                    </div>
+
+                </div>
+
+                <div id="statusMessage" role="status" aria-live="polite"></div>
+
+                <div class="form-actions">
+                    <button type="submit" class="save-button" id="saveButton">
+                        Save Profile
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+</main>
+
+<script src="profile.js"></script>
 
 </body>
 </html>
