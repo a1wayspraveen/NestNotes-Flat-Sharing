@@ -61,41 +61,52 @@ router.post("/", verifyToken, (req, res) => {
 
 // Get the logged-in user's profile
 router.get("/", verifyToken, (req, res) => {
+    console.log("Profile request received");
+    console.log("Authenticated user ID:", req.user.id);
+
     db.get(
-        `
-        SELECT
-            u.name,
-            u.email,
-            p.age,
-            p.gender,
-            p.occupation,
-            p.budget,
-            p.food_preference,
-            p.smoking,
-            p.drinking,
-            p.bio
-        FROM users u
-        LEFT JOIN user_profiles p
-            ON p.user_id = u.id
-        WHERE u.id = ?
-        `,
+        "SELECT id, name, email FROM users WHERE id = ?",
         [req.user.id],
-        (err, row) => {
+        (err, user) => {
             if (err) {
-                console.error("Profile loading error:", err.message);
-
+                console.error("Database error:", err.message);
                 return res.status(500).json({
-                    message: "Failed to load profile."
+                    message: "Database query failed."
                 });
             }
 
-            if (!row) {
+            console.log(
+                "User found in database:",
+                user ? { id: user.id, email: user.email } : null
+            );
+
+            if (!user) {
                 return res.status(404).json({
-                    message: "User not found."
+                    message: "Authenticated user not found in database."
                 });
             }
 
-            return res.json(row);
+            db.get(
+                `SELECT * FROM user_profiles WHERE user_id = ?`,
+                [req.user.id],
+                (profileErr, profile) => {
+                    if (profileErr) {
+                        console.error(
+                            "Profile query error:",
+                            profileErr.message
+                        );
+
+                        return res.status(500).json({
+                            message: "Failed to load profile."
+                        });
+                    }
+
+                    return res.json({
+                        ...user,
+                        ...(profile || {})
+                    });
+                }
+            );
         }
     );
 });
