@@ -1,27 +1,165 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NestNotes</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NestNotes Flat Sharing</title>
 
-<header>
-    <h1>NestNotes Flat Sharing</h1>
-</header>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        
+      <a href="notifications.html">
+        <button>🔔 Notifications</button>
+      </a>
 
-<nav>
-    <a href="#">Home</a>
-    <a href="#">Listings</a>
-    <a href="#">Login</a>
-</nav>
+      <a href="admin.html">Admin</a>
 
-<main>
-    <h2>Find Your Perfect Flatmate</h2>
-</main>
+      <a href="dashboard.html">Dashboard</a>
 
-<script src="script.js"></script>
-</body>
+      <a href="favorites.html">Favorites</a>
+
+      <a href="inbox.html">Inbox</a>
+
+      <div class="logo">🏠 NestNotes</div>
+
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="my-listings.html">My Listings</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+
+        <button onclick="logout()">Logout</button>
+      </div>
+    </nav>
+
+    <!-- HERO BANNER -->
+    <section class="hero-banner">
+      <div class="hero-content">
+        <h1>Find Your Perfect Flat</h1>
+
+        <p>Discover affordable flats, PGs and roommates across Bangalore.</p>
+
+        <a href="#listingContainer">
+          <button class="hero-btn">Browse Listings</button>
+        </a>
+      </div>
+    </section>
+
+    <!-- ADD LISTING -->
+    <section class="form-section">
+      <button id="toggleFormBtn" class="toggle-btn">+ Add New Listing</button>
+
+      <div id="formContainer">
+        <form id="listingForm">
+          <input type="text" id="title" placeholder="Flat Title" required />
+
+          <input type="number" id="rent" placeholder="Monthly Rent" required />
+
+          <input type="text" id="location" placeholder="Location" required />
+
+          <select id="category" required>
+            <option value="">Select Category</option>
+            <option value="Apartment">Apartment</option>
+            <option value="PG">PG</option>
+            <option value="Single Room">Single Room</option>
+            <option value="Shared Room">Shared Room</option>
+            <option value="Villa">Villa</option>
+          </select>
+
+          <input type="file" id="image" accept="image/*" required />
+
+          <textarea
+            id="description"
+            placeholder="Description"
+            required
+          ></textarea>
+
+          <button type="submit">Add Listing</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-section">
+      <h2 class="section-title">Platform Statistics</h2>
+
+      <div class="stats-container">
+        <div class="stat-card">
+          <h3 id="totalListings">0</h3>
+          <p>Total Listings</p>
+        </div>
+
+        <div class="stat-card">
+          <h3 id="averageRent">₹0</h3>
+          <p>Average Rent</p>
+        </div>
+
+        <div class="stat-card">
+          <h3 id="highestRent">₹0</h3>
+          <p>Highest Rent</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+      <div class="feature-card">
+        <h3>🏠 Verified Listings</h3>
+        <p>Browse trusted flats, PGs and apartments.</p>
+      </div>
+
+      <div class="feature-card">
+        <h3>💰 Affordable Rent</h3>
+        <p>Compare rents and find the best deal.</p>
+      </div>
+
+      <div class="feature-card">
+        <h3>📍 Prime Locations</h3>
+        <p>Search properties across Bangalore.</p>
+      </div>
+    </section>
+
+    <!-- FILTERS -->
+    <section class="search-section">
+      <div class="filter-bar">
+        <input type="text" id="search" placeholder="Search listings..." />
+
+        <select id="sortRent">
+          <option value="">Sort Rent</option>
+          <option value="low">Low to High</option>
+          <option value="high">High to Low</option>
+        </select>
+
+        <select id="categoryFilter">
+          <option value="All">All Categories</option>
+          <option value="Apartment">Apartment</option>
+          <option value="PG">PG</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Shared Room">Shared Room</option>
+          <option value="Villa">Villa</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- LISTINGS -->
+    <section class="listings-section">
+      <h2 id="listingCount">Listings</h2>
+
+      <div id="listingContainer"></div>
+    </section>
+
+    <!-- LOADER -->
+
+    <div id="loader" class="spinner"></div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>© 2026 NestNotes Flat Sharing</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
 </html>

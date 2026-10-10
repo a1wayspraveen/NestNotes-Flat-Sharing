@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Dashboard</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .dashboard{
+            max-width:1200px;
+            margin:40px auto;
+            padding:20px;
+        }
+
+        .stats-grid{
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:20px;
+            margin-bottom:30px;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            text-align:center;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .card h2{
+            color:#2563eb;
+            font-size:2rem;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th,td{
+            border:1px solid #ddd;
+            padding:10px;
+            text-align:left;
+        }
+
+        th{
+            background:#2563eb;
+            color:white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <h1>Owner Dashboard</h1>
+
+    <a href="profile.html">
+         My Profile
+    </a>
+
+    <div class="stats-grid">
+
+        <div class="card">
+            <h2 id="myListings">0</h2>
+            <p>My Listings</p>
+        </div>
+
+        <div class="card">
+            <h2 id="totalInterests">0</h2>
+            <p>Total Interests</p>
+        </div>
+
+        <div class="card">
+            <h2 id="totalMessages">0</h2>
+            <p>Total Messages</p>
+        </div>
+
+        <div class="card">
+            <h2 id="verifiedListings">0</h2>
+            <p>Verified Listings</p>
+        </div>
+
+    </div>
+
+    <h2>My Listings</h2>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Rent</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Interests</th>
+                <th>Messages</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="listingsTable"></tbody>
+
+    </table>
+
+</div>
+
+<script src="dashboard.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+node_modules/
+backend/node_modules/
+
+backend/nestnotes.db
+
+backend/uploads/
+
+.env
+
+.DS_Store

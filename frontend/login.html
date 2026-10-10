@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | NestNotes</title>
+
+    <style>
+        :root {
+            --primary: #078b72;
+            --primary-dark: #06745f;
+            --text: #19332f;
+            --muted: #71817e;
+            --border: #d8e5e1;
+            --background: #f0f8f6;
+            --white: #ffffff;
+            --danger: #c0392b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at top left,
+                    #e0f3ed 0%,
+                    transparent 45%
+                ),
+                linear-gradient(
+                    135deg,
+                    #f3faf8,
+                    #edf5f8
+                );
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 16px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 505px;
+        }
+
+        .auth-card {
+            background: var(--white);
+            border-radius: 22px;
+            padding: 36px 42px 32px;
+            box-shadow: 0 12px 45px rgba(30, 70, 60, 0.09);
+        }
+
+        .brand {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 15px;
+            background: #e2f5ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+        }
+
+        .brand-name {
+            font-size: 29px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.8px;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            font-size: 31px;
+            line-height: 1.3;
+            margin-bottom: 10px;
+            color: #18332e;
+        }
+
+        .heading p {
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .form-group {
+            margin-bottom: 23px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 54px;
+            padding: 0 15px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fbfdfc;
+            color: var(--text);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(7, 139, 114, 0.10);
+            background: #ffffff;
+        }
+
+        .password-input {
+            padding-right: 68px !important;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 8px 0 8px 8px;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin: 3px 0 25px;
+            font-size: 13px;
+        }
+
+        .remember-option {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #596b67;
+        }
+
+        .remember-option input {
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .forgot-link,
+        .auth-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .forgot-link:hover,
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-btn {
+            width: 100%;
+            min-height: 54px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .auth-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.7;
+            cursor: wait;
+            transform: none;
+        }
+
+        #message {
+            display: none;
+            margin-top: 17px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        #message.error {
+            display: block;
+            color: var(--danger);
+            background: #fff0ee;
+            border: 1px solid #f5d1cc;
+        }
+
+        #message.success {
+            display: block;
+            color: #087456;
+            background: #eaf8f0;
+            border: 1px solid #c8ebd8;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin: 25px 0;
+            color: #9aa9a5;
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: #e7eeeb;
+        }
+
+        .auth-links {
+            text-align: center;
+            color: #657773;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 23px;
+            color: #667974;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .back-home:hover {
+            color: var(--primary);
+        }
+
+        .security-note {
+            text-align: center;
+            color: #81908c;
+            font-size: 12px;
+            margin-top: 25px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 520px) {
+            body {
+                padding: 16px 12px;
+            }
+
+            .auth-card {
+                padding: 30px 23px 25px;
+                border-radius: 18px;
+            }
+
+            .brand {
+                margin-bottom: 26px;
+            }
+
+            .brand-name {
+                font-size: 26px;
+            }
+
+            .heading h1 {
+                font-size: 27px;
+            }
+
+            .heading p {
+                font-size: 14px;
+            }
+
+            .form-options {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="auth-container">
+
+        <section class="auth-card">
+
+            <div class="brand">
+                <div class="brand-icon">🏡</div>
+                <div class="brand-name">NestNotes</div>
+            </div>
+
+            <div class="heading">
+                <h1>Welcome back!</h1>
+
+                <p>
+                    Sign in to find your space, manage your listings,
+                    and connect with your future flatmates.
+                </p>
+            </div>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+                    <label for="email">Email address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <div class="input-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="password-input"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="togglePassword"
+                            aria-label="Show password"
+                        >
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+
+                    <label class="remember-option">
+                        <input type="checkbox" id="rememberEmail">
+                        Remember email
+                    </label>
+
+                    <a
+                        href="#"
+                        class="forgot-link"
+                        id="forgotPassword"
+                    >
+                        Forgot password?
+                    </a>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="auth-btn"
+                    id="loginButton"
+                >
+                    Login to NestNotes
+                </button>
+
+                <p id="message" role="status" aria-live="polite"></p>
+
+            </form>
+
+            <div class="divider">NEW TO NESTNOTES?</div>
+
+            <div class="auth-links">
+                Don't have an account?
+                <a href="register.html">Create an account</a>
+            </div>
+
+            <a href="index.html" class="back-home">
+                ← Back to NestNotes
+            </a>
+
+            <p class="security-note">
+                🏡 Your next home and your next chapter start here.
+            </p>
+
+        </section>
+
+    </main>
+
+    <script>
+        const API_URL =
+            "https://nestnotes-flat-sharing.onrender.com/api/auth/login";
+
+        const loginForm = document.getElementById("loginForm");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const loginButton = document.getElementById("loginButton");
+        const messageElement = document.getElementById("message");
+        const rememberEmail = document.getElementById("rememberEmail");
+
+        // Restore the remembered email address, if available.
+        const savedEmail = localStorage.getItem("rememberedEmail");
+
+        if (savedEmail) {
+            emailInput.value = savedEmail;
+            rememberEmail.checked = true;
+        }
+
+        // Show or hide the password.
+        document
+            .getElementById("togglePassword")
+            .addEventListener("click", function () {
+                const isPassword =
+                    passwordInput.type === "password";
+
+                passwordInput.type =
+                    isPassword ? "text" : "password";
+
+                this.textContent =
+                    isPassword ? "Hide" : "Show";
+
+                this.setAttribute(
+                    "aria-label",
+                    isPassword ? "Hide password" : "Show password"
+                );
+            });
+
+        // The backend does not currently have a password-reset flow.
+        document
+            .getElementById("forgotPassword")
+            .addEventListener("click", function (event) {
+                event.preventDefault();
+
+                showMessage(
+                    "Password reset is not available yet. Please contact support if you cannot access your account.",
+                    "error"
+                );
+            });
+
+        function showMessage(text, type) {
+            messageElement.textContent = text;
+            messageElement.className = type;
+        }
+
+        loginForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                showMessage(
+                    "Please enter your email address and password.",
+                    "error"
+                );
+                return;
+            }
+
+            if (rememberEmail.checked) {
+                localStorage.setItem("rememberedEmail", email);
+            } else {
+                localStorage.removeItem("rememberedEmail");
+            }
+
+            loginButton.disabled = true;
+            loginButton.textContent = "Signing you in...";
+            messageElement.className = "";
+            messageElement.textContent = "";
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message || "Login failed. Please check your details."
+                    );
+                }
+
+                if (!data.token || !data.user || data.user.id == null) {
+                    throw new Error(
+                        "The server response was incomplete. Please try again."
+                    );
+                }
+
+                // Preserve the existing authentication storage format.
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("userId", data.user.id);
+                localStorage.setItem("user", JSON.stringify(data.user));
+
+                showMessage(
+                    "Login successful! Redirecting...",
+                    "success"
+                );
+
+                window.location.href = "index.html";
+
+            } catch (error) {
+                console.error("Login error:", error);
+
+                showMessage(
+                    error.message ||
+                    "Unable to connect. Please try again.",
+                    "error"
+                );
+
+            } finally {
+                loginButton.disabled = false;
+                loginButton.textContent = "Login to NestNotes";
+            }
+        });
+    </script>
+
+</body>
+</html>

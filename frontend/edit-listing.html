@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Listing</title>
+
+    <link rel="stylesheet" href="edit-listing.css">
+</head>
+
+<body>
+  <section class="form-section">
+
+    <button
+    type="button"
+    class="back-btn"
+    onclick="window.location.href='my-listings.html'">
+
+    ← Back to My Listings
+
+    </button>
+
+        <button id="toggleFormBtn" class="toggle-btn">
+            Edit Listing
+        </button>
+
+        <h1 class="page-title">Edit Property Listing</h1>
+
+        <div id="formContainer">
+
+            <form id="listingForm">
+
+
+                <label for="title">Property Title</label>
+                <input
+                    type="text"
+                    id="title"
+                    placeholder="Flat Title"
+                    required
+                >
+
+                <label for="rent">Monthly Rent</label>
+                <input
+                    type="number"
+                    id="rent"
+                    placeholder="Monthly Rent"
+                    required
+                >
+
+                <label for="location">Location</label>
+                <input
+                    type="text"
+                    id="location"
+                    placeholder="Location"
+                    required
+                >
+
+                <select id="category" required>
+                    <option value="">Select Category</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="PG">PG</option>
+                    <option value="Single Room">Single Room</option>
+                    <option value="Shared Room">Shared Room</option>
+                    <option value="Villa">Villa</option>
+                </select>
+
+                <h3>Current Property Image</h3>
+
+                <img
+                id="imagePreview"
+                class="image-preview"
+                src=""
+                alt="Property Image"
+            >
+
+                <input
+                    type="file"
+                    id="image"
+                    accept="image/*"
+                >
+
+                <textarea
+                id="description"
+                placeholder="Description"
+                maxlength="500"
+                required
+            ></textarea>
+
+            <small id="charCount">0/500</small>
+
+                <button type="submit">
+                    Submit Changes
+                </button>
+
+                <button
+                type="button"
+                class="cancel-btn"
+                onclick="window.location.href='my-listings.html'">
+                Cancel
+            </button>
+
+            </form>
+
+        </div>
+
+<script>
+
+const API_URL =
+  "https://nestnotes-flat-sharing.onrender.com/api/listings";
+
+const token = localStorage.getItem("token");
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+let currentListing = null;
+
+if (!id) {
+    alert("No listing ID found");
+    window.location.href = "index.html";
+}
+
+console.log("URL =", window.location.href);
+console.log("ID =", id);
+
+fetch(`${API_URL}/${id}`)
+    .then(res => res.json())
+    .then(listing => {
+        currentListing = listing;
+
+        document.getElementById("title").value = listing.title;
+        document.getElementById("rent").value = listing.rent;
+        document.getElementById("location").value = listing.location;
+        document.getElementById("category").value = listing.category;
+        document.getElementById("description").value = listing.description;
+
+        const imagePreview = document.getElementById("imagePreview");
+        if (listing.image) {
+            imagePreview.src = listing.image;
+        } else {
+            imagePreview.style.display = "none";
+        }
+    })
+
+    .catch(error => {
+
+    console.error(error);
+
+    alert(
+        "Unable to load listing details."
+    );
+
+});
+
+</script>
+
+<script>
+document.getElementById("image").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+        document.getElementById("imagePreview").src =
+            URL.createObjectURL(file);
+    }
+});
+
+</script>
+
+<script>
+
+const description =
+document.getElementById("description");
+
+const charCount =
+document.getElementById("charCount");
+
+description.addEventListener("input", () => {
+
+    charCount.textContent =
+        `${description.value.length}/500`;
+
+});
+
+</script>
+
+
+
+<script>
+
+document.getElementById("listingForm")
+.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const submitBtn =
+        document.querySelector(
+        'button[type="submit"]'
+        );
+
+        submitBtn.disabled = true;
+
+        submitBtn.textContent =
+        "Updating...";
+
+    const rent = Number(
+    document.getElementById("rent").value
+);
+
+if (rent <= 0) {
+
+    alert(
+        "Rent must be greater than 0"
+    );
+
+    return;
+}
+
+    let imageUrl = currentListing?.image || "";
+
+    const imageFile = document.getElementById("image").files[0];
+
+    if (imageFile) {
+        const formData = new FormData();
+        formData.append("image", imageFile);
+
+        const uploadResponse = await fetch(
+            "https://nestnotes-flat-sharing.onrender.com/api/listings/upload",
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                body: formData
+            }
+        );
+
+        const uploadData = await uploadResponse.json();
+        imageUrl = uploadData.image || imageUrl;
+    }
+
+    const response = await fetch(
+        `${API_URL}/${id}`,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                title: document.getElementById("title").value,
+                rent: document.getElementById("rent").value,
+                location: document.getElementById("location").value,
+                category: document.getElementById("category").value,
+                description: document.getElementById("description").value,
+                image: imageUrl
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+
+    submitBtn.disabled = false;
+
+    submitBtn.textContent =
+    "Submit Changes";
+
+    alert(data.message);
+
+    return;
+}
+
+    submitBtn.disabled = false;
+
+    submitBtn.textContent =
+    "Submit Changes";
+
+    alert("Listing updated successfully!");
+
+    window.location.href =
+    "my-listings.html";
+});
+
+
+
+</script>
+
+</body>
+</html>
