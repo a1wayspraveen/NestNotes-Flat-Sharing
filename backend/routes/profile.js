@@ -111,4 +111,53 @@ router.get("/", verifyToken, (req, res) => {
     );
 });
 
+// Get another user's public flatmate profile
+router.get("/:id", verifyToken, (req, res) => {
+    const profileUserId = Number(req.params.id);
+
+    if (!Number.isInteger(profileUserId) || profileUserId <= 0) {
+        return res.status(400).json({
+            message: "Invalid user ID."
+        });
+    }
+
+    db.get(
+        `
+        SELECT
+            u.id,
+            u.name,
+            p.age,
+            p.gender,
+            p.occupation,
+            p.budget,
+            p.food_preference,
+            p.smoking,
+            p.drinking,
+            p.bio
+        FROM users u
+        LEFT JOIN user_profiles p
+            ON p.user_id = u.id
+        WHERE u.id = ?
+        `,
+        [profileUserId],
+        (err, row) => {
+            if (err) {
+                console.error("Public profile loading error:", err.message);
+
+                return res.status(500).json({
+                    message: "Failed to load user profile."
+                });
+            }
+
+            if (!row) {
+                return res.status(404).json({
+                    message: "User not found."
+                });
+            }
+
+            return res.json(row);
+        }
+    );
+});
+
 module.exports = router;

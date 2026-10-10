@@ -1,49 +1,105 @@
-const params =
-new URLSearchParams(window.location.search);
+const API_BASE = "https://nestnotes-flat-sharing.onrender.com/api";
 
-const userId =
-params.get("id");
+const params = new URLSearchParams(window.location.search);
+const profileUserId = params.get("id");
+
+const token = localStorage.getItem("token");
+const currentUserId = localStorage.getItem("userId");
+
+const container = document.getElementById("profileContainer");
+const messageBtn = document.getElementById("messageBtn");
 
 async function loadProfile() {
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
 
-    const response =
-    await fetch(
-        `https://nestnotes-flat-sharing.onrender.com/api/profile/${userId}`
-    );
+    if (!profileUserId || !/^\d+$/.test(profileUserId)) {
+        container.textContent = "Invalid profile link.";
+        messageBtn.disabled = true;
+        return;
+    }
 
-    const profile =
-    await response.json();
+    container.textContent = "Loading profile...";
 
-    const container =
-    document.getElementById("profileContainer");
+    try {
+        const response = await fetch(
+            `${API_BASE}/profile/${encodeURIComponent(profileUserId)}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
 
-    container.innerHTML = `
-        <p><strong>Age:</strong> ${profile.age || "Not specified"}</p>
+        const data = await response.json().catch(() => ({}));
 
-        <p><strong>Gender:</strong> ${profile.gender || "Not specified"}</p>
+        if (response.status === 401 || response.status === 403) {
+            container.textContent =
+                "Your session has expired. Please log in again.";
+            return;
+        }
 
-        <p><strong>Occupation:</strong> ${profile.occupation || "Not specified"}</p>
+        if (!response.ok) {
+            throw new Error(
+                data.message || `Unable to load profile (${response.status}).`
+            );
+        }
 
-        <p><strong>Budget:</strong> ₹${profile.budget || "Not specified"}</p>
+        document.title = `${data.name || "Flatmate"} | NestNotes`;
 
-        <p><strong>Food Preference:</strong> ${profile.food_preference || "Not specified"}</p>
+        container.replaceChildren();
 
-        <p><strong>Smoking:</strong> ${profile.smoking || "Not specified"}</p>
+        const heading = document.createElement("h2");
+        heading.textContent = data.name || "NestNotes Member";
+        container.appendChild(heading);
 
-        <p><strong>Drinking:</strong> ${profile.drinking || "Not specified"}</p>
+        const fields = [
+            ["Age", data.age],
+            ["Gender", data.gender],
+            ["Occupation", data.occupation],
+            ["Monthly Budget", data.budget],
+            ["Food Preference", data.food_preference],
+            ["Smoking", data.smoking],
+            ["Drinking", data.drinking],
+            ["About Me", data.bio]
+        ];
 
-        <p><strong>Bio:</strong></p>
+        fields.forEach(([label, value]) => {
+            const paragraph = document.createElement("p");
+            const strong = document.createElement("strong");
 
-        <p>${profile.bio || "No bio available"}</p>
-    `;
+            strong.textContent = `${label}: `;
+            paragraph.appendChild(strong);
+            paragraph.appendChild(
+                document.createTextNode(
+                    value !== null && value !== undefined && value !== ""
+                        ? value
+                        : "Not specified"
+                )
+            );
+
+            container.appendChild(paragraph);
+        });
+
+        messageBtn.disabled =
+            String(currentUserId) === String(profileUserId);
+
+    } catch (error) {
+        console.error("Profile loading error:", error);
+        container.textContent =
+            error.message || "Unable to load this profile.";
+        messageBtn.disabled = true;
+    }
 }
 
-document
-.getElementById("messageBtn")
-.addEventListener("click", () => {
+messageBtn.addEventListener("click", () => {
+    if (!profileUserId) return;
 
+    // The chat page should receive the selected user's ID.
     window.location.href =
-    `chat.html?userId=${userId}`;
+        `chat.html?userId=${encodeURIComponent(profileUserId)}`;
 });
 
 loadProfile();
