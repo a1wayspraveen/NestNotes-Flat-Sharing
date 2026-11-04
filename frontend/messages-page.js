@@ -1,4 +1,4 @@
-const API_URL = "https://nestnotes-flat-sharing.onrender.com/api/messages";
+const API_URL = `${window.NESTNOTES_API_BASE}/messages`;
 
 const listingId = new URLSearchParams(window.location.search).get("listingId");
 

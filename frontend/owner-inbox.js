@@ -1,254 +1,684 @@
-const API_URL = "https://nestnotes-flat-sharing.onrender.com/api/messages";
+// ========================================
+// NESTNOTES OWNER INBOX
+// Group messages into conversations
+// ========================================
+
+const API_URL = `${window.NESTNOTES_API_BASE}/messages`;
 
 const token = localStorage.getItem("token");
 const userId = localStorage.getItem("userId");
 
-// Redirect users who aren't logged in
+// Redirect users who aren't logged in.
 if (!token || !userId) {
-    window.location.href = "login.html";
+  window.location.href = "login.html";
 }
 
-// Common headers for authenticated API requests
+// ========================================
+// AUTHENTICATION HELPERS
+// ========================================
+
 function getAuthHeaders(includeJson = false) {
-    const headers = {
-        Authorization: `Bearer ${token}`
-    };
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
 
-    if (includeJson) {
-        headers["Content-Type"] = "application/json";
-    }
+  if (includeJson) {
+    headers["Content-Type"] = "application/json";
+  }
 
-    return headers;
+  return headers;
 }
 
-// Common response handler
 async function handleResponse(response) {
-    const data = await response.json().catch(() => ({}));
+  const data = await response.json().catch(() => ({}));
 
-    if (response.status === 401 || response.status === 403) {
-        throw new Error(
-            data.message || "Your session has expired or you don't have permission."
-        );
-    }
+  if (response.status === 401 || response.status === 403) {
+    throw new Error(
+      data.message || "Your session has expired or you don't have permission.",
+    );
+  }
 
-    if (!response.ok) {
-        throw new Error(data.message || `Request failed (${response.status}).`);
-    }
+  if (!response.ok) {
+    throw new Error(data.message || `Request failed (${response.status}).`);
+  }
 
-    return data;
+  return data;
 }
 
-// Load replies for a message
+// ========================================
+// LOAD REPLIES
+// ========================================
+
 async function getReplies(messageId) {
-    const response = await fetch(`${API_URL}/replies/${messageId}`, {
-        headers: getAuthHeaders()
-    });
+  const response = await fetch(
+    `${API_URL}/replies/${encodeURIComponent(messageId)}`,
+    {
+      headers: getAuthHeaders(),
+    },
+  );
 
-    return await handleResponse(response);
+  return handleResponse(response);
 }
 
-// Load the owner's inbox
-async function loadInbox() {
-    const container = document.getElementById("messagesContainer");
+// ========================================
+// GROUP MESSAGES INTO CONVERSATIONS
+// ========================================
 
-    if (!container) {
-        console.error("messagesContainer element was not found.");
-        return;
+function groupMessagesIntoConversations(messages) {
+  const conversations = new Map();
+  const currentUserId = Number(userId);
+
+  for (const message of messages) {
+    const senderId = Number(message.senderId);
+    const recipientId =
+      message.recipientId == null ? null : Number(message.recipientId);
+
+    // The owner is the current user.
+    // The other participant is the person on the other side
+    // of the conversation.
+    let participantId;
+
+    if (senderId === currentUserId) {
+      participantId = recipientId;
+    } else {
+      participantId = senderId;
     }
 
-    container.innerHTML = "<p>Loading messages...</p>";
+    // Old messages with no recipient and sent by the owner
+    // cannot safely be assigned to a particular conversation.
+    if (
+      !Number.isInteger(participantId) ||
+      participantId <= 0 ||
+      participantId === currentUserId
+    ) {
+      console.warn(
+        "Skipping a message whose conversation participant is unknown:",
+        message.id,
+      );
+      continue;
+    }
 
-    try {
-        const response = await fetch(`${API_URL}/owner/${userId}`, {
-            headers: getAuthHeaders()
-        });
+    const key = `${message.listingId}:${participantId}`;
 
-        const messages = await handleResponse(response);
+    if (!conversations.has(key)) {
+      conversations.set(key, {
+        key,
+        listingId: Number(message.listingId),
+        participantId,
+        title: message.title || "Listing",
+        name: message.name || "User",
+        email: message.email || "",
+        age: message.age,
+        gender: message.gender,
+        occupation: message.occupation,
+        budget: message.budget,
+        food_preference: message.food_preference,
+        smoking: message.smoking,
+        drinking: message.drinking,
+        bio: message.bio,
+        messages: [],
+        latestMessage: message,
+        unreadCount: 0,
+      });
+    }
 
-        if (!Array.isArray(messages)) {
-            throw new Error("The server returned an unexpected inbox response.");
-        }
+    const conversation = conversations.get(key);
 
-        if (messages.length === 0) {
-            container.innerHTML = "<p>No messages yet.</p>";
-            return;
-        }
+    conversation.messages.push(message);
 
-        container.innerHTML = "";
+    // Count only messages addressed to the current user.
+    if (recipientId === currentUserId && Number(message.isRead) === 0) {
+      conversation.unreadCount++;
+    }
 
-        for (const msg of messages) {
-            let replies = [];
+    // The API orders messages newest first, but compare dates
+    // to keep the latest message correct even if that changes.
+    const currentLatestTime = Date.parse(
+      conversation.latestMessage.createdAt || "",
+    );
 
-            try {
-                replies = await getReplies(msg.id);
+    const messageTime = Date.parse(message.createdAt || "");
 
-                if (!Array.isArray(replies)) {
-                    replies = [];
-                }
-            } catch (error) {
-                console.error(`Could not load replies for message ${msg.id}:`, error);
-            }
+    if (
+      Number.isFinite(messageTime) &&
+      (!Number.isFinite(currentLatestTime) || messageTime > currentLatestTime)
+    ) {
+      conversation.latestMessage = message;
 
-            let repliesHtml = "";
+      // Prefer the sender's name when the latest message
+      // comes from the other participant.
+      if (Number(message.senderId) === participantId) {
+        conversation.name = message.name || conversation.name;
+        conversation.email = message.email || conversation.email;
+      }
+    }
+  }
 
-            replies.forEach((reply) => {
-                repliesHtml += `
-                    <div class="reply-box">
-                        <strong>Owner:</strong>
-                        <p>${reply.reply || ""}</p>
-                        <small>${reply.createdAt || ""}</small>
-                    </div>
-                `;
-            });
+  return Array.from(conversations.values()).sort((a, b) => {
+    const timeA = Date.parse(a.latestMessage.createdAt || "") || 0;
+    const timeB = Date.parse(b.latestMessage.createdAt || "") || 0;
 
-            const card = document.createElement("div");
-            card.className = "message-card";
+    return timeB - timeA;
+  });
+}
 
-            card.innerHTML = `
-                <h3>🏠 ${msg.title || "Listing"}</h3>
+// ========================================
+// LOAD OWNER INBOX
+// ========================================
 
-                <p><strong>${msg.name || "Unknown user"}</strong></p>
-                <p>${msg.email || ""}</p>
+async function loadInbox() {
+  const container = document.getElementById("messagesContainer");
 
-                <hr>
+  if (!container) {
+    console.error("messagesContainer element was not found.");
+    return;
+  }
 
-                <p>${msg.message || ""}</p>
+  container.innerHTML = "<p>Loading conversations...</p>";
 
-                <p>Age: ${msg.age || "Not specified"}</p>
-                <p>Gender: ${msg.gender || "Not specified"}</p>
-                <p>Occupation: ${msg.occupation || "Not specified"}</p>
-                <p>Budget: ${msg.budget ? `₹${msg.budget}` : "Not specified"}</p>
+  try {
+    const response = await fetch(
+      `${API_URL}/owner/${encodeURIComponent(userId)}`,
+      {
+        headers: getAuthHeaders(),
+        cache: "no-store",
+      },
+    );
 
-                <button class="view-profile-btn" type="button">
-                    View Profile
-                </button>
+    const messages = await handleResponse(response);
 
-                <button class="open-chat-btn" type="button">
-                    Open Chat
-                </button>
+    if (!Array.isArray(messages)) {
+      throw new Error("The server returned an unexpected inbox response.");
+    }
 
-                <br>
+    const conversations = groupMessagesIntoConversations(messages);
 
-                <small>
-                    ${msg.createdAt
-                        ? new Date(msg.createdAt).toLocaleString()
-                        : ""}
-                </small>
-
-                <div class="replies-container">${repliesHtml}</div>
-
-                <br>
-
-                <button class="reply-toggle-btn" type="button">
-                    Reply
-                </button>
-
-                <div class="reply-form" style="display:none; margin-top:10px;">
-                    <textarea placeholder="Type reply..."></textarea>
-                    <br>
-                    <button class="send-reply-btn" type="button">
-                        Send Reply
-                    </button>
+    if (conversations.length === 0) {
+      container.innerHTML = `
+                <div class="empty-inbox">
+                    <h3>No conversations yet</h3>
+                    <p>Messages from interested users will appear here.</p>
                 </div>
             `;
+      return;
+    }
 
-            card.querySelector(".view-profile-btn").addEventListener("click", () => {
-                viewProfile(msg.senderId);
-            });
+    container.innerHTML = "";
 
-            card.querySelector(".open-chat-btn").addEventListener("click", () => {
-                openChat(msg.senderId, msg.listingId, msg.name || "User");
-            });
+    for (const conversation of conversations) {
+      const latest = conversation.latestMessage;
+      const card = document.createElement("div");
 
-            card.querySelector(".reply-toggle-btn").addEventListener("click", () => {
-                const form = card.querySelector(".reply-form");
-                form.style.display =
-                    form.style.display === "none" ? "block" : "none";
-            });
+      card.className = "message-card conversation-card";
 
-            card.querySelector(".send-reply-btn").addEventListener("click", async () => {
-                await sendReply(msg.id, card);
-            });
+      if (conversation.unreadCount > 0) {
+        card.classList.add("unread-message-card");
+      }
 
-            container.appendChild(card);
+      const unreadBadge =
+        conversation.unreadCount > 0
+          ? `
+                    <span class="inbox-unread-badge">
+                        ${conversation.unreadCount} unread
+                    </span>
+                  `
+          : "";
+
+      const latestDate = latest.createdAt
+        ? new Date(latest.createdAt).toLocaleString()
+        : "";
+
+      const latestSenderId = Number(latest.senderId);
+
+      const latestSenderLabel =
+        latestSenderId === Number(userId) ? "You" : conversation.name;
+
+      card.innerHTML = `
+                <div class="conversation-header">
+                    <h3>
+                        🏠 ${escapeHtml(conversation.title)}
+                    </h3>
+
+                    ${unreadBadge}
+                </div>
+
+                <p>
+                    <strong>
+                        ${escapeHtml(conversation.name)}
+                    </strong>
+                </p>
+
+                <p>
+                    ${escapeHtml(conversation.email)}
+                </p>
+
+                <p>
+                    <strong>Messages:</strong>
+                    ${conversation.messages.length}
+                </p>
+
+                <div class="conversation-latest-message">
+                    <strong>Latest message — ${escapeHtml(latestSenderLabel)}:</strong>
+                    <p>${escapeHtml(latest.message || "")}</p>
+                </div>
+
+                <small>
+                    ${escapeHtml(latestDate)}
+                </small>
+
+                <div class="reply-history-section">
+    <button
+        type="button"
+        class="toggle-history-btn"
+        aria-expanded="false"
+    >
+        💬 View Reply History
+    </button>
+
+    <div class="reply-history-container" hidden>
+        <p class="reply-history-status" role="status">
+            Click above to load replies.
+        </p>
+
+        <div class="reply-history-list"></div>
+    </div>
+</div>
+
+        <div class="conversation-reply-section">
+    <button
+        class="toggle-reply-btn"
+        type="button"
+        aria-expanded="false"
+    >
+        Reply to Conversation
+    </button>
+
+    <form class="conversation-reply-form" hidden>
+        <label>Write your reply</label>
+
+        <textarea
+            class="conversation-reply-input"
+            rows="3"
+            maxlength="2000"
+            placeholder="Type your reply here..."
+            required
+        ></textarea>
+
+        <button type="submit" class="send-reply-btn">
+            Send Reply
+        </button>
+
+        <p class="reply-status" role="status"></p>
+    </form>
+    </div>
+
+        <div class="conversation-actions">
+            <button
+                class="view-profile-btn"
+                type="button"
+            >
+                View Profile
+            </button>
+
+            <button
+                class="open-chat-btn"
+                type="button"
+            >
+                Open Conversation
+            </button>
+        </div>
+            `;
+
+      card.querySelector(".view-profile-btn").addEventListener("click", () => {
+        viewProfile(conversation.participantId);
+      });
+
+      card.querySelector(".open-chat-btn").addEventListener("click", () => {
+        openChat(
+          conversation.participantId,
+          conversation.listingId,
+          conversation.name,
+        );
+      });
+
+      // Toggle the reply form.
+      const toggleReplyBtn = card.querySelector(".toggle-reply-btn");
+      const replyForm = card.querySelector(".conversation-reply-form");
+      const replyInput = card.querySelector(".conversation-reply-input");
+      const replyStatus = card.querySelector(".reply-status");
+
+      toggleReplyBtn.addEventListener("click", () => {
+        const opening = replyForm.hidden;
+
+        replyForm.hidden = !opening;
+        toggleReplyBtn.setAttribute("aria-expanded", String(opening));
+
+        if (opening) {
+          replyInput.focus();
         }
-    } catch (error) {
-        console.error("Inbox loading error:", error);
+      });
 
-        container.innerHTML = `
-            <p style="color:#c0392b;">
-                Unable to load your inbox: ${error.message}
-            </p>
-            <button type="button" onclick="loadInbox()">Try Again</button>
-        `;
-    }
-}
+      // Submit a reply to the latest message in this conversation.
+      replyForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-// Show and send a reply
-async function sendReply(messageId, card) {
-    const textarea = card.querySelector(".reply-form textarea");
-    const reply = textarea.value.trim();
+        const reply = replyInput.value.trim();
 
-    if (!reply) {
-        alert("Please enter a reply.");
-        return;
-    }
+        if (!reply) {
+          replyStatus.textContent = "Please enter a reply.";
+          return;
+        }
 
-    const button = card.querySelector(".send-reply-btn");
-    button.disabled = true;
-    button.textContent = "Sending...";
+        const sendButton = replyForm.querySelector(".send-reply-btn");
 
-    try {
-        const response = await fetch(`${API_URL}/reply`, {
+        sendButton.disabled = true;
+        replyStatus.textContent = "Sending reply...";
+
+        try {
+          const response = await fetch(`${API_URL}/reply`, {
             method: "POST",
             headers: getAuthHeaders(true),
             body: JSON.stringify({
-                messageId,
-                senderId: Number(userId),
-                reply
+              messageId: latest.id,
+              senderId: Number(userId),
+              reply,
+            }),
+          });
+
+          await handleResponse(response);
+
+          // Refresh the unread notification badge immediately.
+          if (typeof window.refreshUnreadNotifications === "function") {
+            window.refreshUnreadNotifications();
+          }
+
+          replyInput.value = "";
+          replyStatus.textContent = "Reply sent successfully!";
+
+          // Keep reply history open and refresh it after sending.
+          historyContainer.hidden = false;
+
+          historyButton.setAttribute("aria-expanded", "true");
+          historyButton.textContent = "✖ Hide Reply History";
+
+          await refreshReplyHistory(false);
+        } catch (error) {
+          console.error("Reply submission error:", error);
+          replyStatus.textContent = error.message || "Unable to send reply.";
+        } finally {
+          sendButton.disabled = false;
+        }
+      });
+
+      // ========================================
+      // REPLY HISTORY WITH AUTO-REFRESH
+      // ========================================
+
+      const historyButton = card.querySelector(".toggle-history-btn");
+      const historyContainer = card.querySelector(".reply-history-container");
+      const historyList = card.querySelector(".reply-history-list");
+      const historyStatus = card.querySelector(".reply-history-status");
+
+      let historyLoading = false;
+
+      // Load and render replies for this conversation.
+      async function refreshReplyHistory(silent = false) {
+        if (historyLoading) return;
+
+        historyLoading = true;
+
+        if (!silent) {
+          historyStatus.textContent = "Loading reply history...";
+        }
+
+        try {
+          const results = await Promise.all(
+            conversation.messages.map(async (message) => {
+              const replies = await getReplies(message.id);
+
+              if (!Array.isArray(replies)) {
+                throw new Error("Unexpected reply history response.");
+              }
+
+              return replies.map((reply) => ({
+                ...reply,
+                originalMessageId: message.id,
+              }));
+            }),
+          );
+
+          const allReplies = results.flat().sort((a, b) => {
+            const dateA = Date.parse(a.createdAt || "") || 0;
+            const dateB = Date.parse(b.createdAt || "") || 0;
+
+            return dateA - dateB;
+          });
+
+          // Show an empty state if there are no replies.
+          if (allReplies.length === 0) {
+            historyList.innerHTML = "";
+
+            historyStatus.textContent =
+              "No replies yet. You can send the first reply below.";
+
+            return;
+          }
+
+          historyStatus.textContent = `${allReplies.length} ${
+            allReplies.length === 1 ? "reply" : "replies"
+          }`;
+
+          // Preserve the history panel's scroll position.
+          const previousScrollTop = historyContainer.scrollTop;
+
+          historyList.innerHTML = allReplies
+            .map((reply) => {
+              const replySenderId = Number(reply.senderId);
+              const currentUserId = Number(userId);
+              const participantId = Number(conversation.participantId);
+
+              let senderLabel;
+
+              if (replySenderId === currentUserId) {
+                senderLabel = "You";
+              } else if (replySenderId === participantId) {
+                senderLabel = conversation.name || "Participant";
+              } else {
+                senderLabel = "Unknown user";
+              }
+
+              const replyDate = reply.createdAt
+                ? new Date(reply.createdAt).toLocaleString()
+                : "Date unavailable";
+
+              return `
+                <article class="reply-history-item">
+                    <div class="reply-history-header">
+                        <strong>${escapeHtml(senderLabel)}</strong>
+                        <time>${escapeHtml(replyDate)}</time>
+                    </div>
+
+                    <p>${escapeHtml(reply.reply || "")}</p>
+                </article>
+            `;
             })
-        });
+            .join("");
 
-        const data = await handleResponse(response);
+          historyContainer.scrollTop = previousScrollTop;
+        } catch (error) {
+          console.error("Reply history refresh error:", error);
 
-        alert(data.message || "Reply sent successfully!");
+          // Don't disrupt the existing history during a background refresh.
+          if (!silent) {
+            historyStatus.textContent =
+              "Unable to load reply history. Please try again.";
 
-        textarea.value = "";
-        await loadInbox();
-    } catch (error) {
-        console.error("Reply sending error:", error);
-        alert(`Could not send reply: ${error.message}`);
-    } finally {
-        button.disabled = false;
-        button.textContent = "Send Reply";
+            historyButton.textContent = "↻ Retry Reply History";
+          }
+        } finally {
+          historyLoading = false;
+        }
+      }
+
+      // Make the refresh function available to the global polling timer.
+      card.refreshReplyHistory = () => {
+        if (!historyContainer.hidden) {
+          refreshReplyHistory(true);
+        }
+      };
+
+      // Open or close Reply History.
+      historyButton.addEventListener("click", async () => {
+        if (!historyContainer.hidden) {
+          historyContainer.hidden = true;
+
+          historyButton.setAttribute("aria-expanded", "false");
+          historyButton.textContent = "💬 View Reply History";
+
+          return;
+        }
+
+        historyContainer.hidden = false;
+
+        historyButton.setAttribute("aria-expanded", "true");
+        historyButton.textContent = "✖ Hide Reply History";
+
+        await refreshReplyHistory(false);
+      });
+
+      container.appendChild(card);
     }
+  } catch (error) {
+    console.error("Inbox loading error:", error);
+
+    container.innerHTML = `
+            <p style="color:#c0392b;">
+                Unable to load your inbox: ${escapeHtml(error.message)}
+            </p>
+
+            <button type="button" id="retryInboxBtn">
+                Try Again
+            </button>
+        `;
+
+    document
+      .getElementById("retryInboxBtn")
+      ?.addEventListener("click", loadInbox);
+  }
 }
 
-// Navigate to a user's profile
+// ========================================
+// HTML ESCAPING
+// ========================================
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (character) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    };
+
+    return entities[character];
+  });
+}
+
+// ========================================
+// VIEW USER PROFILE
+// ========================================
+
 function viewProfile(profileUserId) {
-    if (!profileUserId) {
-        alert("User profile information is unavailable.");
-        return;
-    }
+  if (!profileUserId) {
+    alert("User profile information is unavailable.");
+    return;
+  }
 
-    window.location.href =
-        `user-profile.html?id=${encodeURIComponent(profileUserId)}`;
+  window.location.href = `user-profile.html?id=${encodeURIComponent(profileUserId)}`;
 }
 
-// Open the chat page
+// ========================================
+// OPEN CONVERSATION
+// ========================================
+
 function openChat(chatUserId, listingId, name) {
-    if (!chatUserId || !listingId) {
-        alert("Chat information is incomplete.");
-        return;
-    }
+  const currentUserId = Number(localStorage.getItem("userId"));
+  const otherUserId = Number(chatUserId);
+  const propertyId = Number(listingId);
 
-    window.location.href =
-        `chat.html?userId=${encodeURIComponent(chatUserId)}` +
-        `&listingId=${encodeURIComponent(listingId)}` +
-        `&name=${encodeURIComponent(name)}`;
+  if (
+    !Number.isInteger(otherUserId) ||
+    otherUserId <= 0 ||
+    !Number.isInteger(propertyId) ||
+    propertyId <= 0
+  ) {
+    alert("Chat information is incomplete. Please try again.");
+
+    console.error("Invalid chat details:", {
+      chatUserId,
+      listingId,
+    });
+
+    return;
+  }
+
+  if (otherUserId === currentUserId) {
+    alert("You cannot start a conversation with yourself.");
+    return;
+  }
+
+  const params = new URLSearchParams({
+    userId: String(otherUserId),
+    listingId: String(propertyId),
+    name: name || "User",
+  });
+
+  window.location.href = `chat.html?${params.toString()}`;
 }
 
-// Start loading the inbox
+// ========================================
+// AUTOMATIC REPLY HISTORY REFRESH
+// ========================================
+
+// Check every 15 seconds.
+// Refresh only conversations whose Reply History is open.
+setInterval(() => {
+  document.querySelectorAll(".conversation-card").forEach((card) => {
+    const historyContainer = card.querySelector(".reply-history-container");
+
+    if (
+      historyContainer &&
+      !historyContainer.hidden &&
+      typeof card.refreshReplyHistory === "function"
+    ) {
+      card.refreshReplyHistory();
+    }
+  });
+}, 15000);
+
+// ========================================
+// SEARCH CONVERSATIONS
+// ========================================
+
+const searchInbox = document.getElementById("searchInbox");
+
+if (searchInbox) {
+  searchInbox.addEventListener("input", () => {
+    const searchTerm = searchInbox.value.trim().toLowerCase();
+
+    document.querySelectorAll(".conversation-card").forEach((card) => {
+      const searchableText = card.textContent.toLowerCase();
+
+      card.style.display = searchableText.includes(searchTerm) ? "" : "none";
+    });
+  });
+}
+
+// ========================================
+// START
+// ========================================
+
 if (token && userId) {
-    loadInbox();
+  loadInbox();
 }

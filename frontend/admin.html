@@ -1,47 +1,223 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <div class="stats-grid">
+    <title>Admin Dashboard | NestNotes</title>
 
-    <div class="card">
-        <h2 id="totalListings">0</h2>
-        <p>Total Listings</p>
-    </div>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
 
-    <div class="card">
-        <h2 id="verifiedListings">0</h2>
-        <p>Verified Listings</p>
-    </div>
+  <body class="admin-page">
+    <!-- NAVIGATION -->
+    <nav class="navbar admin-navbar">
+      <!-- Logo -->
+      <a href="index.html" class="logo" aria-label="NestNotes home">
+        🏠 NestNotes
+      </a>
 
-    <div class="card">
-        <h2 id="pendingListings">0</h2>
-        <p>Pending Listings</p>
-    </div>
+      <!-- Mobile Actions -->
+      <div class="admin-mobile-actions">
+        <!-- Theme button is created by theme.js -->
+        <!-- Hamburger -->
+        <button
+          type="button"
+          class="admin-menu-toggle"
+          id="adminMenuToggle"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="adminNavLinks"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
 
-    </div>
+      <!-- Navigation Links -->
+      <div class="nav-links admin-nav-links" id="adminNavLinks">
+        <a href="index.html">Home</a>
 
-    <h1>Admin Dashboard</h1>
+        <a href="my-listings.html">My Listings</a>
 
-    <table border="1" cellpadding="10">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Rent</th>
-                <th>Location</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+        <a href="favorites.html">Favorites</a>
 
-        <tbody id="listingsTable"></tbody>
-    </table>
+        <a href="notifications.html">Notifications</a>
 
+        <button
+          type="button"
+          class="admin-back-button"
+          onclick="window.location.href = 'index.html'"
+        >
+          Back to Website
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="admin-main">
+      <!-- PAGE HEADER -->
+      <section class="admin-header">
+        <div>
+          <span class="eyebrow">NESTNOTES CONTROL CENTER</span>
+
+          <h1>Admin Dashboard</h1>
+
+          <p>
+            Manage property listings, review submissions, and keep the NestNotes
+            community trustworthy.
+          </p>
+        </div>
+
+        <div class="admin-header-icon">🛡️</div>
+      </section>
+
+      <!-- STATISTICS -->
+      <section class="stats-grid">
+        <article class="card admin-stat-card">
+          <div class="stat-icon">🏠</div>
+
+          <div>
+            <p>Total Listings</p>
+            <h2 id="totalListings">0</h2>
+            <span>Properties on NestNotes</span>
+          </div>
+        </article>
+
+        <article class="card admin-stat-card">
+          <div class="stat-icon verified-icon">✓</div>
+
+          <div>
+            <p>Verified Listings</p>
+            <h2 id="verifiedListings">0</h2>
+            <span>Approved properties</span>
+          </div>
+        </article>
+
+        <article class="card admin-stat-card">
+          <div class="stat-icon pending-icon">◷</div>
+
+          <div>
+            <p>Pending Listings</p>
+            <h2 id="pendingListings">0</h2>
+            <span>Awaiting review</span>
+          </div>
+        </article>
+      </section>
+
+      <!-- LISTING MANAGEMENT -->
+      <section class="admin-listings-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">PROPERTY MANAGEMENT</span>
+
+            <h2>Manage Listings</h2>
+
+            <p>Review property details and manage verification status.</p>
+          </div>
+
+          <span class="admin-status-label"> ● Admin Panel </span>
+        </div>
+
+        <!-- TABLE -->
+        <div class="admin-table-card">
+          <div class="table-heading">
+            <div>
+              <h3>All Properties</h3>
+
+              <p>Review and manage submitted listings.</p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>Monthly Rent</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody id="listingsTable">
+                <!-- Populated by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- USER MANAGEMENT -->
+      <section class="admin-listings-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">COMMUNITY MANAGEMENT</span>
+            <h2>Manage Users</h2>
+            <p>Review registered users and manage their verification status.</p>
+          </div>
+
+          <span class="admin-status-label">● User Management</span>
+        </div>
+
+        <div class="admin-table-card">
+          <div class="table-heading">
+            <div>
+              <h3>Registered Users</h3>
+              <p>View user accounts and verification status.</p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody id="usersTable">
+                <tr>
+                  <td colspan="5">Loading users...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- INFORMATION CARD -->
+      <section class="admin-info-card">
+        <div class="admin-info-icon">💡</div>
+
+        <div>
+          <h3>Keep NestNotes trustworthy</h3>
+
+          <p>
+            Verify listings only after reviewing their information. Remove
+            listings that violate your platform's rules.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="admin-footer">
+      <p>© 2026 NestNotes Flat Sharing. All rights reserved.</p>
+
+      <a href="index.html">Back to Home →</a>
+    </footer>
+
+    <!-- KEEP THE EXISTING JAVASCRIPT -->
     <script src="admin.js"></script>
-
-</body>
+    <script src="theme.js"></script>
+    <script src="api-config.js"></script>
+  </body>
 </html>

@@ -1,52 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Details</title>
 
+    <title>Property Details | NestNotes</title>
+
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="details.css">
 </head>
+
 <body>
 
-<div class="details-container">
+    <!-- Navigation -->
+    <nav class="details-navbar">
 
-    <img
-        id="propertyImage"
-        class="property-image"
-        src=""
-        alt="Property"
-    >
+        <a href="index.html" class="details-brand">
+            <span class="brand-icon">⌂</span>
+            <span>NestNotes</span>
+        </a>
 
-    <h1 id="title"></h1>
+        <div class="details-nav-links">
+            <a href="index.html">Home</a>
+            <a href="favorites.html">Favorites</a>
+            <a href="my-listings.html">My Listings</a>
 
-    <p class="rent">
-        ₹<span id="rent"></span>/month
-    </p>
+            <a href="index.html#listingContainer" class="nav-cta">
+                Browse Listings
+            </a>
+        </div>
 
-    <p>
-        📍 <span id="location"></span>
-    </p>
+    </nav>
 
-    <p>
-        🏠 <span id="category"></span>
-    </p>
 
-    <div class="description-box">
-        <h3>Description</h3>
-        <p id="description"></p>
-    </div>
+    <!-- Main Content -->
+    <main class="property-page">
 
-    <button
-        onclick="window.location.href='index.html'"
-        class="back-btn"
-    >
-        Back to Listings
-    </button>
+        <!-- Breadcrumb -->
+        <div class="property-breadcrumb">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <span>Property Details</span>
+        </div>
 
-</div>
 
-<script src="details.js"></script>
+        <!-- Page Heading -->
+        <section class="property-heading">
+
+            <div>
+                <span class="eyebrow">YOUR NEXT HOME</span>
+
+                <h1 id="title">Loading property...</h1>
+
+                <p class="property-location">
+                    <span class="location-icon">⌖</span>
+                    <span id="location">Loading location...</span>
+                </p>
+            </div>
+
+            <div class="property-price">
+                <span class="price-label">Monthly rent</span>
+
+                <div>
+                    <span class="currency-symbol">₹</span>
+                    <span id="rent">—</span>
+                </div>
+
+                <span class="price-period">per month</span>
+            </div>
+
+        </section>
+
+
+        <!-- Property Image -->
+        <section class="property-gallery">
+
+            <div class="main-image-wrapper">
+
+                <img
+                    id="propertyImage"
+                    class="property-image"
+                    src="https://placehold.co/1200x650/eaf2ff/315b9b?text=Your+Next+Home"
+                    alt="Property"
+                >
+
+                <div class="image-label">
+                    🏡 Property Preview
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Property Information -->
+        <div class="property-layout">
+
+            <!-- Main Column -->
+            <div class="property-main-column">
+
+                <!-- Overview -->
+                <section class="property-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <span class="eyebrow">OVERVIEW</span>
+                            <h2>About this property</h2>
+                        </div>
+
+                        <span class="property-type-badge" id="category">
+                            Property
+                        </span>
+                    </div>
+
+                    <div class="property-divider"></div>
+
+                    <div class="description-box">
+
+                        <h3>Property description</h3>
+
+                        <p id="description">
+                            Property information will appear here.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Location Information -->
+                <section class="property-panel location-panel">
+
+                    <span class="eyebrow">LOCATION</span>
+
+                    <h2>Find your neighbourhood</h2>
+
+                    <div class="location-information">
+
+                        <div class="location-icon-box">
+                            📍
+                        </div>
+
+                        <div>
+                            <h3 id="locationSummary">Property location</h3>
+
+                            <p>
+                                Explore the area and discover whether
+                                this space suits your everyday needs.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- Sidebar -->
+            <aside class="property-sidebar">
+
+                <section class="contact-panel">
+
+                    <span class="eyebrow">INTERESTED IN THIS SPACE?</span>
+
+                    <h2>Your next home could be here.</h2>
+
+                    <p>
+                        Like what you see? Head back to the listings
+                        to explore the available actions.
+                    </p>
+
+                    <div class="contact-divider"></div>
+
+                    <div class="contact-benefit">
+                        <span class="benefit-icon">✓</span>
+
+                        <span>
+                            Explore available properties
+                        </span>
+                    </div>
+
+                    <div class="contact-benefit">
+                        <span class="benefit-icon">✓</span>
+
+                        <span>
+                            Compare monthly rents
+                        </span>
+                    </div>
+
+                    <div class="contact-benefit">
+                        <span class="benefit-icon">✓</span>
+
+                        <span>
+                            Find a space that suits you
+                        </span>
+                    </div>
+
+                    <a href="index.html#listingContainer"
+                       class="primary-action">
+                        Browse All Listings
+                        <span>→</span>
+                    </a>
+
+                    <a href="index.html" class="secondary-action">
+                        ← Back to Home
+                    </a>
+
+                </section>
+
+
+                <div class="help-card">
+
+                    <div class="help-icon">💡</div>
+
+                    <div>
+                        <h3>Finding your space?</h3>
+
+                        <p>
+                            Review the location, rent and property
+                            description before making a decision.
+                        </p>
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <!-- Bottom Navigation -->
+        <footer class="property-footer">
+
+            <a href="index.html" class="footer-brand">
+                ⌂ NestNotes
+            </a>
+
+            <p>
+                Find your space. Feel at home.
+            </p>
+
+            <a href="index.html#listingContainer">
+                Explore more properties →
+            </a>
+
+        </footer>
+
+    </main>
+
+
+    <!-- Keep the existing property-loading JavaScript -->
+    <script src="details.js"></script>
+    <script src="theme.js"></script>
+    <script src="api-config.js"></script>
+
+    <!-- Sync the displayed location with the loaded property -->
+    <script>
+        const locationElement = document.getElementById("location");
+        const locationSummary = document.getElementById("locationSummary");
+
+        const locationObserver = new MutationObserver(() => {
+            locationSummary.textContent =
+                locationElement.textContent.trim() || "Location unavailable";
+        });
+
+        locationObserver.observe(locationElement, {
+            childList: true,
+            characterData: true,
+            subtree: true
+        });
+    </script>
 
 </body>
+
 </html>

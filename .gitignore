@@ -1,10 +1,36 @@
+# Dependencies
 node_modules/
 backend/node_modules/
 
-backend/nestnotes.db
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
 
+# Uploaded files
 backend/uploads/
 
-.env
+# Local SQLite databases and backups
+backend/nestnotes.db
+backend/nestnotes.db-shm
+backend/nestnotes.db-wal
+backend/nestnotes-backup.db
+backend/nestnotes-backup.db-shm
+backend/nestnotes-backup.db-wal
 
+# Local debugging utilities
+backend/check-login.js
+backend/set-admin.js
+
+# Migration and temporary test scripts
+backend/test-neon*.js
+backend/test-postgres*.js
+backend/inspect-schema.js
+backend/create-neon-schema.js
+backend/check-neon-tables.js
+backend/migrate-sqlite-to-neon.js
+backend/verify-migration.js
+
+# OS files
 .DS_Store
+Thumbs.db

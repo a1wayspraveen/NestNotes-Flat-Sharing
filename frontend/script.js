@@ -1,5 +1,6 @@
-const API_URL =
-"https://nestnotes-flat-sharing.onrender.com/api/listings";
+const API_BASE_URL = window.NESTNOTES_API_BASE.replace(/\/api$/, "");
+
+const API_URL = `${API_BASE_URL}/api/listings`;
 
 const container =
 document.getElementById("listingContainer");
@@ -129,8 +130,14 @@ localStorage.getItem("userId");
 
     <img
     class="listing-image"
-    src="${listing.image || 'https://placehold.co/400x250?text=No+Image'}"
-    alt="${listing.title}"
+    src="${listing.image
+    ? listing.image.startsWith("http")
+        ? listing.image.replace(
+            "https://nestnotes-flat-sharing.onrender.com",
+            API_BASE_URL
+        )
+        : `${API_BASE_URL}${listing.image.startsWith("/") ? "" : "/"}${listing.image}`
+    : "https://placehold.co/400x250?text=No+Image"}"
     >
 
     <div class="listing-content">
@@ -270,7 +277,7 @@ if (!token) {
 
         const uploadResponse =
         await fetch(
-            "https://nestnotes-flat-sharing.onrender.com/api/listings/upload",
+            `${API_BASE_URL}/api/listings/upload`,
             {
                 method: "POST",
                 headers: {
@@ -429,13 +436,17 @@ async function editListingPrompt(id) {
 }
 
 async function expressInterest(id, button) {
-
     const token = localStorage.getItem("token");
 
-    try {
+    if (!token) {
+        alert("Please log in to express interest.");
+        window.location.href = "login.html";
+        return;
+    }
 
+    try {
         const response = await fetch(
-            "https://nestnotes-flat-sharing.onrender.com/api/interests",
+            `${API_BASE_URL}/api/interests`,
             {
                 method: "POST",
                 headers: {
@@ -448,24 +459,22 @@ async function expressInterest(id, button) {
             }
         );
 
+        const data = await response.json();
+
         if (!response.ok) {
+            alert(data.message || "Unable to express interest.");
+            return;
+        }
 
-    const data = await response.json();
-
-    alert(data.message);
-
-    return;
-}
+        alert(data.message);
 
         button.innerText = "Interested ✓";
         button.style.background = "#28a745";
         button.disabled = true;
 
     } catch (error) {
-
-        console.error(error);
-        alert("Unable to express interest");
-
+        console.error("Express interest error:", error);
+        alert("Unable to express interest. Please try again.");
     }
 }
 
@@ -521,7 +530,7 @@ document
 async function loadStats(){
 
     const response = await fetch(
-        "https://nestnotes-flat-sharing.onrender.com/api/listings/stats/summary"
+        `${API_BASE_URL}/api/listings/stats/summary`
     );
 
     const stats = await response.json();
@@ -614,31 +623,43 @@ function editListing(id) {
         `edit-listing.html?id=${id}`;
 }
 
-async function viewInterests(id){
+async function viewInterests(id) {
+    const token = localStorage.getItem("token");
 
-    try{
+    if (!token) {
+        alert("Please log in to continue.");
+        window.location.href = "login.html";
+        return;
+    }
 
-        const response =
-        await fetch(
-            `https://nestnotes-flat-sharing.onrender.com/api/interests/listing/${id}`
+    try {
+        const response = await fetch(
+            `${API_BASE_URL}/api/interests/listing/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
         );
 
-        const interests =
-        await response.json();
+        const interests = await response.json();
+
+        if (!response.ok) {
+            alert(interests.message || "Unable to load interests.");
+            return;
+        }
 
         let text = "";
 
-    interests.forEach(user => {
-    text += `User ID: ${user.userId}\n`;
-    });
+        interests.forEach(user => {
+            text += `User: ${user.name}\n`;
+        });
 
-     alert(text || "No interests yet");
+        alert(text || "No interests yet");
 
-    }catch(error){
-
-        console.error(error);
-
-        alert("Unable to load interests");
+    } catch (error) {
+        console.error("View interests error:", error);
+        alert("Something went wrong while loading interests.");
     }
 }
 
@@ -648,7 +669,7 @@ async function viewMessages(listingId) {
 
         const response =
         await fetch(
-            `https://nestnotes-flat-sharing.onrender.com/api/messages/${listingId}`
+            `${API_BASE_URL}/api/messages/${listingId}`
         );
 
         const messages =
@@ -684,7 +705,7 @@ async function getInterestCount(listingId) {
     try {
 
         const response = await fetch(
-            `https://nestnotes-flat-sharing.onrender.com/api/interests/count/${listingId}`
+            `${API_BASE_URL}/api/interests/count/${listingId}`
         );
 
         const data = await response.json();
@@ -704,3 +725,183 @@ function openChatPage(listingId){
     window.location.href =
     `chat.html?listingId=${listingId}`;
 }
+
+/* =========================================
+   NESTNOTES MOBILE NAVIGATION
+========================================= */
+
+(function initializeMobileNavigation() {
+    const menuToggle = document.getElementById("mobileMenuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    if (!menuToggle || !navLinks) {
+        return;
+    }
+
+    function closeMenu() {
+        navLinks.classList.remove("mobile-menu-open");
+
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open navigation menu");
+    }
+
+    function openMenu() {
+        navLinks.classList.add("mobile-menu-open");
+
+        menuToggle.setAttribute("aria-expanded", "true");
+        menuToggle.setAttribute("aria-label", "Close navigation menu");
+    }
+
+    menuToggle.addEventListener("click", function () {
+        const isExpanded =
+            menuToggle.getAttribute("aria-expanded") === "true";
+
+        if (isExpanded) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+
+    /* Close after choosing a navigation link */
+
+    navLinks.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", closeMenu);
+    });
+
+    /* Close when clicking outside the navbar */
+
+    document.addEventListener("click", function (event) {
+        if (
+            !event.target.closest(".navbar") &&
+            menuToggle.getAttribute("aria-expanded") === "true"
+        ) {
+            closeMenu();
+        }
+    });
+
+    /* Close with Escape */
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeMenu();
+            menuToggle.focus();
+        }
+    });
+
+    /* Reset the menu when switching back to desktop */
+
+    window.addEventListener("resize", function () {
+        if (window.innerWidth > 1050) {
+            closeMenu();
+        }
+    });
+})();
+
+/* =========================================
+   MOBILE UNREAD NOTIFICATION BADGE
+========================================= */
+
+(function initializeMobileNotificationBadge() {
+    const badge = document.getElementById("mobileNotificationBadge");
+
+    if (!badge) return;
+
+    function hideBadge() {
+        badge.hidden = true;
+        badge.textContent = "0";
+        badge.removeAttribute("aria-label");
+    }
+
+    function showBadge(count) {
+        const unreadCount = Number(count);
+
+        if (!Number.isFinite(unreadCount) || unreadCount <= 0) {
+            hideBadge();
+            return;
+        }
+
+        badge.textContent = unreadCount > 99 ? "99+" : String(unreadCount);
+        badge.hidden = false;
+        badge.setAttribute(
+            "aria-label",
+            `${unreadCount} unread notification${unreadCount === 1 ? "" : "s"}`
+        );
+    }
+
+    async function loadUnreadNotifications() {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("userId");
+
+        if (!token || !userId) {
+            hideBadge();
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${window.NESTNOTES_API_BASE}/messages/notifications/${encodeURIComponent(userId)}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                hideBadge();
+                return;
+            }
+
+            const data = await response.json();
+
+            // Adapt to the response shape returned by your API.
+            const notifications = Array.isArray(data)
+                ? data
+                : Array.isArray(data.notifications)
+                    ? data.notifications
+                    : null;
+
+            if (!notifications) {
+                hideBadge();
+                return;
+            }
+
+            // Count unread notifications if the API supplies a read status.
+            const hasReadStatus = notifications.some(item =>
+                Object.prototype.hasOwnProperty.call(item, "is_read") ||
+                Object.prototype.hasOwnProperty.call(item, "read")
+            );
+
+            if (!hasReadStatus) {
+                // Do not claim every notification is unread if the API
+                // doesn't provide read/unread information.
+                hideBadge();
+                return;
+            }
+
+            const unreadCount = notifications.filter(item => {
+                const value = item.is_read ?? item.read;
+
+                return value === 0 ||
+                    value === false ||
+                    value === "0";
+            }).length;
+
+            showBadge(unreadCount);
+
+        } catch (error) {
+            console.error("Unable to load notification badge:", error);
+            hideBadge();
+        }
+    }
+
+    loadUnreadNotifications();
+
+    // Refresh when the user returns to the tab.
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+            loadUnreadNotifications();
+        }
+    });
+})();

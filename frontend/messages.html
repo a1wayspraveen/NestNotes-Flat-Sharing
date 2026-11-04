@@ -1,26 +1,147 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Messages</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Messages | NestNotes</title>
+
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="messages.css">
 </head>
-<body>
 
-<h2>Messages</h2>
+<body class="messages-page">
 
-<div id="messagesContainer"></div>
+    <!-- NAVIGATION -->
+    <nav class="messages-navbar">
+        <a href="index.html" class="messages-brand">
+            <span class="brand-icon">⌂</span>
+            <span>NestNotes</span>
+        </a>
 
-<input
-    type="text"
-    id="messageInput"
-    placeholder="Type message..."
->
+        <div class="navbar-links">
+            <a href="index.html">Home</a>
+            <a href="my-listings.html">My Listings</a>
+            <a href="favorites.html">Favorites</a>
+            <a href="inbox.html" class="nav-primary">Owner Inbox</a>
+        </div>
+    </nav>
 
-<button onclick="sendMessage()">
-    Send
-</button>
+    <!-- MAIN CONTENT -->
+    <main class="messages-main">
 
-<script src="messages-page.js"></script>
+        <!-- PAGE INTRODUCTION -->
+        <section class="messages-hero">
+            <div>
+                <p class="eyebrow">YOUR CONVERSATIONS</p>
+
+                <h1>Messages that bring you <span>closer to home.</span></h1>
+
+                <p class="hero-description">
+                    Connect with property owners, ask questions, and
+                    take the next step towards finding your perfect space.
+                </p>
+            </div>
+
+            <div class="hero-illustration" aria-hidden="true">
+                💬
+            </div>
+        </section>
+
+        <!-- CONVERSATION AREA -->
+        <section class="conversation-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Your messages</h2>
+                    <p>Your property conversations in one place.</p>
+                </div>
+
+                <a href="index.html#listingContainer" class="explore-link">
+                    Explore listings →
+                </a>
+            </div>
+
+            <div class="conversation-card">
+
+                <div class="conversation-header">
+                    <div class="conversation-icon">✉️</div>
+
+                    <div>
+                        <h3>Conversation</h3>
+                        <p>Messages about your selected property</p>
+                    </div>
+                </div>
+
+                <!-- IMPORTANT: Keep the ID used by messages-page.js -->
+                <div id="messagesContainer" class="messages-container">
+                    <div class="messages-loading">
+                        <span class="loading-icon">💬</span>
+                        <h3>Your conversation</h3>
+                        <p>Your messages will appear here.</p>
+                    </div>
+                </div>
+
+                <!-- MESSAGE COMPOSER -->
+                <div class="message-composer">
+                    <label for="messageInput">Write a message</label>
+
+                    <div class="composer-row">
+                        <!-- Keep the original input ID -->
+                        <input
+                            type="text"
+                            id="messageInput"
+                            placeholder="Type your message here..."
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            class="send-message-btn"
+                            onclick="sendMessage()"
+                        >
+                            Send <span aria-hidden="true">↑</span>
+                        </button>
+                    </div>
+
+                    <p class="composer-note">
+                        Be respectful and keep your conversation friendly.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- BOTTOM INFORMATION CARD -->
+        <section class="messages-tip">
+            <div class="tip-icon">🏡</div>
+
+            <div>
+                <h3>Found a place you love?</h3>
+                <p>
+                    Browse available properties and contact owners to
+                    learn more about your next home.
+                </p>
+            </div>
+
+            <a href="index.html#listingContainer">Browse properties →</a>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="messages-footer">
+        <a href="index.html" class="footer-brand">⌂ NestNotes</a>
+
+        <p>Find your space. Feel at home.</p>
+
+        <span>© 2026 NestNotes Flat Sharing</span>
+    </footer>
+
+    <!-- Preserve the existing JavaScript -->
+    <script src="messages-page.js"></script>
+    <script src="theme.js"></script>
+    <script src="api-config.js"></script>
 
 </body>
 </html>

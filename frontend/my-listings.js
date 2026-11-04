@@ -1,4 +1,5 @@
-const API_URL = "https://nestnotes-flat-sharing.onrender.com/api/listings";
+const API_BASE_URL = window.NESTNOTES_API_BASE.replace(/\/api$/, "");
+const API_URL = `${API_BASE_URL}/api/listings`;
 
 const container = document.getElementById("myListingsContainer");
 
@@ -53,11 +54,13 @@ async function loadMyListings() {
 
     myListings.forEach((listing) => {
       const imageUrl = listing.image
-        ? listing.image.replace(
-            "http://localhost:3000",
-            "https://nestnotes-flat-sharing.onrender.com",
-          ) + `?t=${Date.now()}`
-        : "https://placehold.co/400x250?text=No+Image";
+        ? listing.image.startsWith("http")
+          ? listing.image.replace(
+              "https://nestnotes-flat-sharing.onrender.com",
+              API_BASE_URL,
+            )
+          : `${API_BASE_URL}${listing.image.startsWith("/") ? "" : "/"}${listing.image}`
+        : "https://placehold.co/600x400";
 
       const card = document.createElement("div");
 
@@ -149,9 +152,15 @@ loadMyListings();
 async function viewInterestedUsers(listingId) {
   const token = localStorage.getItem("token");
 
+  if (!token) {
+    alert("Please log in to continue.");
+    window.location.href = "login.html";
+    return;
+  }
+
   try {
     const response = await fetch(
-      `https://nestnotes-flat-sharing.onrender.com/api/interests/listing/${listingId}`,
+      `${API_BASE_URL}/api/interests/listing/${listingId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -161,25 +170,101 @@ async function viewInterestedUsers(listingId) {
 
     const users = await response.json();
 
-    console.log(users);
+    if (!response.ok) {
+      alert(users.message || "Unable to load interested users.");
+      return;
+    }
 
     if (users.length === 0) {
-      alert("No interested users yet");
+      alert("No interested users yet.");
       return;
     }
 
     let message = "Interested Users:\n\n";
 
     users.forEach((user) => {
-      message += `${user.email}\n`;
+      message += `Name: ${user.name}\n`;
+      message += `Email: ${user.email}\n`;
+      message += `Occupation: ${user.occupation || "Not specified"}\n`;
+      message += `Budget: ${user.budget || "Not specified"}\n\n`;
     });
 
     alert(message);
+
   } catch (error) {
-    console.error(error);
+    console.error("View interested users error:", error);
+    alert("Something went wrong while loading interested users.");
   }
 }
 
-function viewInterests(listingId) {
-  window.location.href = `view-interests.html?id=${listingId}`;
-}
+
+/* =========================================
+   MY LISTINGS — MOBILE NAVIGATION
+========================================= */
+
+(function initializeDashboardMobileNavigation() {
+  const toggle = document.getElementById("dashboardMenuToggle");
+  const menu = document.getElementById("dashboardNavLinks");
+
+  if (!toggle || !menu) return;
+
+  const icon = toggle.querySelector(".menu-icon");
+
+  function openMenu() {
+    menu.classList.add("is-open");
+
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.setAttribute("aria-label", "Close navigation menu");
+
+    if (icon) {
+      icon.textContent = "✕";
+    }
+  }
+
+  function closeMenu() {
+    menu.classList.remove("is-open");
+
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Open navigation menu");
+
+    if (icon) {
+      icon.textContent = "☰";
+    }
+  }
+
+  toggle.addEventListener("click", function () {
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
+
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  menu.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("click", function (event) {
+    if (
+      !event.target.closest(".dashboard-navbar") &&
+      toggle.getAttribute("aria-expanded") === "true"
+    ) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeMenu();
+      toggle.focus();
+    }
+  });
+
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1000) {
+      closeMenu();
+    }
+  });
+})();

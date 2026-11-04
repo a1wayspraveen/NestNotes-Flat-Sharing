@@ -103,11 +103,11 @@
             </form>
 
         </div>
-
+<script src="api-config.js"></script>
 <script>
+const API_BASE_URL = window.NESTNOTES_API_BASE.replace(/\/api$/, "");
 
-const API_URL =
-  "https://nestnotes-flat-sharing.onrender.com/api/listings";
+const API_URL = `${API_BASE_URL}/api/listings`;
 
 const token = localStorage.getItem("token");
 const params = new URLSearchParams(window.location.search);
@@ -135,10 +135,17 @@ fetch(`${API_URL}/${id}`)
 
         const imagePreview = document.getElementById("imagePreview");
         if (listing.image) {
-            imagePreview.src = listing.image;
-        } else {
-            imagePreview.style.display = "none";
-        }
+    imagePreview.src = listing.image.startsWith("http")
+        ? listing.image.replace(
+            "https://nestnotes-flat-sharing.onrender.com",
+            API_BASE_URL
+          )
+        : `${API_BASE_URL}${listing.image.startsWith("/") ? "" : "/"}${listing.image}`;
+
+    imagePreview.style.display = "block";
+} else {
+    imagePreview.style.display = "none";
+}
     })
 
     .catch(error => {
@@ -223,7 +230,7 @@ if (rent <= 0) {
         formData.append("image", imageFile);
 
         const uploadResponse = await fetch(
-            "https://nestnotes-flat-sharing.onrender.com/api/listings/upload",
+            `${API_BASE_URL}/api/listings/upload`,
             {
                 method: "POST",
                 headers: {
@@ -284,6 +291,7 @@ if (rent <= 0) {
 
 
 </script>
+<script src="theme.js"></script>
 
 </body>
 </html>

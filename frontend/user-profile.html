@@ -1,19 +1,393 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Flatmate Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Flatmate Profile | NestNotes</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="user-profile.css">
 </head>
+
 <body>
 
-    <h1>Flatmate Profile</h1>
+    <!-- NAVIGATION -->
+<header class="profile-header">
 
-    <div id="profileContainer"></div>
+    <a href="index.html" class="brand" aria-label="NestNotes home">
+        <span class="brand-icon">🏠</span>
+        <span>NestNotes</span>
+    </a>
 
-    <button id="messageBtn">Message User</button>
+    <!-- Mobile navigation actions -->
+    <div class="mobile-nav-actions">
 
-    <button onclick="history.back()">Back</button>
+        <a
+            href="notifications.html"
+            class="mobile-notification-btn"
+            aria-label="Notifications"
+            title="Notifications"
+        >
+            🔔
+        </a>
+
+        <button
+            type="button"
+            class="mobile-menu-toggle"
+            id="profileMenuToggle"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="profileNavigation"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+    </div>
+
+    <!-- Navigation links -->
+    <nav
+        class="header-links"
+        id="profileNavigation"
+        aria-label="Main navigation"
+    >
+        <a href="index.html">Home</a>
+        <a href="my-listings.html">My Listings</a>
+        <a href="favorites.html">Favorites</a>
+        <a href="messages.html">Messages</a>
+        <a href="notifications.html" class="desktop-notification-link">
+            🔔 Notifications
+        </a>
+
+        <a href="index.html#listingContainer" class="browse-link">
+            Browse Listings →
+        </a>
+    </nav>
+
+</header>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="page">
+
+        <!-- PAGE INTRODUCTION -->
+        <section class="page-heading">
+            <p class="eyebrow">GET TO KNOW YOUR NEXT FLATMATE</p>
+
+            <h1>Flatmate Profile</h1>
+
+            <p>
+                Learn more about this NestNotes member, their lifestyle,
+                and their preferences before starting a conversation.
+            </p>
+        </section>
+
+
+        <!-- LOADING AND ERROR MESSAGES -->
+        <div
+            id="profileStatus"
+            class="profile-status"
+            role="status"
+            aria-live="polite"
+        >
+            Loading profile...
+        </div>
+
+
+        <!-- PROFILE CONTENT -->
+        <section id="profileContent" class="profile-layout" hidden>
+
+            <!-- LEFT PROFILE SUMMARY -->
+            <aside class="profile-card profile-summary">
+
+                <div class="avatar" id="profileAvatar">
+                    👤
+                </div>
+
+                <span class="member-badge">
+                    ✓ NestNotes Member
+                </span>
+
+                <h2 id="profileName">Flatmate</h2>
+
+                <p class="profile-subtitle">
+                    Potential Flatmate
+                </p>
+
+                <div class="profile-divider"></div>
+
+                <div class="summary-note">
+                    <span class="summary-icon">🤝</span>
+
+                    <div>
+                        <h3>Find your match</h3>
+                        <p>
+                            Get to know their lifestyle and preferences
+                            before connecting.
+                        </p>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    id="messageBtn"
+                    class="message-button"
+                >
+                    <span>💬</span>
+                    Message User
+                </button>
+
+                <button
+                    type="button"
+                    id="backBtn"
+                    class="back-button"
+                >
+                    ← Go Back
+                </button>
+
+            </aside>
+
+
+            <!-- RIGHT PROFILE INFORMATION -->
+            <div class="profile-details">
+
+                <!-- PERSONAL INFORMATION -->
+                <section class="profile-card details-card">
+
+                    <div class="section-heading">
+                        <div class="section-icon">👤</div>
+
+                        <div>
+                            <h2>Personal Information</h2>
+                            <p>Get to know your potential flatmate.</p>
+                        </div>
+                    </div>
+
+                    <div class="information-grid">
+
+                        <article class="information-item">
+                            <span class="information-icon">🎂</span>
+
+                            <div>
+                                <p class="information-label">Age</p>
+                                <p class="information-value" id="profileAge">
+                                    Not specified
+                                </p>
+                            </div>
+                        </article>
+
+                        <article class="information-item">
+                            <span class="information-icon">👥</span>
+
+                            <div>
+                                <p class="information-label">Gender</p>
+                                <p class="information-value" id="profileGender">
+                                    Not specified
+                                </p>
+                            </div>
+                        </article>
+
+                        <article class="information-item">
+                            <span class="information-icon">💼</span>
+
+                            <div>
+                                <p class="information-label">Occupation</p>
+                                <p class="information-value" id="profileOccupation">
+                                    Not specified
+                                </p>
+                            </div>
+                        </article>
+
+                        <article class="information-item">
+                            <span class="information-icon">💰</span>
+
+                            <div>
+                                <p class="information-label">Monthly Budget</p>
+                                <p class="information-value" id="profileBudget">
+                                    Not specified
+                                </p>
+                            </div>
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <!-- LIFESTYLE PREFERENCES -->
+                <section class="profile-card details-card">
+
+                    <div class="section-heading">
+                        <div class="section-icon">✨</div>
+
+                        <div>
+                            <h2>Lifestyle & Preferences</h2>
+                            <p>Understand their everyday preferences.</p>
+                        </div>
+                    </div>
+
+                    <div class="preference-list">
+
+                        <div class="preference-row">
+                            <div class="preference-label">
+                                <span>🍽️</span>
+                                Food Preference
+                            </div>
+
+                            <span
+                                class="preference-value"
+                                id="profileFood"
+                            >
+                                Not specified
+                            </span>
+                        </div>
+
+                        <div class="preference-row">
+                            <div class="preference-label">
+                                <span>🚭</span>
+                                Smoking
+                            </div>
+
+                            <span
+                                class="preference-value"
+                                id="profileSmoking"
+                            >
+                                Not specified
+                            </span>
+                        </div>
+
+                        <div class="preference-row">
+                            <div class="preference-label">
+                                <span>🥤</span>
+                                Drinking
+                            </div>
+
+                            <span
+                                class="preference-value"
+                                id="profileDrinking"
+                            >
+                                Not specified
+                            </span>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ABOUT ME -->
+                <section class="profile-card details-card">
+
+                    <div class="section-heading">
+                        <div class="section-icon">📝</div>
+
+                        <div>
+                            <h2>About Me</h2>
+                            <p>A little more about this person.</p>
+                        </div>
+                    </div>
+
+                    <div class="bio-box">
+                        <p id="profileBio">
+                            This member hasn't added a bio yet.
+                        </p>
+                    </div>
+
+                </section>
+
+
+                <!-- BOTTOM ACTION -->
+                <section class="contact-banner">
+
+                    <div class="contact-banner-icon">💬</div>
+
+                    <div class="contact-banner-content">
+                        <h2>Interested in connecting?</h2>
+
+                        <p>
+                            Start a conversation to learn more about
+                            each other and discuss your flat-sharing plans.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="messageBtnBottom"
+                        class="contact-banner-button"
+                    >
+                        Send Message →
+                    </button>
+
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="profile-footer">
+        <div class="footer-inner">
+            <span class="footer-brand">🏠 NestNotes</span>
+
+            <span class="footer-copy">
+                © 2026 NestNotes Flat Sharing. All rights reserved.
+            </span>
+
+            <a href="index.html">Back to Home →</a>
+        </div>
+    </footer>
+
 
     <script src="user-profile.js"></script>
+    <script src="theme.js"></script>
+    <script src="api-config.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("profileMenuToggle");
+    const navigation = document.getElementById("profileNavigation");
+
+    if (!menuToggle || !navigation) return;
+
+    function closeMenu() {
+        navigation.classList.remove("is-open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open navigation menu");
+    }
+
+    menuToggle.addEventListener("click", function () {
+        const isOpen = navigation.classList.toggle("is-open");
+
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+        menuToggle.setAttribute(
+            "aria-label",
+            isOpen ? "Close navigation menu" : "Open navigation menu"
+        );
+    });
+
+    navigation.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", closeMenu);
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeMenu();
+        }
+    });
+
+    window.addEventListener("resize", function () {
+        if (window.innerWidth > 760) {
+            closeMenu();
+        }
+    });
+});
+</script>
 
 </body>
 </html>

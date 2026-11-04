@@ -1,17 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing Details</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <title>Listing Details | NestNotes</title>
 
-<div id="listingDetails"></div>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="listing.css" />
+  </head>
 
-<script src="listing.js"></script>
+  <body>
+    <!-- NAVIGATION -->
+    <header class="listing-header">
+      <a href="index.html" class="listing-brand">
+        <span class="listing-brand-icon">🏠</span>
+        <span>NestNotes</span>
+      </a>
 
-</body>
+      <button
+        class="listing-menu-toggle"
+        id="listingMenuToggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="listingNavigation"
+      >
+        ☰
+      </button>
+
+      <!-- Navigation -->
+      <nav
+        class="listing-nav"
+        id="listingNavigation"
+        aria-label="Main navigation"
+      >
+        <a href="index.html" class="listing-mobile-link">Home</a>
+        <a href="my-listings.html" class="listing-mobile-link">My Listings</a>
+        <a href="favorites.html" class="listing-mobile-link">Favorites</a>
+
+        <a href="index.html#listingContainer" class="listing-nav-button">
+          Browse Listings →
+        </a>
+      </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="listing-page">
+      <!-- BREADCRUMB -->
+      <div class="listing-breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span>Property Details</span>
+      </div>
+
+      <!-- PAGE INTRODUCTION -->
+      <section class="listing-intro">
+        <div>
+          <p class="listing-eyebrow">FIND YOUR NEXT HOME</p>
+          <h1>Property Details</h1>
+          <p class="listing-intro-text">
+            Explore the property, review the details, and connect with the
+            owner.
+          </p>
+        </div>
+
+        <a href="index.html#listingContainer" class="back-listings-link">
+          ← All Listings
+        </a>
+      </section>
+
+      <!-- STATUS / ERROR MESSAGE -->
+      <div
+        id="listingStatus"
+        class="listing-status"
+        role="status"
+        aria-live="polite"
+      >
+        Loading property details...
+      </div>
+
+      <!-- PROPERTY DETAILS -->
+      <div id="listingDetails" hidden></div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="listing-footer">
+      <div class="listing-footer-inner">
+        <span class="listing-footer-brand">🏠 NestNotes</span>
+
+        <span> © 2026 NestNotes Flat Sharing. All rights reserved. </span>
+
+        <a href="index.html">Back to Home →</a>
+      </div>
+    </footer>
+
+    <script src="api-config.js"></script>
+    <script src="listing.js"></script>
+    <script src="theme.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuButton = document.getElementById("listingMenuToggle");
+        const navigation = document.getElementById("listingNavigation");
+
+        if (!menuButton || !navigation) return;
+
+        menuButton.addEventListener("click", function () {
+          const isOpen = navigation.classList.toggle("is-open");
+
+          menuButton.setAttribute("aria-expanded", String(isOpen));
+          menuButton.setAttribute(
+            "aria-label",
+            isOpen ? "Close navigation menu" : "Open navigation menu",
+          );
+
+          menuButton.textContent = isOpen ? "✕" : "☰";
+        });
+      });
+    </script>
+  </body>
 </html>

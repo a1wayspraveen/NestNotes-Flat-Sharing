@@ -1,65 +1,57 @@
-const API_URL =
-"https://nestnotes-flat-sharing.onrender.com/api/listings";
+const API_BASE_URL = window.NESTNOTES_API_BASE.replace(/\/api$/, "");
 
-const container =
-document.getElementById("favoriteContainer");
+const API_URL = `${API_BASE_URL}/api/listings`;
 
-let favorites =
-JSON.parse(
-localStorage.getItem("favorites")
-) || [];
+const container = document.getElementById("favoriteContainer");
+
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 async function loadFavorites() {
+  try {
+    const response = await fetch(API_URL);
 
-    try {
+    const listings = await response.json();
 
-        const response =
-        await fetch(API_URL);
+    const favoriteListings = listings.filter((listing) =>
+      favorites.includes(listing.id),
+    );
 
-        const listings =
-        await response.json();
-
-        const favoriteListings =
-        listings.filter(listing =>
-            favorites.includes(listing.id)
-        );
-
-        displayFavorites(
-            favoriteListings
-        );
-
-    } catch(error) {
-
-        console.error(error);
-    }
+    displayFavorites(favoriteListings);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function displayFavorites(data) {
+  container.innerHTML = "";
 
-    container.innerHTML = "";
-
-    if(data.length === 0){
-
-        container.innerHTML = `
+  if (data.length === 0) {
+    container.innerHTML = `
             <h2>
                 No favorite listings yet.
             </h2>
         `;
 
-        return;
-    }
+    return;
+  }
 
-    data.forEach(listing => {
+  data.forEach((listing) => {
+    const imageUrl = listing.image
+      ? listing.image.startsWith("http")
+        ? listing.image.replace(
+            "https://nestnotes-flat-sharing.onrender.com",
+            API_BASE_URL,
+          )
+        : `${API_BASE_URL}${listing.image.startsWith("/") ? "" : "/"}${listing.image}`
+      : "https://placehold.co/400x250";
 
-        container.innerHTML += `
+    container.innerHTML += `
             <div class="card">
 
                 <img
                 class="listing-image"
-                src="${
-                    listing.image ||
-                    'https://placehold.co/400x250'
-                }"
+                src="${imageUrl}"
+                alt="${listing.title}"
                 >
 
                 <h3>
@@ -91,22 +83,15 @@ function displayFavorites(data) {
 
             </div>
         `;
-    });
+  });
 }
 
-function removeFavorite(id){
+function removeFavorite(id) {
+  favorites = favorites.filter((fav) => fav !== id);
 
-    favorites =
-    favorites.filter(
-        fav => fav !== id
-    );
+  localStorage.setItem("favorites", JSON.stringify(favorites));
 
-    localStorage.setItem(
-        "favorites",
-        JSON.stringify(favorites)
-    );
-
-    loadFavorites();
+  loadFavorites();
 }
 
 loadFavorites();
