@@ -1,3 +1,7 @@
+const sharp = require("sharp");
+const fs = require("fs/promises");
+const path = require("path");
+const crypto = require("crypto");
 const express = require("express");
 const router = express.Router();
 
@@ -6,21 +10,63 @@ const requireAdmin = require("../middleware/adminMiddleware");
 const upload = require("../multerConfig");
 const db = require("../database");
 
-router.post("/upload", verifyToken, upload.single("image"), (req, res) => {
+router.post("/upload", verifyToken, upload.single("image"), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({
             message: "No image file uploaded."
         });
     }
 
-    console.log("Image uploaded:", req.file.filename);
+    const originalPath = req.file.path;
+    const filename = `${Date.now()}-${crypto.randomUUID()}.webp`;
+    const outputPath = path.join(__dirname, "../uploads", filename);
 
-    res.json({
-        image: `/uploads/${req.file.filename}`
-    });
+    try {
+        // Optimise and convert image to WebP
+        await sharp(originalPath)
+            .rotate()
+            .resize({
+                width: 1200,
+                height: 1200,
+                fit: "inside",
+                withoutEnlargement: true
+            })
+            .webp({
+                quality: 82,
+                effort: 5
+            })
+            .toFile(outputPath);
+
+        console.log("Optimised image uploaded:", filename);
+
+        // Delete original image if possible.
+        // Upload should still succeed if Windows locks the file.
+        try {
+            await fs.unlink(originalPath);
+        } catch (deleteError) {
+            console.warn(
+                "Could not delete original image:",
+                deleteError.message
+            );
+        }
+
+        return res.json({
+            image: `/uploads/${filename}`
+        });
+
+    } catch (error) {
+        console.error("Image optimisation failed:", error);
+
+        // Remove incomplete WebP output, but preserve original upload.
+        await fs.unlink(outputPath).catch(() => {});
+
+        return res.status(500).json({
+            message: "Image processing failed. Please try another image."
+        });
+    }
 });
 
-router.get("/stats/summary", verifyToken, requireAdmin, (req, res) => {
+router.get("/stats/summary", (req, res) => {
   db.get(
     `
         SELECT

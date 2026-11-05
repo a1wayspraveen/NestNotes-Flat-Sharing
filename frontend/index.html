@@ -73,18 +73,18 @@
         <span id="unreadMessageBadge" class="unread-badge" hidden>0</span>
         </a>
 
-        <a href="favorites.html">Favorites</a>
+        <a href="favorites.html" id="favoritesLink">Favorites</a>
 
         <a href="notifications.html" id="notificationsLink" aria-label="Notifications">
           🔔 Notifications
           <span id="unreadNotificationBadge" class="unread-badge" hidden>0</span>
         </a>
 
-        <a href="my-listings.html">My Listings</a>
+        <a href="my-listings.html" id="myListingsLink">My Listings</a>
 
-        <a href="dashboard.html">Dashboard</a>
+        <a href="dashboard.html" id="dashboardLink">Dashboard</a>
 
-        <a href="admin.html">Admin</a>
+        <a href="admin.html" id="adminLink">Admin</a>
 
         <a href="login.html" class="nav-login">Login</a>
 
@@ -451,9 +451,9 @@
 
           <a href="#listingContainer">Listings</a>
 
-          <a href="favorites.html">Favorites</a>
+          <a href="favorites.html" id="favoritesLink">Favorites</a>
 
-          <a href="inbox.html">Messages</a>
+          <a href="inbox.html" id="ownerInboxLink">Messages</a>
 
           <a href="login.html">Login</a>
         </div>
@@ -465,10 +465,10 @@
     </footer>
 
     <!-- Preserve the existing JavaScript -->
+    <script src="api-config.js"></script>
     <script src="script.js"></script>
     <script src="theme.js"></script>
     <script src="unread-badge.js"></script>
-    <script src="api-config.js"></script>
 
     <!-- Hero search uses the existing listing search field -->
     <script>
