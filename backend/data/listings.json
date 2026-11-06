@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "title": "Modern 2BHK Apartment",
+    "rent": 18000,
+    "location": "Koramangala",
+    "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
+    "description": "Spacious apartment near metro."
+  },
+  {
+    "id": 2,
+    "title": "Single Room",
+    "rent": 9000,
+    "location": "HSR Layout",
+    "image": "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
+    "description": "Furnished room with balcony."
+  }
+]
+
+router.post("/", verifyToken, (req, res) => {
+
+    const {
+        title,
+        rent,
+        location,
+        image,
+        description
+    } = req.body;
+
+    db.run(
+        `
+        INSERT INTO listings
+        (
+            title,
+            rent,
+            location,
+            image,
+            description
+        )
+        VALUES (?, ?, ?, ?, ?)
+        `,
+        [
+            title,
+            rent,
+            location,
+            image,
+            description
+        ],
+        function(err){
+
+            if(err){
+                return res.status(500)
+                .json(err);
+            }
+
+            res.status(201).json({
+                id: this.lastID,
+                title,
+                rent,
+                location,
+                image,
+                description
+            });
+        }
+    );
+});

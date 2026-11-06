@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="theme-color" content="#087f8c" />
+
+    <title>Login | NestNotes</title>
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body class="auth-page">
+    <main class="auth-layout">
+      <!-- Left branding panel -->
+      <section class="auth-brand-panel">
+        <a href="index.html" class="auth-brand">
+          <span class="auth-brand-icon">⌂</span>
+          <span>NestNotes</span>
+        </a>
+
+        <div class="auth-brand-content">
+          <span class="auth-eyebrow"> WELCOME HOME </span>
+
+          <h1>
+            Your next chapter
+            <span>starts here.</span>
+          </h1>
+
+          <p>
+            Discover comfortable spaces, connect with potential flatmates, and
+            find your place in Bengaluru.
+          </p>
+
+          <div class="auth-benefits">
+            <div class="auth-benefit">
+              <span>✓</span>
+              <p>
+                <strong>Discover your space</strong>
+                <small>Explore flats, PGs and shared rooms.</small>
+              </p>
+            </div>
+
+            <div class="auth-benefit">
+              <span>✓</span>
+              <p>
+                <strong>Manage your listings</strong>
+                <small>Keep your property details organised.</small>
+              </p>
+            </div>
+
+            <div class="auth-benefit">
+              <span>✓</span>
+              <p>
+                <strong>Connect with people</strong>
+                <small>Use messaging to connect with others.</small>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <p class="auth-brand-footer">Find a place that feels like home.</p>
+      </section>
+
+      <!-- Login form panel -->
+      <section class="auth-form-panel">
+        <a href="index.html" class="auth-mobile-brand"> 🏠 NestNotes </a>
+
+        <div class="auth-card">
+          <div class="auth-card-icon">👋</div>
+
+          <span class="section-eyebrow"> YOUR SPACE AWAITS </span>
+
+          <h2>Welcome back!</h2>
+
+          <p class="auth-subtitle">
+            Sign in to continue to your NestNotes account.
+          </p>
+
+          <form id="loginForm">
+            <div class="auth-field">
+              <label for="email"> Email address </label>
+
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <div class="auth-field">
+              <label for="password"> Password </label>
+
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+
+            <button type="submit" class="auth-btn" id="loginSubmitBtn">
+              Sign In <span aria-hidden="true">→</span>
+            </button>
+          </form>
+
+          <p
+            id="message"
+            class="auth-message"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+          <div class="auth-divider">
+            <span>NEW TO NESTNOTES?</span>
+          </div>
+
+          <a href="register.html" class="auth-secondary-btn">
+            Create an account
+          </a>
+
+          <p class="auth-back-link">
+            <a href="index.html"> ← Back to homepage </a>
+          </p>
+        </div>
+
+        <p class="auth-legal">© 2026 NestNotes Flat Sharing</p>
+      </section>
+    </main>
+
+    <script src="api-config.js"></script>
+
+    <!-- Existing login functionality preserved -->
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const email = document.getElementById("email").value.trim();
+
+          const password = document.getElementById("password").value;
+
+          const message = document.getElementById("message");
+          const submitButton = document.getElementById("loginSubmitBtn");
+
+          message.textContent = "";
+          message.className = "auth-message";
+
+          submitButton.disabled = true;
+          submitButton.textContent = "Signing in...";
+
+          try {
+            const response = await fetch(
+              `${window.NESTNOTES_API_BASE}/auth/login`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  email,
+                  password,
+                }),
+              },
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              throw new Error(
+                data.message || "Unable to sign in. Check your details.",
+              );
+            }
+
+            if (!data.token || !data.user || !data.user.id) {
+              throw new Error(
+                "The server response was incomplete. Please try again.",
+              );
+            }
+
+            localStorage.setItem("token", data.token);
+
+            localStorage.setItem("userId", data.user.id);
+
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            message.textContent = "Login successful! Redirecting...";
+            message.classList.add("success");
+
+            window.location.href = "index.html";
+          } catch (error) {
+            message.textContent =
+              error.message || "Unable to connect. Please try again.";
+
+            message.classList.add("error");
+          } finally {
+            submitButton.disabled = false;
+            submitButton.innerHTML =
+              'Sign In <span aria-hidden="true">→</span>';
+          }
+        });
+    </script>
+    <script src="theme.js"></script>
+  </body>
+</html>

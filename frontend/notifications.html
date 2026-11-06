@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Notifications | NestNotes</title>
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="notifications.css" />
+  </head>
+
+  <body class="notifications-page">
+    <!-- Responsive Navigation -->
+    <nav class="notifications-navbar">
+      <a href="index.html" class="notifications-brand">
+        <span class="notifications-brand-icon">⌂</span>
+        <span>NestNotes</span>
+      </a>
+
+      <!-- Mobile hamburger button -->
+      <button
+        type="button"
+        class="notifications-menu-toggle"
+        id="notificationsMenuToggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="notificationsNavLinks"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Navigation links -->
+      <div class="notifications-nav-links" id="notificationsNavLinks">
+        <a href="index.html">Home</a>
+        <a href="my-listings.html">My Listings</a>
+        <a href="favorites.html">Favorites</a>
+        <a href="inbox.html">Messages</a>
+
+        <a href="index.html#listingContainer" class="notifications-nav-cta">
+          Browse Listings
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="notifications-main">
+      <!-- Page Heading -->
+      <section class="notifications-hero">
+        <div class="notifications-hero-content">
+          <span class="notifications-eyebrow"> YOUR NESTNOTES ACTIVITY </span>
+
+          <h1>Stay in the <span>loop.</span></h1>
+
+          <p>
+            Keep track of listing updates, interests, and conversations in one
+            convenient place.
+          </p>
+        </div>
+
+        <div class="notifications-hero-icon" aria-hidden="true">🔔</div>
+      </section>
+
+      <!-- Notifications Section -->
+      <section class="notifications-section">
+        <div class="notifications-section-header">
+          <div>
+            <h2>Your notifications</h2>
+
+            <p>Important updates about your NestNotes activity.</p>
+          </div>
+
+          <a href="inbox.html" class="notifications-messages-link">
+            💬 Open Messages
+          </a>
+        </div>
+
+        <!-- Existing JavaScript renders notifications here -->
+        <div class="notifications-list-card">
+          <div id="notificationsContainer">
+            <div class="notifications-loading">
+              <span class="notifications-loading-icon">◌</span>
+              <p>Loading your notifications...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Information Card -->
+      <section class="notifications-info">
+        <div class="notifications-info-icon">✓</div>
+
+        <div>
+          <h3>Stay connected to your next home</h3>
+
+          <p>
+            Check your notifications regularly so you don't miss updates about
+            your listings and enquiries.
+          </p>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="notifications-footer">
+        <a href="index.html" class="notifications-footer-brand">
+          ⌂ NestNotes
+        </a>
+
+        <p>Find your space. Feel at home.</p>
+
+        <a href="index.html"> Back to Home → </a>
+      </footer>
+    </main>
+
+    <script src="api-config.js"></script>
+    <script src="notifications.js"></script>
+    <script src="unread-badge.js"></script>
+    <script src="theme.js"></script>
+
+    <script>
+      (() => {
+        const menuButton = document.getElementById("notificationsMenuToggle");
+        const navLinks = document.getElementById("notificationsNavLinks");
+
+        if (!menuButton || !navLinks) return;
+
+        function closeMenu() {
+          navLinks.classList.remove("is-open");
+          menuButton.classList.remove("is-active");
+          menuButton.setAttribute("aria-expanded", "false");
+          menuButton.setAttribute("aria-label", "Open navigation menu");
+        }
+
+        menuButton.addEventListener("click", () => {
+          const isOpen = navLinks.classList.toggle("is-open");
+
+          menuButton.classList.toggle("is-active", isOpen);
+          menuButton.setAttribute("aria-expanded", String(isOpen));
+          menuButton.setAttribute(
+            "aria-label",
+            isOpen ? "Close navigation menu" : "Open navigation menu",
+          );
+        });
+
+        // Close after selecting a navigation link.
+        navLinks.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", closeMenu);
+        });
+
+        // Close with Escape.
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            closeMenu();
+          }
+        });
+
+        // Close if the viewport changes to desktop size.
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 768) {
+            closeMenu();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

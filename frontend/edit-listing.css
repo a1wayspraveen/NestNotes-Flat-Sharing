@@ -1,0 +1,759 @@
+/* =========================================
+   NESTNOTES — EDIT LISTING
+   Modern SaaS styling
+========================================= */
+
+:root {
+    --primary: #078894;
+    --primary-dark: #066d78;
+    --primary-light: #e5f7f7;
+
+    --heading: #192f52;
+    --text: #647895;
+    --border: #dce7f2;
+
+    --background: #f3f7fc;
+    --white: #ffffff;
+
+    --danger: #dc4545;
+
+    --radius: 18px;
+
+    --shadow:
+        0 12px 35px rgba(27, 51, 85, 0.07);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 36px 20px 60px;
+
+    min-height: 100vh;
+
+    background: var(--background);
+
+    color: var(--heading);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    line-height: 1.6;
+}
+
+/* Main form card */
+
+.form-section {
+    position: relative;
+
+    width: 100%;
+    max-width: 920px;
+
+    margin: 30px auto;
+
+    padding: 38px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 24px;
+
+    box-shadow: var(--shadow);
+}
+
+/* Back button */
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 10px 17px;
+
+    margin-bottom: 28px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    color: var(--heading);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.back-btn:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+
+    transform: translateY(-1px);
+}
+
+/* Toggle button */
+
+.toggle-btn {
+    display: block;
+
+    margin-left: auto;
+    margin-bottom: 20px;
+
+    padding: 12px 20px;
+
+    background: var(--primary-light);
+
+    border: 1px solid #ccebed;
+    border-radius: 11px;
+
+    color: var(--primary-dark);
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+/* Page heading */
+
+.page-title {
+    margin: 0 0 10px;
+
+    color: var(--heading);
+
+    font-size: clamp(27px, 4vw, 36px);
+    font-weight: 750;
+
+    letter-spacing: -1.2px;
+}
+
+.form-section > h1::after {
+    content: "";
+
+    display: block;
+
+    width: 58px;
+    height: 4px;
+
+    margin-top: 15px;
+
+    background: var(--primary);
+
+    border-radius: 10px;
+}
+
+/* Form layout */
+
+#formContainer {
+    margin-top: 28px;
+}
+
+#listingForm {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px 22px;
+}
+
+/* Labels */
+
+#listingForm label {
+    display: block;
+
+    align-self: end;
+
+    margin-top: 7px;
+
+    color: var(--heading);
+
+    font-size: 14px;
+    font-weight: 650;
+}
+
+/* Inputs */
+
+#listingForm input[type="text"],
+#listingForm input[type="number"],
+#listingForm input[type="file"],
+#listingForm select,
+#listingForm textarea {
+    width: 100%;
+    min-width: 0;
+
+    padding: 13px 15px;
+
+    background: #fbfdff;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    color: var(--heading);
+
+    font: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+#listingForm input[type="text"],
+#listingForm input[type="number"],
+#listingForm select {
+    min-height: 49px;
+}
+
+#listingForm input:focus,
+#listingForm select:focus,
+#listingForm textarea:focus {
+    background: var(--white);
+
+    border-color: var(--primary);
+
+    box-shadow: 0 0 0 4px rgba(7, 136, 148, 0.1);
+}
+
+#listingForm input::placeholder,
+#listingForm textarea::placeholder {
+    color: #8b9bb1;
+}
+
+/* Category dropdown */
+
+#listingForm select {
+    cursor: pointer;
+}
+
+/* Current image heading */
+
+#listingForm h3 {
+    grid-column: 1 / -1;
+
+    margin: 12px 0 0;
+
+    padding-top: 22px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--heading);
+
+    font-size: 17px;
+}
+
+/* Image preview */
+
+.image-preview {
+    display: block;
+
+    grid-column: 1 / -1;
+
+    width: 100%;
+    max-width: 460px;
+
+    max-height: 280px;
+
+    object-fit: cover;
+
+    background: #f4f8fc;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+/* File input */
+
+#listingForm input[type="file"] {
+    grid-column: 1 / -1;
+
+    padding: 10px;
+
+    background: #f8fbff;
+
+    cursor: pointer;
+}
+
+#listingForm input[type="file"]::file-selector-button {
+    margin-right: 14px;
+
+    padding: 9px 13px;
+
+    background: var(--primary-light);
+
+    border: 1px solid #ccebed;
+    border-radius: 8px;
+
+    color: var(--primary-dark);
+
+    font-weight: 650;
+
+    cursor: pointer;
+}
+
+/* Description */
+
+#listingForm textarea {
+    grid-column: 1 / -1;
+
+    min-height: 145px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+/* Character counter */
+
+#charCount {
+    grid-column: 1 / -1;
+
+    margin-top: -7px;
+
+    color: var(--text);
+
+    font-size: 12px;
+
+    text-align: right;
+}
+
+/* Form buttons */
+
+#listingForm button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 49px;
+
+    padding: 13px 20px;
+
+    border-radius: 11px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* Submit */
+
+#listingForm button[type="submit"] {
+    background: var(--primary);
+
+    border: 1px solid var(--primary);
+
+    color: var(--white);
+
+    box-shadow: 0 6px 14px rgba(7, 136, 148, 0.16);
+}
+
+#listingForm button[type="submit"]:hover {
+    background: var(--primary-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 8px 18px rgba(7, 136, 148, 0.2);
+}
+
+#listingForm button[type="submit"]:disabled {
+    opacity: 0.65;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+/* Cancel */
+
+#listingForm .cancel-btn {
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    color: var(--text);
+}
+
+#listingForm .cancel-btn:hover {
+    background: #f5f8fc;
+
+    border-color: #bdcadb;
+}
+
+/* Focus accessibility */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(7, 136, 148, 0.25);
+
+    outline-offset: 3px;
+}
+
+/* Responsive layout */
+
+@media (max-width: 700px) {
+    body {
+        padding: 16px 12px 35px;
+    }
+
+    .form-section {
+        margin: 12px auto;
+
+        padding: 23px 18px;
+
+        border-radius: 18px;
+    }
+
+    #listingForm {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+    #listingForm h3,
+    #listingForm .image-preview,
+    #listingForm input[type="file"],
+    #listingForm textarea,
+    #charCount {
+        grid-column: 1;
+    }
+
+    .page-title {
+        font-size: 28px;
+    }
+
+    .image-preview {
+        max-width: 100%;
+    }
+
+    #listingForm button {
+        width: 100%;
+    }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}
+
+/* ==========================================
+   NESTNOTES EDIT LISTING — THEME POLISH
+========================================== */
+
+/* Theme toggle button */
+.theme-toggle {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 2000;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 48px;
+    padding: 12px 18px;
+
+    background: #203747;
+    color: #ffffff;
+
+    border: 1px solid #3b5669;
+    border-radius: 12px;
+
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+
+    box-shadow: 0 8px 24px rgba(15, 35, 55, 0.15);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+    background: #0b8995;
+    transform: translateY(-2px);
+}
+
+.theme-toggle:focus-visible {
+    outline: 3px solid #36c5d0;
+    outline-offset: 3px;
+}
+
+/* Dark mode page */
+html[data-theme="dark"] body {
+    background: #101923;
+    color: #e6edf7;
+}
+
+html[data-theme="dark"] .edit-listing-container,
+html[data-theme="dark"] .edit-listing-card,
+html[data-theme="dark"] .edit-form-card {
+    background: #192735;
+    color: #e6edf7;
+    border-color: #304254;
+}
+
+/* Headings and labels */
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] label {
+    color: #e6edf7;
+}
+
+/* Inputs and text areas */
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+    background: #142230;
+    color: #e6edf7;
+    border-color: #35495d;
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+    color: #9aabc0;
+}
+
+html[data-theme="dark"] input:focus,
+html[data-theme="dark"] select:focus,
+html[data-theme="dark"] textarea:focus {
+    border-color: #22c1cc;
+    outline-color: #22c1cc;
+}
+
+/* Image preview */
+html[data-theme="dark"] .current-image,
+html[data-theme="dark"] .image-preview,
+html[data-theme="dark"] .upload-area {
+    background: #142230;
+    border-color: #35495d;
+}
+
+/* Secondary buttons */
+html[data-theme="dark"] .back-button,
+html[data-theme="dark"] .cancel-button {
+    background: #223344;
+    color: #e6edf7;
+    border-color: #405368;
+}
+
+/* Dividers */
+html[data-theme="dark"] hr,
+html[data-theme="dark"] .form-divider {
+    border-color: #304254;
+}
+
+/* Mobile positioning */
+@media (max-width: 600px) {
+    .theme-toggle {
+        right: 14px;
+        bottom: 14px;
+        min-height: 44px;
+        padding: 10px 14px;
+    }
+}
+
+/* ==========================================
+   EDIT LISTING — DARK MODE VISIBILITY FIX
+========================================== */
+
+html[data-theme="dark"] body {
+    background-color: #101923 !important;
+    color: #e6edf7;
+}
+
+/* Main form card */
+html[data-theme="dark"] .edit-listing-container,
+html[data-theme="dark"] .edit-listing-card,
+html[data-theme="dark"] .edit-form-card,
+html[data-theme="dark"] form {
+    background-color: #192735 !important;
+    color: #e6edf7 !important;
+    border-color: #304254;
+}
+
+/* Main heading and section headings */
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] label {
+    color: #e6edf7 !important;
+}
+
+/* Text inside the form */
+html[data-theme="dark"] p,
+html[data-theme="dark"] small,
+html[data-theme="dark"] .form-description {
+    color: #b6c5d8;
+}
+
+/* Form fields */
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+    background-color: #142230 !important;
+    color: #e6edf7 !important;
+    border-color: #35495d !important;
+}
+
+/* Placeholder text */
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+    color: #9aabc0 !important;
+}
+
+/* Dividers */
+html[data-theme="dark"] hr {
+    border-color: #304254;
+}
+
+/* Back and cancel buttons */
+html[data-theme="dark"] .back-button,
+html[data-theme="dark"] .cancel-button {
+    background-color: #223344;
+    color: #e6edf7;
+    border-color: #405368;
+}
+
+/* ==========================================
+   NESTNOTES — EDIT LISTING DARK MODE FIX
+========================================== */
+
+/* Page background */
+html[data-theme="dark"] body {
+    background: #101923 !important;
+    color: #e6edf7 !important;
+}
+
+/* Main form container */
+html[data-theme="dark"] .form-section {
+    background: #192735 !important;
+    color: #e6edf7 !important;
+    border: 1px solid #304254;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+/* Page heading */
+html[data-theme="dark"] .page-title {
+    color: #e6edf7 !important;
+}
+
+/* Form labels and section headings */
+html[data-theme="dark"] #listingForm label,
+html[data-theme="dark"] #listingForm h3 {
+    color: #e6edf7 !important;
+}
+
+/* Form fields */
+html[data-theme="dark"] #listingForm input:not([type="file"]),
+html[data-theme="dark"] #listingForm select,
+html[data-theme="dark"] #listingForm textarea {
+    background: #142230 !important;
+    color: #e6edf7 !important;
+    border: 1px solid #35495d !important;
+}
+
+/* Placeholder text */
+html[data-theme="dark"] #listingForm input::placeholder,
+html[data-theme="dark"] #listingForm textarea::placeholder {
+    color: #9aabc0 !important;
+}
+
+/* File upload */
+html[data-theme="dark"] #listingForm input[type="file"] {
+    background: #142230 !important;
+    color: #e6edf7 !important;
+    border: 1px solid #35495d !important;
+}
+
+/* Character counter */
+html[data-theme="dark"] #charCount {
+    color: #a8b8cc !important;
+}
+
+/* Back button */
+html[data-theme="dark"] .back-btn {
+    background: #223344;
+    color: #e6edf7;
+    border: 1px solid #405368;
+}
+
+/* Cancel button */
+html[data-theme="dark"] .cancel-btn {
+    background: #223344;
+    color: #e6edf7;
+    border: 1px solid #405368;
+}
+
+/* Edit Listing toggle */
+html[data-theme="dark"] .toggle-btn {
+    background: #1b3a46;
+    color: #b8f5f3;
+    border: 1px solid #315667;
+}
+
+/* Submit button */
+html[data-theme="dark"] #listingForm button[type="submit"] {
+    background: #078b96;
+    color: #ffffff;
+    border: none;
+}
+
+/* Buttons hover */
+html[data-theme="dark"] #listingForm button:hover,
+html[data-theme="dark"] .back-btn:hover,
+html[data-theme="dark"] .toggle-btn:hover {
+    filter: brightness(1.12);
+}
+
+/* Image preview */
+html[data-theme="dark"] .image-preview {
+    border: 1px solid #35495d;
+}
+
+/* Smooth transitions */
+html[data-theme="dark"] .form-section,
+html[data-theme="dark"] #listingForm input,
+html[data-theme="dark"] #listingForm select,
+html[data-theme="dark"] #listingForm textarea {
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}

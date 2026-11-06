@@ -1,27 +1,505 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NestNotes</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<header>
-    <h1>NestNotes Flat Sharing</h1>
-</header>
+    <meta
+      name="description"
+      content="Find affordable flats, PGs, shared rooms and roommates in Bengaluru with NestNotes Flat Sharing."
+    />
 
-<nav>
-    <a href="#">Home</a>
-    <a href="#">Listings</a>
-    <a href="#">Login</a>
-</nav>
+    <meta name="theme-color" content="#087f8c" />
 
-<main>
-    <h2>Find Your Perfect Flatmate</h2>
-</main>
+    <title>NestNotes | Find Your Perfect Flat</title>
 
-<script src="script.js"></script>
-</body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+    <nav class="navbar">
+      <!-- Logo -->
+      <a href="index.html" class="logo" aria-label="NestNotes home">
+        <span aria-hidden="true">🏠</span>
+        <span>NestNotes</span>
+      </a>
+
+      <div class="mobile-nav-actions">
+        <!-- Notifications: mobile only -->
+        <a
+          href="notifications.html"
+          class="mobile-notification-btn"
+          id="mobileNotificationBtn"
+          aria-label="Notifications"
+          title="Notifications"
+        >
+          <span aria-hidden="true">🔔</span>
+          <span
+            class="mobile-notification-badge"
+            id="mobileNotificationBadge"
+            hidden
+            >0</span
+          >
+        </a>
+
+        <!-- Hamburger -->
+        <button
+          type="button"
+          class="mobile-menu-toggle"
+          id="mobileMenuToggle"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="navLinks"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" class="active">Home</a>
+
+        <a href="#listingContainer">Listings</a>
+
+        <a href="#features">About</a>
+
+        <a href="inbox.html" id="ownerInboxLink">
+         Owner Inbox
+        <span id="unreadMessageBadge" class="unread-badge" hidden>0</span>
+        </a>
+
+        <a href="favorites.html" id="favoritesLink">Favorites</a>
+
+        <a href="notifications.html" id="notificationsLink" aria-label="Notifications">
+          🔔 Notifications
+          <span id="unreadNotificationBadge" class="unread-badge" hidden>0</span>
+        </a>
+
+        <a href="my-listings.html" id="myListingsLink">My Listings</a>
+
+        <a href="dashboard.html" id="dashboardLink">Dashboard</a>
+
+        <a href="admin.html" id="adminLink">Admin</a>
+
+        <a href="login.html" class="nav-login">Login</a>
+
+        <a href="register.html" class="nav-signup">Sign Up</a>
+
+        <button
+          type="button"
+          id="logoutBtn"
+          class="nav-logout"
+          onclick="logout()"
+        >
+          Logout
+        </button>
+      </div>
+    </nav>
+
+    <main>
+      <!-- =========================
+             HERO SECTION
+        ========================== -->
+      <section class="hero-banner">
+        <div class="hero-content">
+          <span class="hero-eyebrow"> YOUR NEXT CHAPTER STARTS HERE </span>
+
+          <h1>
+            Find Your Perfect Flatmate
+            <span class="hero-highlight">in Bengaluru</span>
+          </h1>
+
+          <p>
+            Discover affordable flats, PGs and shared rooms. Connect with people
+            and find a place that feels like home.
+          </p>
+
+          <!-- Search area -->
+          <div class="hero-search">
+            <label class="visually-hidden" for="heroSearch">
+              Search by location or property
+            </label>
+
+            <input
+              type="text"
+              id="heroSearch"
+              placeholder="Search by location, area or keyword..."
+              autocomplete="off"
+            />
+
+            <button type="button" id="heroSearchBtn" class="hero-search-btn">
+              🔎 Search
+            </button>
+          </div>
+
+<div class="hero-features">
+
+    <div class="hero-feature">
+        <div class="hero-feature-icon">🏡</div>
+        <div class="hero-feature-content">
+            <strong>Find Your Space</strong>
+            <span>Flats, PGs & shared rooms</span>
+        </div>
+    </div>
+
+    <div class="hero-feature">
+        <div class="hero-feature-icon">💰</div>
+        <div class="hero-feature-content">
+            <strong>Fits Your Budget</strong>
+            <span>Find a place within your budget</span>
+        </div>
+    </div>
+
+    <div class="hero-feature">
+        <div class="hero-feature-icon">🤝</div>
+        <div class="hero-feature-content">
+            <strong>Meet Your Flatmates</strong>
+            <span>Connect with owners and people</span>
+        </div>
+    </div>
+
+</div>
+
+      </section>
+
+      <!-- =========================
+             QUICK INTRODUCTION
+        ========================== -->
+      <section class="intro-section">
+        <div class="intro-copy">
+          <span class="section-eyebrow">WELCOME TO NESTNOTES</span>
+
+          <h2>Make finding a flat feel effortless.</h2>
+
+          <p>
+            Whether you're looking for a private room, a PG or a place to share
+            with flatmates, NestNotes helps you explore your options in one
+            place.
+          </p>
+        </div>
+
+        <a href="#listingContainer" class="intro-link">
+          Explore available listings <span aria-hidden="true">→</span>
+        </a>
+      </section>
+
+      <!-- =========================
+             PLATFORM STATISTICS
+        ========================== -->
+      <section class="stats-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-eyebrow">NESTNOTES AT A GLANCE</span>
+            <h2 class="section-title">A better way to find your space</h2>
+          </div>
+        </div>
+
+        <div class="stats-container">
+          <div class="stat-card">
+            <div class="stat-icon">⌂</div>
+            <h3 id="totalListings">0</h3>
+            <p>Total Listings</p>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">₹</div>
+            <h3 id="averageRent">₹0</h3>
+            <p>Average Rent</p>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">↗</div>
+            <h3 id="highestRent">₹0</h3>
+            <p>Highest Rent</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+             ADD LISTING FORM
+        ========================== -->
+      <section class="form-section" id="addListingSection">
+        <div class="add-listing-banner">
+          <div>
+            <span class="section-eyebrow">HAVE A SPACE TO SHARE?</span>
+
+            <h2>Find someone who will love your space.</h2>
+
+            <p>Create a listing and help someone discover their next home.</p>
+          </div>
+
+          <button
+            type="button"
+            id="toggleFormBtn"
+            class="toggle-btn"
+            aria-controls="formContainer"
+          >
+            + Add New Listing
+          </button>
+        </div>
+
+        <div id="formContainer">
+          <form id="listingForm">
+            <input
+              type="text"
+              id="title"
+              placeholder="Flat or property title"
+              aria-label="Flat or property title"
+              required
+            />
+
+            <input
+              type="number"
+              id="rent"
+              placeholder="Monthly rent in ₹"
+              aria-label="Monthly rent"
+              min="0"
+              required
+            />
+
+            <input
+              type="text"
+              id="location"
+              placeholder="Location in Bengaluru"
+              aria-label="Property location"
+              required
+            />
+
+            <select id="category" aria-label="Property category" required>
+              <option value="">Select Category</option>
+
+              <option value="Apartment">Apartment</option>
+
+              <option value="PG">PG</option>
+
+              <option value="Single Room">Single Room</option>
+
+              <option value="Shared Room">Shared Room</option>
+
+              <option value="Villa">Villa</option>
+            </select>
+
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              aria-label="Upload property image"
+              required
+            />
+
+            <textarea
+              id="description"
+              placeholder="Describe the property, amenities and nearby places..."
+              aria-label="Property description"
+              required
+            ></textarea>
+
+            <button type="submit">Publish Listing</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- =========================
+             WHY NESTNOTES
+        ========================== -->
+      <section class="features-section" id="features">
+        <div class="section-heading">
+          <div>
+            <span class="section-eyebrow">WHY NESTNOTES?</span>
+
+            <h2 class="section-title">Your search, made simpler.</h2>
+          </div>
+
+          <p class="section-description">
+            Everything you need to take the next step toward a place you'll
+            love.
+          </p>
+        </div>
+
+        <div class="features">
+          <article class="feature-card">
+            <div class="feature-icon">🏠</div>
+
+            <h3>Explore More Spaces</h3>
+
+            <p>
+              Discover apartments, PGs, single rooms and shared accommodation in
+              one place.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">₹</div>
+
+            <h3>Compare Your Options</h3>
+
+            <p>
+              Compare monthly rents and explore spaces that suit your budget.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">💬</div>
+
+            <h3>Connect With People</h3>
+
+            <p>
+              Express interest in listings and use the available messaging
+              features to connect.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- =========================
+             PROPERTY LISTINGS
+        ========================== -->
+      <section class="listings-section">
+        <div class="section-heading listings-heading">
+          <div>
+            <span class="section-eyebrow">EXPLORE BENGALURU</span>
+
+            <h2 class="section-title">Find a place to call home</h2>
+
+            <p class="section-description">
+              Browse available spaces and discover your next home.
+            </p>
+          </div>
+        </div>
+
+        <!-- Search and filtering -->
+        <div class="filter-panel">
+          <div class="filter-panel-heading">
+            <h3>Find your space</h3>
+            <p>Search and sort the available listings.</p>
+          </div>
+
+          <div class="filter-bar">
+            <div class="filter-input-wrap">
+              <label for="search">Search listings</label>
+
+              <input
+                type="text"
+                id="search"
+                placeholder="Try Koramangala, PG, apartment..."
+              />
+            </div>
+
+            <div class="filter-input-wrap">
+              <label for="categoryFilter">Property type</label>
+
+              <select id="categoryFilter">
+                <option value="All">All Categories</option>
+
+                <option value="Apartment">Apartment</option>
+
+                <option value="PG">PG</option>
+
+                <option value="Single Room">Single Room</option>
+
+                <option value="Shared Room">Shared Room</option>
+
+                <option value="Villa">Villa</option>
+              </select>
+            </div>
+
+            <div class="filter-input-wrap">
+              <label for="sortRent">Sort by rent</label>
+
+              <select id="sortRent">
+                <option value="">Recommended</option>
+
+                <option value="low">Rent: Low to High</option>
+
+                <option value="high">Rent: High to Low</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Keep this ID for the existing listing JavaScript -->
+        <div class="listing-results-heading">
+          <h2 id="listingCount">Listings</h2>
+        </div>
+
+        <!-- Existing JavaScript renders listing cards here -->
+        <div id="listingContainer"></div>
+
+        <!-- Existing loading indicator -->
+        <div id="loader" class="spinner" aria-label="Loading listings"></div>
+      </section>
+    </main>
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo"> 🏠 NestNotes </a>
+
+          <p>Helping you discover spaces and find your place in Bengaluru.</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+
+          <a href="#listingContainer">Listings</a>
+
+          <a href="favorites.html" id="favoritesLink">Favorites</a>
+
+          <a href="inbox.html" id="ownerInboxLink">Messages</a>
+
+          <a href="login.html">Login</a>
+        </div>
+
+        <p class="footer-copyright">
+          © 2026 NestNotes Flat Sharing. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Preserve the existing JavaScript -->
+    <script src="api-config.js"></script>
+    <script src="script.js"></script>
+    <script src="theme.js"></script>
+    <script src="unread-badge.js"></script>
+
+    <!-- Hero search uses the existing listing search field -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const heroSearch = document.getElementById("heroSearch");
+        const heroSearchBtn = document.getElementById("heroSearchBtn");
+        const listingSearch = document.getElementById("search");
+
+        function performHeroSearch() {
+          if (!heroSearch || !listingSearch) {
+            return;
+          }
+
+          listingSearch.value = heroSearch.value;
+
+          listingSearch.dispatchEvent(new Event("input", { bubbles: true }));
+
+          document
+            .getElementById("listingContainer")
+            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        heroSearchBtn?.addEventListener("click", performHeroSearch);
+
+        heroSearch?.addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            performHeroSearch();
+          }
+        });
+      });
+    </script>
+  </body>
 </html>

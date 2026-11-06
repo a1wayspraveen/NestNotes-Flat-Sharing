@@ -1,0 +1,1132 @@
+/* ==========================================
+   NESTNOTES — FAVORITES PAGE
+   Modern SaaS Design
+========================================== */
+
+.favorites-page {
+    --fav-primary: #087f8c;
+    --fav-primary-dark: #066873;
+    --fav-primary-light: #e8f7f8;
+
+    --fav-text: #172b4d;
+    --fav-muted: #718096;
+    --fav-border: #e3eaf2;
+    --fav-background: #f5f8fc;
+
+    margin: 0;
+
+    background: var(--fav-background);
+    color: var(--fav-text);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+.favorites-page * {
+    box-sizing: border-box;
+}
+
+.favorites-page a {
+    text-decoration: none;
+}
+
+
+/* =========================================
+   FAVORITES NAVIGATION
+========================================= */
+
+.favorites-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    min-height: 76px;
+    padding: 12px max(24px, calc((100% - 1200px) / 2));
+
+    background: rgba(255, 255, 255, 0.97);
+    border-bottom: 1px solid #e2eaf3;
+    box-shadow: 0 4px 18px rgba(25, 47, 82, 0.04);
+
+    backdrop-filter: blur(12px);
+}
+
+.favorites-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #192f52;
+    font-size: 1.35rem;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.favorites-brand-icon {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    place-items: center;
+
+    border-radius: 14px;
+    background: #e6f7f7;
+    color: #078b99;
+
+    font-size: 1.5rem;
+}
+
+.favorites-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.favorites-nav-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 11px 13px;
+    border-radius: 10px;
+
+    color: #536781;
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: background 0.2s, color 0.2s;
+}
+
+.favorites-nav-links a:hover {
+    background: #edf8f8;
+    color: #078b99;
+}
+
+.favorites-nav-links .favorites-nav-cta {
+    padding: 13px 17px;
+
+    background: #078b99;
+    color: #ffffff;
+}
+
+.favorites-nav-links .favorites-nav-cta:hover {
+    background: #066f7a;
+    color: #ffffff;
+}
+
+/* Mobile controls are hidden on desktop */
+
+.favorites-nav-actions {
+    display: none;
+}
+
+.favorites-mobile-notification,
+.favorites-menu-toggle {
+    display: none;
+}
+
+/* =========================================
+   TABLET AND MOBILE NAVIGATION
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .favorites-navbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+
+        padding: 12px 18px;
+    }
+
+    .favorites-brand {
+        min-width: 0;
+        font-size: 1.2rem;
+    }
+
+    .favorites-brand-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .favorites-nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Notification shortcut */
+
+    .favorites-mobile-notification {
+        position: relative;
+
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+
+        border: 1px solid #dcebef;
+        border-radius: 13px;
+        background: #eaf8f8;
+
+        font-size: 1.2rem;
+        text-decoration: none;
+    }
+
+    .favorites-notification-dot {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+
+        display: none;
+        width: 8px;
+        height: 8px;
+
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        background: #ef4444;
+    }
+
+    /* Enable this class when unread notifications are detected */
+
+    .favorites-mobile-notification.has-unread
+    .favorites-notification-dot {
+        display: block;
+    }
+
+    /* Hamburger */
+
+    .favorites-menu-toggle {
+        display: flex;
+        width: 44px;
+        height: 44px;
+
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+
+        border: 1px solid #dcebef;
+        border-radius: 13px;
+        background: #eaf8f8;
+
+        cursor: pointer;
+    }
+
+    .favorites-menu-toggle span {
+        display: block;
+        width: 20px;
+        height: 2px;
+
+        border-radius: 3px;
+        background: #087f8c;
+
+        transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .favorites-menu-toggle[aria-expanded="true"] span:first-child {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .favorites-menu-toggle[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .favorites-menu-toggle[aria-expanded="true"] span:last-child {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Collapsible links */
+
+    .favorites-nav-links {
+        grid-column: 1 / -1;
+
+        display: none;
+        width: 100%;
+
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+
+        padding-top: 10px;
+        border-top: 1px solid #e7eef5;
+    }
+
+    .favorites-nav-links.is-open {
+        display: flex;
+    }
+
+    .favorites-nav-links a {
+        display: flex;
+        width: 100%;
+        justify-content: flex-start;
+
+        padding: 13px 14px;
+        border-radius: 10px;
+
+        font-size: 0.94rem;
+    }
+
+    .favorites-nav-links .favorites-nav-cta {
+        justify-content: center;
+        margin-top: 4px;
+    }
+}
+
+/* Small screens */
+
+@media (max-width: 600px) {
+
+    .favorites-navbar {
+        padding: 10px 14px;
+    }
+
+    .favorites-brand {
+        font-size: 1.12rem;
+    }
+
+    .favorites-brand-icon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .favorites-nav-actions {
+        gap: 8px;
+    }
+
+    .favorites-mobile-notification,
+    .favorites-menu-toggle {
+        width: 42px;
+        height: 42px;
+    }
+}
+
+/* ==========================================
+   MAIN CONTAINER
+========================================== */
+
+.favorites-main {
+    width: min(1160px, 92%);
+    margin: 0 auto;
+    padding-top: 44px;
+}
+
+
+/* ==========================================
+   HERO
+========================================== */
+
+.favorites-hero {
+    min-height: 245px;
+    padding: 38px 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+
+    overflow: hidden;
+
+    border: 1px solid #d8eeee;
+    border-radius: 23px;
+
+    background:
+        radial-gradient(
+            circle at 88% 15%,
+            rgba(90, 214, 197, 0.22),
+            transparent 30%
+        ),
+        linear-gradient(
+            120deg,
+            #ffffff 0%,
+            #eefafb 100%
+        );
+
+    box-shadow: 0 10px 30px rgba(29, 55, 90, 0.035);
+}
+
+.favorites-heading-content {
+    max-width: 650px;
+}
+
+.favorites-eyebrow {
+    display: inline-block;
+    margin-bottom: 12px;
+
+    color: var(--fav-primary);
+
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 1.7px;
+}
+
+.favorites-hero h1 {
+    margin: 0 0 13px;
+
+    color: var(--fav-text);
+
+    font-size: clamp(32px, 4vw, 47px);
+    font-weight: 850;
+    letter-spacing: -1.6px;
+    line-height: 1.15;
+}
+
+.favorites-hero h1 span {
+    color: var(--fav-primary);
+}
+
+.favorites-hero p {
+    max-width: 520px;
+    margin: 0;
+
+    color: var(--fav-muted);
+
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.favorites-hero-icon {
+    width: 135px;
+    height: 135px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid rgba(8, 127, 140, 0.1);
+    border-radius: 35px;
+
+    background: rgba(255, 255, 255, 0.75);
+
+    transform: rotate(5deg);
+}
+
+.favorites-hero-icon span {
+    color: #e66c91;
+    font-size: 75px;
+    line-height: 1;
+}
+
+
+/* ==========================================
+   SUMMARY
+========================================== */
+
+.favorites-summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    margin: 34px 0 22px;
+    padding: 23px 25px;
+
+    border: 1px solid var(--fav-border);
+    border-radius: 17px;
+
+    background: #ffffff;
+    box-shadow: 0 8px 25px rgba(29, 55, 90, 0.025);
+}
+
+.favorites-summary-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 14px;
+
+    background: #fff0f4;
+    color: #df638b;
+
+    font-size: 23px;
+}
+
+.favorites-summary h2 {
+    margin: 0 0 6px;
+
+    color: var(--fav-text);
+
+    font-size: 19px;
+    font-weight: 850;
+    letter-spacing: -0.4px;
+}
+
+.favorites-summary p {
+    margin: 0;
+
+    color: var(--fav-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.favorites-browse-link {
+    margin-left: auto;
+
+    color: var(--fav-primary);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+/* ==========================================
+   FAVORITES OUTPUT
+========================================== */
+
+.favorites-results {
+    min-height: 100px;
+}
+
+/* Support common card layouts without changing JS */
+#favoriteContainer {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(min(100%, 320px), 380px)
+    );
+    align-items: start;
+    gap: 24px;
+}
+
+#favoriteContainer > * {
+    min-width: 0;
+}
+
+#favoriteContainer img {
+    max-width: 100%;
+}
+
+#favoriteContainer button {
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   BOTTOM CTA
+========================================== */
+
+.favorites-bottom-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+
+    margin-top: 45px;
+    padding: 30px 33px;
+
+    border: 1px solid #d6e8ed;
+    border-radius: 19px;
+
+    background: #edf8fa;
+}
+
+.favorites-bottom-cta h2 {
+    margin: 0 0 9px;
+
+    color: var(--fav-text);
+
+    font-size: 22px;
+    font-weight: 850;
+    letter-spacing: -0.6px;
+    line-height: 1.35;
+}
+
+.favorites-bottom-cta p {
+    margin: 0;
+
+    color: var(--fav-muted);
+
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.favorites-primary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    flex-shrink: 0;
+
+    min-height: 47px;
+    padding: 12px 18px;
+
+    border-radius: 11px;
+
+    background: var(--fav-primary);
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+.favorites-primary-btn:hover {
+    background: var(--fav-primary-dark);
+    transform: translateY(-1px);
+}
+
+.favorites-primary-btn span {
+    font-size: 18px;
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.favorites-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    margin-top: 35px;
+    padding: 25px 0;
+
+    border-top: 1px solid var(--fav-border);
+}
+
+.favorites-footer-brand {
+    color: var(--fav-text);
+
+    font-size: 15px;
+    font-weight: 850;
+}
+
+.favorites-footer p {
+    margin: 0;
+
+    color: var(--fav-muted);
+    font-size: 12px;
+}
+
+.favorites-footer > a:last-child {
+    color: var(--fav-primary);
+
+    font-size: 12px;
+    font-weight: 750;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 950px) {
+
+    .favorites-navbar {
+        padding: 16px 4%;
+
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .favorites-nav-links {
+        width: 100%;
+        gap: 15px 20px;
+    }
+
+    #favoriteContainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .favorites-hero {
+        padding: 32px;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .favorites-main {
+        padding-top: 27px;
+    }
+
+    .favorites-hero {
+        min-height: auto;
+        padding: 27px 23px;
+
+        align-items: flex-start;
+    }
+
+    .favorites-hero h1 {
+        font-size: 34px;
+    }
+
+    .favorites-hero-icon {
+        width: 70px;
+        height: 70px;
+
+        border-radius: 21px;
+    }
+
+    .favorites-hero-icon span {
+        font-size: 42px;
+    }
+
+    .favorites-summary {
+        align-items: flex-start;
+        flex-wrap: wrap;
+
+        padding: 19px;
+    }
+
+    .favorites-browse-link {
+        width: 100%;
+        margin: 5px 0 0;
+    }
+
+    #favoriteContainer {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .favorites-bottom-cta {
+        align-items: flex-start;
+        flex-direction: column;
+
+        padding: 24px;
+    }
+
+    .favorites-primary-btn {
+        width: 100%;
+    }
+
+    .favorites-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
+@media (max-width: 390px) {
+
+    .favorites-hero {
+        padding: 23px 18px;
+    }
+
+    .favorites-hero-icon {
+        width: 53px;
+        height: 53px;
+        border-radius: 15px;
+    }
+
+    .favorites-hero-icon span {
+        font-size: 32px;
+    }
+
+    .favorites-hero h1 {
+        font-size: 29px;
+    }
+
+    .favorites-summary h2 {
+        font-size: 17px;
+    }
+}
+
+/* ==========================================
+   NESTNOTES FAVORITES — DARK MODE
+========================================== */
+
+/* Main page */
+html[data-theme="dark"] body.favorites-page {
+    background: #101923 !important;
+    color: #e6edf7;
+}
+
+/* Hero section */
+html[data-theme="dark"] .favorites-hero {
+    background: linear-gradient(
+        120deg,
+        #192735 0%,
+        #193744 100%
+    ) !important;
+
+    border: 1px solid #304254;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.16);
+}
+
+/* Hero heading */
+html[data-theme="dark"] .favorites-hero h1 {
+    color: #e6edf7 !important;
+}
+
+html[data-theme="dark"] .favorites-hero h1 span {
+    color: #35d0d0 !important;
+}
+
+/* Hero description */
+html[data-theme="dark"] .favorites-hero p {
+    color: #b8c8dc !important;
+}
+
+/* Eyebrow labels */
+html[data-theme="dark"] .favorites-eyebrow {
+    color: #35d0d0 !important;
+}
+
+/* Hero heart icon container */
+html[data-theme="dark"] .favorites-hero-icon {
+    background: #223b4b !important;
+    border: 1px solid #355366;
+}
+
+html[data-theme="dark"] .favorites-hero-icon span {
+    color: #ff7298 !important;
+}
+
+/* Favorites summary card */
+html[data-theme="dark"] .favorites-summary {
+    background: #192735 !important;
+    border: 1px solid #304254;
+    color: #e6edf7 !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Summary heading and description */
+html[data-theme="dark"] .favorites-summary h2 {
+    color: #e6edf7 !important;
+}
+
+html[data-theme="dark"] .favorites-summary p {
+    color: #b8c8dc !important;
+}
+
+/* Summary heart icon */
+html[data-theme="dark"] .favorites-summary-icon {
+    background: #3b2435 !important;
+    color: #ff7298 !important;
+}
+
+/* Discover more link */
+html[data-theme="dark"] .favorites-browse-link {
+    color: #45d5dc !important;
+}
+
+/* Empty favorites message */
+html[data-theme="dark"] #favoriteContainer {
+    color: #e6edf7;
+}
+
+html[data-theme="dark"] #favoriteContainer h2,
+html[data-theme="dark"] #favoriteContainer h3,
+html[data-theme="dark"] #favoriteContainer p {
+    color: #e6edf7;
+}
+
+/* Bottom CTA section */
+html[data-theme="dark"] .favorites-bottom-cta {
+    background: linear-gradient(
+        120deg,
+        #192735 0%,
+        #193744 100%
+    ) !important;
+
+    border: 1px solid #304254;
+    color: #e6edf7 !important;
+}
+
+/* CTA heading */
+html[data-theme="dark"] .favorites-bottom-cta h2 {
+    color: #e6edf7 !important;
+}
+
+/* CTA description */
+html[data-theme="dark"] .favorites-bottom-cta p {
+    color: #b8c8dc !important;
+}
+
+/* Explore button */
+html[data-theme="dark"] .favorites-primary-btn {
+    background: #078b96 !important;
+    color: #ffffff !important;
+    border: 1px solid #078b96;
+}
+
+/* Footer */
+html[data-theme="dark"] .favorites-footer {
+    background: #162330 !important;
+    border-top: 1px solid #304254;
+    color: #b8c8dc !important;
+}
+
+/* Footer links and brand */
+html[data-theme="dark"] .favorites-footer a {
+    color: #45d5dc !important;
+}
+
+/* Listing cards rendered by JavaScript */
+html[data-theme="dark"] #favoriteContainer > *,
+html[data-theme="dark"] #favoriteContainer .listing-card,
+html[data-theme="dark"] #favoriteContainer .property-card {
+    background-color: #192735;
+    color: #e6edf7;
+    border-color: #304254;
+}
+
+/* Listing card text */
+html[data-theme="dark"] #favoriteContainer h2,
+html[data-theme="dark"] #favoriteContainer h3,
+html[data-theme="dark"] #favoriteContainer p,
+html[data-theme="dark"] #favoriteContainer span {
+    color: #d5e0ef;
+}
+
+/* Links and buttons inside listing cards */
+html[data-theme="dark"] #favoriteContainer a {
+    color: #45d5dc;
+}
+
+/* Smooth transitions */
+html[data-theme="dark"] .favorites-hero,
+html[data-theme="dark"] .favorites-summary,
+html[data-theme="dark"] .favorites-bottom-cta,
+html[data-theme="dark"] .favorites-footer {
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+/* Fix empty-state background in dark mode */
+html[data-theme="dark"] #favoriteContainer > * {
+    background: transparent;
+    box-shadow: none;
+}
+
+html[data-theme="dark"] #favoriteContainer h2 {
+    display: block;
+    width: fit-content;
+    background: transparent !important;
+    color: #e6edf7 !important;
+}
+
+/* =========================================
+   FAVORITES NAVBAR — DARK MODE
+========================================= */
+
+html[data-theme="dark"] .favorites-navbar {
+    background: #152331 !important;
+    border-bottom: 1px solid #304457;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+}
+
+html[data-theme="dark"] .favorites-brand {
+    color: #e6edf7 !important;
+}
+
+html[data-theme="dark"] .favorites-nav-links a {
+    color: #d4deeb !important;
+}
+
+html[data-theme="dark"] .favorites-nav-links a:hover {
+    color: #35d0d0 !important;
+}
+
+html[data-theme="dark"] .favorites-nav-links .favorites-nav-cta {
+    background: #078995 !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .favorites-nav-links .favorites-nav-cta:hover {
+    background: #0aa3af !important;
+}
+
+html[data-theme="dark"] .favorites-menu-toggle {
+    background: #203647;
+    border-color: #385064;
+}
+
+html[data-theme="dark"] .favorites-menu-toggle span {
+    background: #e6edf7;
+}
+
+html[data-theme="dark"] .favorites-mobile-notification {
+    color: #e6edf7;
+}
+
+/* ========================================
+   FAVORITES PAGE FOOTER FIX
+======================================== */
+
+.favorites-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px 0;
+    margin-top: 40px;
+
+    border-top: 1px solid #304458;
+}
+
+.favorites-footer-brand {
+    flex-shrink: 0;
+    font-size: 17px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.favorites-footer p {
+    margin: 0;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.favorites-footer > a:last-child {
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* ========================================
+   MOBILE FOOTER
+======================================== */
+
+@media (max-width: 600px) {
+
+    .favorites-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 12px;
+
+        padding: 22px 0;
+        margin-top: 28px;
+    }
+
+    .favorites-footer-brand {
+        font-size: 16px;
+    }
+
+    .favorites-footer p {
+        text-align: left;
+        font-size: 13px;
+    }
+
+    .favorites-footer > a:last-child {
+        margin-top: 2px;
+        font-size: 13px;
+    }
+}
+
+/* ==========================================
+   FAVORITES FOOTER — DEFINITIVE LAYOUT FIX
+========================================== */
+
+body.favorites-page .favorites-main > .favorites-footer {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    align-items: center !important;
+    justify-content: stretch !important;
+    gap: 16px !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+
+    margin: 40px 0 0 !important;
+    padding: 24px 0 !important;
+
+    border-top: 1px solid #304458;
+}
+
+body.favorites-page .favorites-main > .favorites-footer > .favorites-footer-brand {
+    justify-self: start !important;
+    margin: 0 !important;
+
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+body.favorites-page .favorites-main > .favorites-footer > p {
+    justify-self: center !important;
+    margin: 0 !important;
+
+    text-align: center !important;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+body.favorites-page .favorites-main > .favorites-footer > a:last-child {
+    justify-self: end !important;
+    margin: 0 !important;
+
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Mobile footer */
+@media (max-width: 600px) {
+    body.favorites-page .favorites-main > .favorites-footer {
+        grid-template-columns: minmax(0, 1fr) !important;
+        justify-items: start !important;
+        gap: 12px !important;
+
+        margin-top: 28px !important;
+        padding: 22px 0 !important;
+    }
+
+    body.favorites-page .favorites-main > .favorites-footer > .favorites-footer-brand,
+    body.favorites-page .favorites-main > .favorites-footer > p,
+    body.favorites-page .favorites-main > .favorites-footer > a:last-child {
+        justify-self: start !important;
+        text-align: left !important;
+        white-space: normal;
+    }
+}
+
+/* Rounded Favorites Footer */
+body.favorites-page .favorites-main > .favorites-footer {
+    border: 1px solid #304458 !important;
+    border-radius: 20px !important;
+
+    padding: 24px !important;
+    margin-top: 40px !important;
+
+    overflow: hidden;
+    background: #152536;
+    box-sizing: border-box;
+}
+
+/* Mobile spacing */
+@media (max-width: 600px) {
+    body.favorites-page .favorites-main > .favorites-footer {
+        padding: 20px !important;
+        margin-top: 28px !important;
+        border-radius: 18px !important;
+    }
+}
