@@ -1525,3 +1525,59 @@ body main.inbox-page {
         display: flex !important;
     }
 }
+
+/* =========================================
+   OWNER INBOX — HAMBURGER THEME FIX
+========================================= */
+
+/* Dark mode */
+html[data-theme="dark"] .inbox-menu-toggle {
+    background: #203448 !important;
+    border: 1px solid #3b5368 !important;
+    box-shadow: none !important;
+}
+
+html[data-theme="dark"] .inbox-menu-toggle span {
+    background: #36d6c5 !important;
+}
+
+html[data-theme="dark"] .inbox-nav-links {
+    background: #152536 !important;
+    border-color: #304458 !important;
+}
+
+html[data-theme="dark"] .inbox-nav-links a {
+    color: #e6edf7 !important;
+}
+
+html[data-theme="dark"] .inbox-nav-links a:hover,
+html[data-theme="dark"] .inbox-nav-links a.active {
+    background: #20394c !important;
+    color: #36d6c5 !important;
+}
+
+/* Light mode */
+html[data-theme="light"] .inbox-menu-toggle {
+    background: #eaf8f7 !important;
+    border: 1px solid #cce5e5 !important;
+    box-shadow: none !important;
+}
+
+html[data-theme="light"] .inbox-menu-toggle span {
+    background: #087f8c !important;
+}
+
+html[data-theme="light"] .inbox-nav-links {
+    background: #ffffff !important;
+    border-color: #dce6f0 !important;
+}
+
+html[data-theme="light"] .inbox-nav-links a {
+    color: #536781 !important;
+}
+
+html[data-theme="light"] .inbox-nav-links a:hover,
+html[data-theme="light"] .inbox-nav-links a.active {
+    background: #edf8f8 !important;
+    color: #078b99 !important;
+}

@@ -93,16 +93,27 @@
             </div>
 
             <div class="auth-field">
-              <label for="password"> Password </label>
+              <label for="password">Password</label>
 
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Enter your password"
-                autocomplete="current-password"
-                required
-              />
+              <div class="password-input-wrap">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                />
+
+                <button
+                  type="button"
+                  class="password-toggle"
+                  aria-label="Show password"
+                  aria-pressed="false"
+                >
+                  Show
+                </button>
+              </div>
             </div>
 
             <button type="submit" class="auth-btn" id="loginSubmitBtn">
@@ -138,6 +149,24 @@
 
     <!-- Existing login functionality preserved -->
     <script>
+      document.querySelectorAll(".password-toggle").forEach((button) => {
+        button.addEventListener("click", () => {
+          const input = button.parentElement.querySelector("input");
+
+          const isPassword = input.type === "password";
+
+          input.type = isPassword ? "text" : "password";
+
+          button.textContent = isPassword ? "Hide" : "Show";
+
+          button.setAttribute(
+            "aria-label",
+            isPassword ? "Hide password" : "Show password",
+          );
+
+          button.setAttribute("aria-pressed", String(isPassword));
+        });
+      });
       document
         .getElementById("loginForm")
         .addEventListener("submit", async function (event) {

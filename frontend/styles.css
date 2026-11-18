@@ -3969,3 +3969,48 @@ html[data-theme="dark"] input[type="file"]::file-selector-button:hover {
         display: none !important;
     }
 }
+
+/* =====================================
+   AUTH — SHOW / HIDE PASSWORD
+===================================== */
+
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-input-wrap input {
+  width: 100%;
+  padding-right: 75px !important;
+  box-sizing: border-box;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #087f8c;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.password-toggle:hover {
+  background: #eaf8f7;
+}
+
+html[data-theme="dark"] .password-toggle {
+  color: #61d9df;
+}
+
+html[data-theme="dark"] .password-toggle:hover {
+  background: #203647;
+}

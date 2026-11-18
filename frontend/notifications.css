@@ -1588,3 +1588,30 @@ html[data-theme="dark"] .mark-all-read-btn {
     background: #0eaaa9;
     color: #ffffff;
 }
+
+/* FIX: Notifications empty state readability in dark mode */
+
+html[data-theme="dark"] .notifications-page .notifications-list-card {
+    background: #152536 !important;
+    border-color: #304458 !important;
+}
+
+html[data-theme="dark"] .notifications-page #notificationsContainer .notification-state {
+    background: #1b2c3e !important;
+    border: 1px solid #304458;
+    border-radius: 14px;
+    color: #f1f5f9 !important;
+}
+
+html[data-theme="dark"] .notifications-page #notificationsContainer .notification-state h3 {
+    color: #f1f5f9 !important;
+}
+
+html[data-theme="dark"] .notifications-page #notificationsContainer .notification-state p {
+    color: #cbd5e1 !important;
+}
+
+html[data-theme="dark"] .notifications-page #notificationsContainer .notification-state-icon {
+    background: #24394d;
+    border-color: #304458;
+}

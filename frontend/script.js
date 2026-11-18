@@ -505,6 +505,10 @@ function updateNavigation() {
     }
   });
 
+  document.querySelectorAll(".footer-auth-link").forEach((element) => {
+    element.style.display = loggedIn ? "" : "none";
+  });
+
   document.querySelectorAll(".nav-login, .nav-signup").forEach((element) => {
     element.style.display = loggedIn ? "none" : "";
   });
