@@ -32,8 +32,8 @@ router.post("/upload", verifyToken, upload.single("image"), async (req, res) => 
                 withoutEnlargement: true
             })
             .webp({
-                quality: 82,
-                effort: 5
+                quality: 80,
+                effort: 3
             })
             .toFile(outputPath);
 
