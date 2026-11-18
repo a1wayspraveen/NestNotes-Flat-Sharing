@@ -1122,21 +1122,6 @@ th {
   }
 }
 @media (max-width: 768px) {
-  .navbar,
-  nav.navbar {
-    position: relative;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    padding: 14px 18px;
-  }
-  .logo {
-    width: 100%;
-  }
-  .nav-links {
-    width: 100%;
-    justify-content: flex-start;
-    gap: 10px 18px;
-  }
   .navbar a,
   .nav-links a {
     font-size: 0.9rem;
@@ -1380,26 +1365,6 @@ th {
     background: #066570;
 }
 
-/* Hero benefits */
-.hero-benefits {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 22px;
-}
-
-.hero-benefit {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 145px;
-    padding: 11px 13px;
-    border: 1px solid #ffffff38;
-    border-radius: 12px;
-    background: #ffffffed;
-    color: #182b3a;
-}
-
 .benefit-icon {
     display: grid;
     flex: 0 0 30px;
@@ -1410,20 +1375,6 @@ th {
     background: #e0f7f2;
     color: #087f8c;
     font-weight: 800;
-}
-
-.hero-benefit strong,
-.hero-benefit small {
-    display: block;
-}
-
-.hero-benefit strong {
-    font-size: 0.8rem;
-}
-
-.hero-benefit small {
-    color: #667788;
-    font-size: 0.7rem;
 }
 
 /* Intro section */
@@ -1709,53 +1660,13 @@ th {
     font-size: 0.85rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1050px) {
-    .navbar {
-        align-items: flex-start;
-    }
-
-    .navbar .nav-links {
-        gap: 10px 14px;
-    }
-
-    .hero-benefit {
-        min-width: 0;
-    }
-}
-
 @media (max-width: 768px) {
-    .navbar,
-    nav.navbar {
-        position: relative;
-        align-items: center;
-        gap: 14px;
-    }
-
-    .navbar > .logo {
-        width: 100%;
-    }
-
-    .navbar .nav-links {
-        justify-content: flex-start;
-        gap: 10px;
-    }
-
     .hero-search {
         align-items: stretch;
     }
 
     .hero-search-btn {
         padding-inline: 12px;
-    }
-
-    .hero-benefits {
-        display: grid;
-        grid-template-columns: 1fr;
-    }
-
-    .hero-benefit {
-        width: 100%;
     }
 
     .intro-section {
