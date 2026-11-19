@@ -2,7 +2,9 @@
 // API CONFIGURATION
 // =========================================
 
-const API_BASE_URL = window.NESTNOTES_API_BASE.replace(/\/api$/, "");
+const API_BASE_URL = window.NESTNOTES_API_BASE;
+const ADMIN_API = `${API_BASE_URL}/admin`;
+const LISTINGS_API = `${API_BASE_URL}/listings`;
 
 function getAuthHeaders() {
     const token = localStorage.getItem("token");
@@ -26,7 +28,7 @@ async function loadListings() {
             return;
         }
 
-        const response = await fetch(`${API_URL}/listings`, {
+        const response = await fetch(`${ADMIN_API}/listings`, {
             headers: getAuthHeaders()
         });
 
@@ -116,7 +118,7 @@ async function loadListings() {
 
 async function verifyListing(id) {
     try {
-        const response = await fetch(`${API_URL}/verify/${id}`, {
+        const response = await fetch(`${ADMIN_API}/verify/${id}`, {
             method: "PUT",
             headers: getAuthHeaders()
         });
@@ -140,7 +142,7 @@ async function verifyListing(id) {
 
 async function unverifyListing(id) {
     try {
-        const response = await fetch(`${API_URL}/unverify/${id}`, {
+        const response = await fetch(`${ADMIN_API}/unverify/${id}`, {
             method: "PUT",
             headers: getAuthHeaders()
         });
@@ -195,7 +197,7 @@ async function deleteListing(id) {
 
 async function verifyUser(id) {
     try {
-        const response = await fetch(`${API_URL}/users/verify/${id}`, {
+        const response = await fetch(`${ADMIN_API}/users/verify/${id}`, {
             method: "PUT",
             headers: getAuthHeaders()
         });
@@ -295,7 +297,7 @@ async function loadUsers() {
     `;
 
     try {
-        const response = await fetch(`${API_URL}/users`, {
+        const response = await fetch(`${ADMIN_API}/users`, {
             method: "GET",
             headers: getAuthHeaders()
         });

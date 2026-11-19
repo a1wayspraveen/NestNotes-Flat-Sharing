@@ -437,7 +437,7 @@ router.delete("/:id/favorite", verifyToken, (req, res) => {
   );
 });
 
-router.get("/dashboard/stats/:userId", requireAdmin, (req, res) => {
+router.get("/dashboard/stats/:userId", verifyToken, requireAdmin, (req, res) => {
   const userId = req.params.userId;
 
   db.get(
@@ -499,7 +499,7 @@ router.get("/dashboard/stats/:userId", requireAdmin, (req, res) => {
   );
 });
 
-router.put("/:id/verify", requireAdmin, (req, res) => {
+router.put("/:id/verify", verifyToken, requireAdmin, (req, res) => {
   db.run(
     `
         UPDATE listings
@@ -519,7 +519,7 @@ router.put("/:id/verify", requireAdmin, (req, res) => {
   );
 });
 
-router.put("/:id/unverify", requireAdmin, (req, res) => {
+router.put("/:id/unverify", verifyToken, requireAdmin, (req, res) => {
   db.run(
     `
         UPDATE listings
