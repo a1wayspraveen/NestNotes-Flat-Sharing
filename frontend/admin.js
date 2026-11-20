@@ -164,30 +164,34 @@ async function unverifyListing(id) {
 // DELETE LISTING
 // =========================================
 
+// =========================================
+// DELETE LISTING — ADMIN
+// =========================================
+
 async function deleteListing(id) {
     if (!confirm("Are you sure you want to delete this listing?")) {
         return;
     }
 
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/api/listings/${id}`,
-            {
-                method: "DELETE",
-                headers: getAuthHeaders()
-            }
-        );
+        const response = await fetch(`${LISTINGS_API}/${id}`, {
+            method: "DELETE",
+            headers: getAuthHeaders()
+        });
+
+        const data = await response.json();
 
         if (!response.ok) {
-            alert("Unable to delete listing.");
-            return;
+            throw new Error(data.message || `Server error: ${response.status}`);
         }
 
         alert("Listing deleted successfully!");
+
         await loadListings();
 
     } catch (error) {
         console.error("Delete listing error:", error);
+        alert(error.message || "Unable to delete listing.");
     }
 }
 
