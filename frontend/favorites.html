@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="theme-color" content="#087f8c" />
+
+    <title>My Favorites | NestNotes</title>
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="favorites.css" />
+  </head>
+
+  <body class="favorites-page">
+    <!-- Navigation -->
+    <nav class="favorites-navbar">
+      <!-- Brand -->
+      <a href="index.html" class="favorites-brand" aria-label="NestNotes home">
+        <span class="favorites-brand-icon" aria-hidden="true">⌂</span>
+        <span>NestNotes</span>
+      </a>
+
+      <!-- Mobile navigation controls -->
+      <div class="favorites-nav-actions">
+        <!-- Notifications -->
+        <a
+          href="notifications.html"
+          class="favorites-mobile-notification"
+          aria-label="Notifications"
+          title="Notifications"
+        >
+          🔔
+          <span class="favorites-notification-dot" aria-hidden="true"></span>
+        </a>
+
+        <!-- Hamburger menu -->
+        <button
+          type="button"
+          class="favorites-menu-toggle"
+          id="favoritesMenuToggle"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="favoritesNavLinks"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <!-- Navigation links -->
+      <div class="favorites-nav-links" id="favoritesNavLinks">
+        <a href="index.html">Home</a>
+
+        <a href="my-listings.html">My Listings</a>
+
+        <a href="inbox.html">Messages</a>
+
+        <a href="notifications.html">Notifications</a>
+
+        <a href="index.html#listingContainer" class="favorites-nav-cta">
+          Explore Listings
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="favorites-main">
+      <!-- Page Heading -->
+      <section class="favorites-hero">
+        <div class="favorites-heading-content">
+          <span class="favorites-eyebrow"> YOUR PERSONAL COLLECTION </span>
+
+          <h1>Places you <span>love.</span></h1>
+
+          <p>
+            Keep your favourite spaces together and revisit the properties that
+            caught your eye.
+          </p>
+        </div>
+
+        <div class="favorites-hero-icon" aria-hidden="true">
+          <span>♥</span>
+        </div>
+      </section>
+
+      <!-- Collection Summary -->
+      <section class="favorites-summary">
+        <div class="favorites-summary-icon">♥</div>
+
+        <div>
+          <h2>My Favorite Listings</h2>
+
+          <p>Your saved spaces, all in one place.</p>
+        </div>
+
+        <a href="index.html#listingContainer" class="favorites-browse-link">
+          Discover more spaces →
+        </a>
+      </section>
+
+      <!-- Existing JavaScript renders saved properties here -->
+      <section class="favorites-results">
+        <div id="favoriteContainer"></div>
+      </section>
+
+      <!-- Explore More -->
+      <section class="favorites-bottom-cta">
+        <div>
+          <span class="favorites-eyebrow"> STILL SEARCHING? </span>
+
+          <h2>Your next home might be one click away.</h2>
+
+          <p>Explore more flats, PGs and shared rooms across Bengaluru.</p>
+        </div>
+
+        <a href="index.html#listingContainer" class="favorites-primary-btn">
+          Explore Properties <span>→</span>
+        </a>
+      </section>
+
+      <!-- Footer -->
+      <footer class="favorites-footer">
+        <a href="index.html" class="favorites-footer-brand"> ⌂ NestNotes </a>
+
+        <p>Find your space. Feel at home.</p>
+
+        <a href="index.html"> Back to Home → </a>
+      </footer>
+    </main>
+
+    <!-- Preserve existing favorites functionality -->
+    <script src="api-config.js"></script>
+    <script src="favorites.js"></script>
+    <script src="theme.js"></script>
+
+    <script>
+      (() => {
+        const menuButton = document.getElementById("favoritesMenuToggle");
+        const navigation = document.getElementById("favoritesNavLinks");
+
+        if (!menuButton || !navigation) return;
+
+        function closeMenu() {
+          navigation.classList.remove("is-open");
+
+          menuButton.setAttribute("aria-expanded", "false");
+          menuButton.setAttribute("aria-label", "Open navigation menu");
+        }
+
+        menuButton.addEventListener("click", () => {
+          const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+
+          navigation.classList.toggle("is-open", !isOpen);
+
+          menuButton.setAttribute("aria-expanded", String(!isOpen));
+
+          menuButton.setAttribute(
+            "aria-label",
+            isOpen ? "Open navigation menu" : "Close navigation menu",
+          );
+        });
+
+        navigation.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", closeMenu);
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            closeMenu();
+            menuButton.focus();
+          }
+        });
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 1000) {
+            closeMenu();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

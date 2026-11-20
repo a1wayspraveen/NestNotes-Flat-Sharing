@@ -1,0 +1,1245 @@
+/* =========================================
+   NESTNOTES — MY LISTINGS DASHBOARD
+========================================= */
+
+.my-listings-page {
+    --dash-primary: #087f8c;
+    --dash-primary-dark: #066873;
+    --dash-primary-light: #e8f7f8;
+    --dash-text: #172b4d;
+    --dash-muted: #718096;
+    --dash-border: #e3eaf2;
+    --dash-background: #f5f8fc;
+
+    margin: 0;
+    background: var(--dash-background);
+    color: var(--dash-text);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.my-listings-page * {
+    box-sizing: border-box;
+}
+
+.my-listings-page a {
+    text-decoration: none;
+}
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+/* =========================================
+   RESPONSIVE NAVIGATION
+========================================= */
+
+.dashboard-navbar {
+    position: relative;
+    z-index: 100;
+
+    min-height: 76px;
+    padding: 12px 5.5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    background: #ffffff;
+    border-bottom: 1px solid var(--dash-border);
+}
+
+/* Brand */
+
+.dashboard-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    flex-shrink: 0;
+
+    color: var(--dash-text);
+    font-size: 21px;
+    font-weight: 850;
+    letter-spacing: -0.5px;
+}
+
+.dashboard-brand-icon {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+    background: var(--dash-primary-light);
+    color: var(--dash-primary);
+
+    font-size: 25px;
+}
+
+/* Desktop links */
+
+.dashboard-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 25px;
+}
+
+.dashboard-nav-links > a:not(.dashboard-nav-cta) {
+    color: #52657c;
+    font-size: 14px;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.dashboard-nav-links > a:not(.dashboard-nav-cta):hover {
+    color: var(--dash-primary);
+}
+
+.dashboard-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 17px;
+    border-radius: 10px;
+
+    background: var(--dash-primary);
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.dashboard-nav-cta:hover {
+    background: var(--dash-primary-dark);
+}
+
+/* Mobile controls are hidden on desktop */
+
+.dashboard-mobile-controls {
+    display: none;
+}
+
+/* =========================================
+   MOBILE NAVIGATION
+========================================= */
+
+@media (max-width: 760px) {
+
+    .dashboard-navbar {
+        min-height: 76px;
+        padding: 12px 16px;
+
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 0;
+    }
+
+    .dashboard-brand {
+        font-size: 19px;
+        gap: 8px;
+    }
+
+    .dashboard-brand-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 23px;
+    }
+
+    /* Bell and hamburger share one row */
+
+    .dashboard-mobile-controls {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+
+        margin-left: auto;
+    }
+
+    .dashboard-notification-link,
+    .dashboard-menu-toggle {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 0;
+        border: 1px solid #dcebed;
+        border-radius: 12px;
+
+        background: var(--dash-primary-light);
+        color: var(--dash-primary);
+
+        font-family: inherit;
+        font-size: 21px;
+        line-height: 1;
+
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .dashboard-menu-toggle:hover,
+    .dashboard-notification-link:hover {
+        background: #d9f0f2;
+    }
+
+    /* Explicitly display the hamburger icon */
+
+    .dashboard-menu-toggle .menu-icon {
+        display: block;
+        color: var(--dash-primary);
+        font-size: 25px;
+        line-height: 1;
+    }
+
+    /* Hide links until the menu is opened */
+
+    .dashboard-nav-links {
+        display: none;
+
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+
+        margin-top: 14px;
+        padding: 12px;
+
+        border: 1px solid var(--dash-border);
+        border-radius: 14px;
+
+        background: #ffffff;
+        box-shadow: 0 10px 25px rgba(29, 55, 90, 0.07);
+    }
+
+    /* JavaScript toggles this class */
+
+    .dashboard-nav-links.is-open {
+        display: flex;
+    }
+
+    .dashboard-nav-links > a:not(.dashboard-nav-cta) {
+        display: flex;
+        align-items: center;
+
+        min-height: 44px;
+        padding: 10px 12px;
+
+        border-radius: 9px;
+
+        font-size: 14px;
+    }
+
+    .dashboard-nav-links > a:not(.dashboard-nav-cta):hover {
+        background: var(--dash-primary-light);
+    }
+
+    .dashboard-nav-cta {
+        min-height: 44px;
+        margin-top: 4px;
+    }
+}
+
+/* Extra-small phones */
+
+@media (max-width: 380px) {
+
+    .dashboard-navbar {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .dashboard-brand {
+        font-size: 17px;
+        gap: 6px;
+    }
+
+    .dashboard-brand-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .dashboard-mobile-controls {
+        gap: 6px;
+    }
+
+    .dashboard-notification-link,
+    .dashboard-menu-toggle {
+        width: 38px;
+        height: 38px;
+    }
+}
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
+
+.my-listings-main {
+    width: min(1160px, 92%);
+    margin: 0 auto;
+    padding: 42px 0 25px;
+}
+
+/* =========================================
+   WELCOME HEADING
+========================================= */
+
+.dashboard-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+
+    margin-bottom: 30px;
+}
+
+.dashboard-eyebrow {
+    display: inline-block;
+    margin-bottom: 9px;
+
+    color: var(--dash-primary);
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 1.6px;
+}
+
+.dashboard-welcome h1 {
+    margin: 0 0 10px;
+
+    color: var(--dash-text);
+    font-size: clamp(30px, 4vw, 40px);
+    font-weight: 850;
+    letter-spacing: -1.1px;
+}
+
+.dashboard-welcome p {
+    max-width: 600px;
+    margin: 0;
+
+    color: var(--dash-muted);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.create-listing-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    flex-shrink: 0;
+    min-height: 48px;
+    padding: 12px 18px;
+
+    border: 0;
+    border-radius: 11px;
+
+    background: var(--dash-primary);
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    box-shadow: 0 7px 16px rgba(8, 127, 140, 0.14);
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.create-listing-btn:hover {
+    background: var(--dash-primary-dark);
+    transform: translateY(-1px);
+}
+
+.create-listing-btn span {
+    font-size: 20px;
+}
+
+/* =========================================
+   SUMMARY CARDS
+========================================= */
+
+.dashboard-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 19px;
+
+    margin-bottom: 42px;
+}
+
+.summary-card {
+    min-width: 0;
+    min-height: 145px;
+    padding: 23px;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+
+    border: 1px solid var(--dash-border);
+    border-radius: 17px;
+
+    background: #ffffff;
+
+    box-shadow: 0 8px 25px rgba(29, 55, 90, 0.035);
+
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(29, 55, 90, 0.07);
+}
+
+.summary-icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 13px;
+
+    font-size: 19px;
+    font-weight: 850;
+}
+
+.summary-icon-blue {
+    background: #eaf1ff;
+    color: #4263a8;
+}
+
+.summary-icon-teal {
+    background: #e5f8f4;
+    color: #098c79;
+}
+
+.summary-icon-purple {
+    background: #f0edff;
+    color: #7660bb;
+}
+
+.summary-card p {
+    margin: 2px 0 9px;
+
+    color: var(--dash-muted);
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.summary-card h2 {
+    margin: 0 0 7px;
+
+    color: var(--dash-text);
+    font-size: 19px;
+    font-weight: 850;
+    letter-spacing: -0.4px;
+
+    overflow-wrap: anywhere;
+}
+
+.summary-caption {
+    color: #8794a6;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* =========================================
+   LISTINGS SECTION
+========================================= */
+
+.dashboard-listings-section {
+    margin-bottom: 30px;
+}
+
+.dashboard-section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 21px;
+}
+
+.dashboard-section-heading h2 {
+    margin: 0 0 8px;
+
+    color: var(--dash-text);
+    font-size: 25px;
+    font-weight: 850;
+    letter-spacing: -0.7px;
+}
+
+.dashboard-section-heading p {
+    margin: 0;
+
+    color: var(--dash-muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.messages-shortcut {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+    padding: 10px 14px;
+
+    border: 1px solid #cce9eb;
+    border-radius: 10px;
+
+    background: #ffffff;
+    color: var(--dash-primary);
+
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+
+    transition: background 0.2s ease;
+}
+
+.messages-shortcut:hover {
+    background: var(--dash-primary-light);
+}
+
+/* =========================================
+   EXISTING LISTING OUTPUT
+========================================= */
+
+#myListingsContainer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 22px;
+
+    width: 100%;
+}
+
+#myListingsContainer > * {
+    min-width: 0;
+}
+
+#myListingsContainer img {
+    display: block;
+    max-width: 100%;
+}
+
+#myListingsContainer button {
+    max-width: 100%;
+    cursor: pointer;
+}
+
+/* General listing card polish.
+   These rules do not change your JavaScript. */
+
+#myListingsContainer .my-card,
+#myListingsContainer .listing-card {
+    min-width: 0;
+    overflow: hidden;
+
+    border: 1px solid var(--dash-border);
+    border-radius: 17px;
+
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(29, 55, 90, 0.045);
+
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+#myListingsContainer .my-card:hover,
+#myListingsContainer .listing-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(29, 55, 90, 0.09);
+}
+
+#myListingsContainer .my-card img,
+#myListingsContainer .listing-card img {
+    width: 100%;
+    object-fit: cover;
+}
+
+#myListingsContainer .my-card-content {
+    padding: 20px;
+}
+
+#myListingsContainer h3 {
+    color: var(--dash-text);
+    overflow-wrap: anywhere;
+}
+
+#myListingsContainer p {
+    color: var(--dash-muted);
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+/* Action buttons */
+
+#myListingsContainer .my-actions,
+#myListingsContainer .owner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-top: 16px;
+}
+
+#myListingsContainer .my-actions > *,
+#myListingsContainer .owner-actions > * {
+    flex: 1 1 110px;
+    min-width: 0;
+}
+
+#myListingsContainer button,
+#myListingsContainer .view-btn,
+#myListingsContainer .edit-btn,
+#myListingsContainer .delete-btn {
+    min-height: 42px;
+    padding: 10px 13px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+#myListingsContainer .view-btn {
+    border: 0;
+    background: var(--dash-primary);
+    color: #ffffff;
+}
+
+#myListingsContainer .view-btn:hover {
+    background: var(--dash-primary-dark);
+}
+
+#myListingsContainer .edit-btn {
+    border: 1px solid #bce8d4;
+    background: #e9f9f0;
+    color: #08754b;
+}
+
+#myListingsContainer .edit-btn:hover {
+    background: #d5f3e3;
+}
+
+#myListingsContainer .delete-btn {
+    border: 1px solid #f4d0d3;
+    background: #fff0f1;
+    color: #b42332;
+}
+
+#myListingsContainer .delete-btn:hover {
+    background: #ffe0e3;
+}
+
+/* =========================================
+   HELPFUL INFORMATION
+========================================= */
+
+.dashboard-help {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+
+    padding: 22px;
+
+    border: 1px solid #dcebe9;
+    border-radius: 15px;
+
+    background: #eef9f7;
+}
+
+.dashboard-help-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 12px;
+    background: #ffffff;
+
+    font-size: 19px;
+}
+
+.dashboard-help h3 {
+    margin: 1px 0 7px;
+
+    color: #195e61;
+    font-size: 14px;
+    font-weight: 850;
+}
+
+.dashboard-help p {
+    max-width: 750px;
+    margin: 0;
+
+    color: #577a7c;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.dashboard-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    margin-top: 35px;
+    padding: 25px 0 8px;
+
+    border-top: 1px solid var(--dash-border);
+}
+
+.dashboard-footer-brand {
+    color: var(--dash-text);
+    font-size: 15px;
+    font-weight: 850;
+}
+
+.dashboard-footer p {
+    margin: 0;
+
+    color: var(--dash-muted);
+    font-size: 12px;
+}
+
+.dashboard-footer > a:last-child {
+    color: var(--dash-primary);
+    font-size: 12px;
+    font-weight: 750;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+    .dashboard-navbar {
+        gap: 18px;
+        padding-right: 4%;
+        padding-left: 4%;
+    }
+
+    .dashboard-nav-links {
+        gap: 15px;
+    }
+
+    .dashboard-summary {
+        gap: 13px;
+    }
+
+    .summary-card {
+        padding: 19px;
+    }
+}
+
+/* =========================================
+   MOBILE NAVIGATION
+========================================= */
+
+@media (max-width: 760px) {
+    .dashboard-navbar {
+        min-height: 76px;
+        padding: 14px 5%;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        gap: 0;
+    }
+
+    .dashboard-brand {
+        gap: 9px;
+        font-size: 20px;
+    }
+
+    .dashboard-brand-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+    }
+
+    /* Keep bell and hamburger beside the brand */
+
+    .dashboard-mobile-controls {
+        display: inline-flex;
+        margin-left: auto;
+    }
+
+    .dashboard-notification-link,
+    .dashboard-menu-toggle {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+    }
+
+    /* Closed menu */
+
+    .dashboard-nav-links {
+        display: none;
+
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+
+        gap: 7px;
+
+        margin-top: 14px;
+        padding: 12px;
+
+        border: 1px solid var(--dash-border);
+        border-radius: 15px;
+
+        background: #ffffff;
+        box-shadow: 0 12px 28px rgba(29, 55, 90, 0.08);
+    }
+
+    /* Open menu: JavaScript should toggle this class */
+
+    .dashboard-nav-links.is-open {
+        display: flex;
+    }
+
+    .dashboard-nav-links > a:not(.dashboard-nav-cta) {
+        display: flex;
+        align-items: center;
+
+        min-height: 45px;
+        padding: 10px 12px;
+
+        border-radius: 9px;
+
+        font-size: 14px;
+    }
+
+    .dashboard-nav-links > a:not(.dashboard-nav-cta):hover {
+        background: var(--dash-primary-light);
+    }
+
+    .dashboard-nav-cta {
+        width: 100%;
+        min-height: 45px;
+        margin-top: 3px;
+    }
+
+    /* Main content */
+
+    .my-listings-main {
+        width: 90%;
+        padding-top: 30px;
+    }
+
+    .dashboard-welcome {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 19px;
+    }
+
+    .dashboard-welcome h1 {
+        font-size: 32px;
+    }
+
+    .create-listing-btn {
+        width: 100%;
+    }
+
+    /* Two summary cards per row on larger phones */
+
+    .dashboard-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 32px;
+    }
+
+    .summary-card {
+        min-height: 135px;
+        padding: 16px;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .summary-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .summary-card h2 {
+        font-size: 17px;
+    }
+
+    .dashboard-section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .dashboard-section-heading h2 {
+        font-size: 23px;
+    }
+
+    .messages-shortcut {
+        width: 100%;
+    }
+
+    #myListingsContainer {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 17px;
+    }
+
+    .dashboard-help {
+        padding: 17px;
+    }
+
+    .dashboard-footer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE SCREENS
+========================================= */
+
+@media (max-width: 420px) {
+    .dashboard-navbar {
+        padding: 12px 4%;
+    }
+
+    .dashboard-brand {
+        gap: 7px;
+        font-size: 18px;
+    }
+
+    .dashboard-brand-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        font-size: 22px;
+    }
+
+    .dashboard-mobile-controls {
+        gap: 7px;
+    }
+
+    .dashboard-notification-link,
+    .dashboard-menu-toggle {
+        width: 39px;
+        height: 39px;
+        border-radius: 11px;
+        font-size: 19px;
+    }
+
+    .my-listings-main {
+        width: 92%;
+        padding-top: 25px;
+    }
+
+    .dashboard-welcome h1 {
+        font-size: 29px;
+    }
+
+    .dashboard-welcome p {
+        font-size: 13px;
+    }
+
+    /* Prevent summary cards from becoming too narrow */
+
+    .dashboard-summary {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .summary-card {
+        min-height: auto;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 18px;
+    }
+
+    .summary-card h2 {
+        font-size: 19px;
+    }
+
+    .dashboard-section-heading h2 {
+        font-size: 21px;
+    }
+
+    .dashboard-help {
+        gap: 11px;
+        padding: 15px;
+    }
+
+    #myListingsContainer .my-actions,
+    #myListingsContainer .owner-actions {
+        flex-direction: column;
+    }
+
+    #myListingsContainer .my-actions > *,
+    #myListingsContainer .owner-actions > * {
+        width: 100%;
+        flex: auto;
+    }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+.dashboard-navbar a:focus-visible,
+.dashboard-navbar button:focus-visible,
+.create-listing-btn:focus-visible,
+.messages-shortcut:focus-visible {
+    outline: 3px solid #65cbd2;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .my-listings-page *,
+    .my-listings-page *::before,
+    .my-listings-page *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==========================================
+   NESTNOTES — MY LISTINGS DARK MODE FIX
+========================================== */
+
+/* Dashboard summary cards */
+html[data-theme="dark"] body.my-listings-page .summary-card {
+    background: #192938 !important;
+    border: 1px solid #304457;
+    color: #e6edf7;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+html[data-theme="dark"] body.my-listings-page .summary-card p {
+    color: #bdcadd !important;
+}
+
+html[data-theme="dark"] body.my-listings-page .summary-card h2 {
+    color: #f1f5fb !important;
+}
+
+html[data-theme="dark"] body.my-listings-page .summary-caption {
+    color: #9fb2c7 !important;
+}
+
+/* Listing section headings */
+html[data-theme="dark"] body.my-listings-page .dashboard-section-heading h2 {
+    color: #edf3fc !important;
+}
+
+html[data-theme="dark"] body.my-listings-page .dashboard-section-heading p {
+    color: #bdcadd !important;
+}
+
+/* Individual property listing cards */
+html[data-theme="dark"] body.my-listings-page #myListingsContainer > * {
+    background-color: #192938;
+    border-color: #304457;
+    color: #e6edf7;
+}
+
+/* Property card text */
+html[data-theme="dark"] body.my-listings-page #myListingsContainer h2,
+html[data-theme="dark"] body.my-listings-page #myListingsContainer h3,
+html[data-theme="dark"] body.my-listings-page #myListingsContainer h4 {
+    color: #edf3fc !important;
+}
+
+html[data-theme="dark"] body.my-listings-page #myListingsContainer p,
+html[data-theme="dark"] body.my-listings-page #myListingsContainer span {
+    color: #bdcadd;
+}
+
+/* Property images */
+html[data-theme="dark"] body.my-listings-page #myListingsContainer img {
+    background: #223648;
+    color: #dce7f5;
+}
+
+/* Edit button */
+html[data-theme="dark"] body.my-listings-page #myListingsContainer .edit-btn,
+html[data-theme="dark"] body.my-listings-page #myListingsContainer .edit-button {
+    background: #164b3b;
+    color: #a7f3d0;
+    border-color: #26745c;
+}
+
+/* Delete button */
+html[data-theme="dark"] body.my-listings-page #myListingsContainer .delete-btn,
+html[data-theme="dark"] body.my-listings-page #myListingsContainer .delete-button {
+    background: #48252d;
+    color: #fecaca;
+    border-color: #82404b;
+}
+
+/* Interested users button */
+html[data-theme="dark"] body.my-listings-page #myListingsContainer button:not(.edit-btn):not(.edit-button):not(.delete-btn):not(.delete-button),
+html[data-theme="dark"] body.my-listings-page #myListingsContainer a {
+    border-color: #365164;
+}
+
+/* Helpful information card */
+html[data-theme="dark"] body.my-listings-page .dashboard-help {
+    background: linear-gradient(
+        110deg,
+        #19333b,
+        #183b43
+    ) !important;
+    border: 1px solid #31505a;
+}
+
+html[data-theme="dark"] body.my-listings-page .dashboard-help h3 {
+    color: #edf3fc !important;
+}
+
+html[data-theme="dark"] body.my-listings-page .dashboard-help p {
+    color: #bdcadd !important;
+}
+
+/* Footer */
+html[data-theme="dark"] body.my-listings-page .dashboard-footer {
+    background: #152331 !important;
+    border-color: #304457;
+}
+
+html[data-theme="dark"] body.my-listings-page .dashboard-footer p {
+    color: #bdcadd !important;
+}
+
+html[data-theme="dark"] body.my-listings-page .dashboard-footer-brand {
+    color: #35d0d0 !important;
+}
+
+/* Buttons and links */
+html[data-theme="dark"] body.my-listings-page .messages-shortcut {
+    background: #223648;
+    color: #35d0d0;
+    border-color: #365164;
+}
+
+html[data-theme="dark"] body.my-listings-page .create-listing-btn {
+    background: #078b98;
+    color: #ffffff;
+}
+
+/* Responsive consistency */
+@media (max-width: 768px) {
+    html[data-theme="dark"] body.my-listings-page .summary-card {
+        border-radius: 18px;
+    }
+
+    html[data-theme="dark"] body.my-listings-page #myListingsContainer {
+        color: #e6edf7;
+    }
+}
+
+/* =========================================
+   MY LISTINGS — ROUNDED FOOTER
+========================================= */
+
+body .my-listings-footer {
+    border: 1px solid #304458 !important;
+    border-radius: 20px !important;
+
+    padding: 24px !important;
+    margin: 32px 0 16px !important;
+
+    box-sizing: border-box;
+    overflow: hidden;
+
+    background: #152536;
+}
+
+/* Mobile footer */
+@media (max-width: 768px) {
+    body .my-listings-footer {
+        border-radius: 18px !important;
+        padding: 20px !important;
+        margin: 28px 0 16px !important;
+    }
+}
+
+/* =========================================
+   MY LISTINGS — ROUNDED FOOTER
+========================================= */
+
+.my-listings-page .dashboard-footer {
+    border: 1px solid #304458 !important;
+    border-radius: 20px !important;
+
+    padding: 24px !important;
+    margin: 32px 0 16px !important;
+
+    box-sizing: border-box;
+    overflow: hidden;
+
+    background: #152536;
+}
+
+/* Footer links and text */
+.my-listings-page .dashboard-footer a,
+.my-listings-page .dashboard-footer p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+    .my-listings-page .dashboard-footer {
+        border-radius: 18px !important;
+        padding: 20px !important;
+        margin: 28px 0 16px !important;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        text-align: center;
+    }
+}

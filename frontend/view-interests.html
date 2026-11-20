@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Interested Users | NestNotes</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="view-interests.css">
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="interests-header">
+        <a href="index.html" class="interests-brand">
+            <span class="brand-icon">🏠</span>
+            <span>NestNotes</span>
+        </a>
+
+        <nav class="interests-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a href="my-listings.html">My Listings</a>
+            <a href="favorites.html">Favorites</a>
+
+            <a href="index.html#listingContainer" class="browse-button">
+                Browse Listings →
+            </a>
+        </nav>
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="interests-page">
+
+        <!-- BREADCRUMB -->
+        <div class="interests-breadcrumb">
+            <a href="index.html">Home</a>
+            <span>›</span>
+            <span>Interested Users</span>
+        </div>
+
+
+        <!-- PAGE HEADING -->
+        <section class="interests-heading">
+            <div class="heading-icon">👥</div>
+
+            <div>
+                <p class="eyebrow">PROPERTY OWNER WORKSPACE</p>
+
+                <h1>Interested Users</h1>
+
+                <p>
+                    Meet people interested in your property, explore their
+                    profiles, and start a conversation.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- SUMMARY -->
+        <section class="interests-summary">
+            <div class="summary-icon">💙</div>
+
+            <div>
+                <h2>Find your next flatmate</h2>
+
+                <p>
+                    Review interested users and learn more about them
+                    before connecting.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- USERS SECTION -->
+        <section class="users-section">
+
+            <div class="users-section-heading">
+                <div>
+                    <h2>People interested in your listing</h2>
+                    <p>View profiles and connect with potential flatmates.</p>
+                </div>
+
+                <span id="userCount" class="user-count">— users</span>
+            </div>
+
+
+            <!-- LOADING / ERROR STATUS -->
+            <div
+                id="usersStatus"
+                class="users-status"
+                role="status"
+                aria-live="polite"
+            >
+                Loading interested users...
+            </div>
+
+
+            <!-- USER CARDS -->
+            <div id="usersContainer" class="users-grid"></div>
+
+        </section>
+
+
+        <!-- BACK BUTTON -->
+        <div class="interests-bottom">
+            <a
+                id="backToListing"
+                href="index.html#listingContainer"
+                class="back-button"
+            >
+                ← Back to Listings
+            </a>
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="interests-footer">
+        <div class="footer-inner">
+            <span class="footer-brand">🏠 NestNotes</span>
+
+            <span class="footer-copy">
+                © 2026 NestNotes Flat Sharing. All rights reserved.
+            </span>
+
+            <a href="index.html">Back to Home →</a>
+        </div>
+    </footer>
+
+    <script src="api-config.js"></script>
+    <script src="view-interests.js"></script>
+    <script src="theme.js"></script>
+
+</body>
+</html>

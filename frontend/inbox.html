@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#087f8c" />
+
+    <title>Owner Inbox | NestNotes</title>
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="inbox.css" />
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <nav class="inbox-nav inbox-navbar">
+      <a href="index.html" class="inbox-brand">
+        <span class="inbox-brand-icon">⌂</span>
+        <span>NestNotes</span>
+      </a>
+
+      <button
+        type="button"
+        class="inbox-menu-toggle"
+        id="inboxMenuToggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="inboxNavLinks"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="inbox-nav-links" id="inboxNavLinks">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="my-listings.html">My Listings</a>
+        <a href="favorites.html">Favorites</a>
+
+        <a href="inbox.html" class="active">
+          Messages
+          <span
+            id="unreadMessageBadge"
+            class="nav-notification-badge"
+            hidden
+          ></span>
+        </a>
+
+        <a href="notifications.html">
+          Notifications
+          <span
+            id="unreadNotificationBadge"
+            class="nav-notification-badge"
+            hidden
+          ></span>
+        </a>
+      </div>
+    </nav>
+
+    <main class="inbox-page">
+      <!-- Hero -->
+      <section class="inbox-hero">
+        <div class="inbox-hero-content">
+          <span class="inbox-eyebrow"> YOUR PROPERTY ENQUIRIES </span>
+
+          <h1>
+            Every enquiry is a step
+            <span>closer to home.</span>
+          </h1>
+
+          <p>
+            Keep track of people interested in your properties, review their
+            messages, and respond to enquiries in one place.
+          </p>
+        </div>
+
+        <div class="inbox-hero-icon" aria-hidden="true">💬</div>
+      </section>
+
+      <!-- Inbox heading -->
+      <section class="inbox-section-heading">
+        <div>
+          <span class="inbox-eyebrow">STAY CONNECTED</span>
+
+          <h2>Your Owner Inbox</h2>
+
+          <p>
+            Search your enquiries and keep your property conversations
+            organised.
+          </p>
+        </div>
+
+        <span class="inbox-count-label"> 💌 Property enquiries </span>
+      </section>
+
+      <!-- Search -->
+      <section class="inbox-search-card">
+        <label for="searchInbox" class="inbox-search-label">
+          Search conversations
+        </label>
+
+        <div class="inbox-search-wrap">
+          <span class="inbox-search-icon" aria-hidden="true"> ⌕ </span>
+
+          <input
+            type="search"
+            id="searchInbox"
+            placeholder="Search by user or listing..."
+            autocomplete="off"
+          />
+        </div>
+      </section>
+
+      <!-- Inbox contents -->
+      <section class="inbox-messages-card">
+        <div class="inbox-card-header">
+          <div class="inbox-card-header-icon" aria-hidden="true">✉️</div>
+
+          <div>
+            <h3>Incoming enquiries</h3>
+            <p>Messages and replies related to your listings.</p>
+          </div>
+        </div>
+
+        <!-- Keep this ID for owner-inbox.js -->
+        <div id="messagesContainer"></div>
+      </section>
+
+      <!-- Helpful note -->
+      <aside class="inbox-help-card">
+        <div class="inbox-help-icon" aria-hidden="true">💡</div>
+
+        <div>
+          <h3>Good conversations build trust</h3>
+
+          <p>
+            Respond clearly to questions about your property and keep
+            communication respectful.
+          </p>
+        </div>
+      </aside>
+
+      <footer class="inbox-footer">
+        © 2026 NestNotes Flat Sharing · Find your space. Feel at home.
+      </footer>
+    </main>
+
+    <!-- Existing inbox functionality preserved -->
+    <script src="api-config.js"></script>
+    <script src="owner-inbox.js"></script>
+    <script src="unread-badge.js"></script>
+    <script src="theme.js"></script>
+    <script>
+      (() => {
+        const menuButton = document.getElementById("inboxMenuToggle");
+        const navigation = document.getElementById("inboxNavLinks");
+
+        if (!menuButton || !navigation) return;
+
+        function closeMenu() {
+          navigation.classList.remove("is-open");
+          menuButton.setAttribute("aria-expanded", "false");
+          menuButton.setAttribute("aria-label", "Open navigation menu");
+        }
+
+        menuButton.addEventListener("click", () => {
+          const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+
+          navigation.classList.toggle("is-open", !isOpen);
+
+          menuButton.setAttribute("aria-expanded", String(!isOpen));
+          menuButton.setAttribute(
+            "aria-label",
+            isOpen ? "Open navigation menu" : "Close navigation menu",
+          );
+        });
+
+        navigation.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", closeMenu);
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            closeMenu();
+          }
+        });
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 768) {
+            closeMenu();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
